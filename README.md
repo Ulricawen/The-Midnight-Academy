@@ -79,17 +79,17 @@ PhET 每个仿真覆盖单一学科、演示单一现象；本作品的差异在
 
 | # | 功能 | 状态 | 代码依据（index.html 内） | 截图 |
 |---|---|---|---|---|
-| 1 | 密码试炼：关键词单表替换加密/解密、字母表映射展示 | ✅ 已实现 | `Cipher` 模块 | `screenshots/02-cipher.png` |
-| 2 | 统计试炼：正态抽样、样本均值与 95% 置信区间直方图 | ✅ 已实现 | `Sampling` 模块 | `screenshots/03-sampling.png` |
-| 3 | 生态试炼：草-兔-狐 150 代推演、移出任一物种观察营养级联 | ✅ 已实现 | `Web` 模块 | `screenshots/04-web.png` |
-| 4 | 频率之眼（密码×统计）：频率初值 + 词典回溯两步破译、手动修正映射、还原度显示 | ✅ 已实现 | `Freq` 模块（`dictSolve`） | `screenshots/05-freq.png` |
-| 5 | 月光池塘（统计×生态）：标志重捕估计、调查台账、揭晓真值 | ✅ 已实现 | `Recap` 模块 | `screenshots/06-recap.png` |
-| 6 | 基因封印（密码×生态）：eDNA 序列比对、相似度与 97% 阈值判定 | ✅ 已实现 | `DNA` 模块 | `screenshots/07-dna.png` |
-| 7 | 掌握度进度：0/6 计数、完成徽章高亮、localStorage 刷新恢复 | ✅ 已实现 | `markTrial` / `loadProgress` / `saveProgress` | `screenshots/08-progress.png` |
-| 8 | 结业闭环：6/6 触发毕业徽章覆盖层，含已掌握清单与重新开始 | ✅ 已实现 | `showGrad` / `#grad` 覆盖层 | `screenshots/09-graduation.png` |
-| 9 | 重新开始：清空进度重新体验（进度条按钮 + 结业层按钮） | ✅ 已实现 | `restartAll` | `screenshots/08-progress.png` |
-| 10 | 学派手账：6 条魔法的「真实知识 × 局限」对照表 | ✅ 已实现 | 学派手账 section | `screenshots/10-codex.png` |
-| 11 | 真实信息锚定：6 处院系/科研平台金色标注 + 真实映射总说明 | ✅ 已实现 | `.realref` 标注 | `screenshots/10-codex.png` |
+| 1 | 密码试炼：关键词单表替换加密/解密、字母表映射展示 | ✅ 已实现 | `Cipher` 模块 | `screenshots/01-cipher.png` |
+| 2 | 统计试炼：正态抽样、样本均值与 95% 置信区间直方图 | ✅ 已实现 | `Sampling` 模块 | `screenshots/02-sampling.png` |
+| 3 | 生态试炼：草-兔-狐 150 代推演、移出任一物种观察营养级联 | ✅ 已实现 | `Web` 模块 | `screenshots/03-web.png` |
+| 4 | 频率之眼（密码×统计）：频率初值 + 词典回溯两步破译、手动修正映射、还原度显示 | ✅ 已实现 | `Freq` 模块（`dictSolve`） | `screenshots/04-freq.png` |
+| 5 | 月光池塘（统计×生态）：标志重捕估计、调查台账、揭晓真值 | ✅ 已实现 | `Recap` 模块 | `screenshots/05-recap.png` |
+| 6 | 基因封印（密码×生态）：eDNA 序列比对、相似度与 97% 阈值判定 | ✅ 已实现 | `DNA` 模块 | `screenshots/06-dna.png` |
+| 7 | 掌握度进度：0/6 计数、完成徽章高亮、localStorage 刷新恢复 | ✅ 已实现 | `markTrial` / `loadProgress` / `saveProgress` | `screenshots/07-graduation.png` |
+| 8 | 结业闭环：6/6 触发毕业徽章覆盖层，含已掌握清单与重新开始 | ✅ 已实现 | `showGrad` / `#grad` 覆盖层 | `screenshots/07-graduation.png` |
+| 9 | 重新开始：清空进度重新体验（进度条按钮 + 结业层按钮） | ✅ 已实现 | `restartAll` | `screenshots/07-graduation.png` |
+| 10 | 学派手账：6 条魔法的「真实知识 × 局限」对照表 | ✅ 已实现 | 学派手账 section | `screenshots/08-codex.png` |
+| 11 | 真实信息锚定：6 处院系/科研平台金色标注 + 真实映射总说明 | ✅ 已实现 | `.realref` 标注 | `screenshots/08-codex.png` |
 | 12 | 首访引导提示与完成 toast 反馈 | ✅ 已实现 | `toast` / 启动逻辑 | — |
 | 13 | 移动端自适应（卡片栅格 auto-fit、断点样式） | ✅ 已实现 | `.grid` / `@media` | — |
 | 14 | 音效、多语言、用户账号 | ⬜ 未实现 | — | — |
