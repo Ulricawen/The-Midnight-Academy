@@ -131,6 +131,34 @@
     opacity:0;transition:.3s;z-index:99;pointer-events:none}
   #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
+  /* ---------- 碰撞熔炉 ---------- */
+  .forge-pick{display:flex;gap:16px;align-items:flex-end;justify-content:center;flex-wrap:wrap;margin:6px 0 20px}
+  .pick-box{display:flex;flex-direction:column;gap:6px;min-width:240px;flex:1;max-width:380px}
+  .pick-box label{font-size:12.5px;color:var(--dim);letter-spacing:2px}
+  .pick-box select{background:var(--panel);color:var(--ink);border:1px solid var(--border);
+    border-radius:10px;padding:11px 12px;font-size:14.5px;cursor:pointer}
+  .pick-box select:focus{outline:none;border-color:var(--gold)}
+  .cross{font-size:28px;color:var(--gold);padding-bottom:4px;font-weight:700}
+  .fpair{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:stretch}
+  .fside{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:13px 15px}
+  .fside .fname{font-size:16.5px;color:var(--gold);font-weight:600}
+  .fside .fwhere{font-size:12px;color:var(--dim);margin-top:2px}
+  .fside p{font-size:13px;color:#cfd3ff;margin:8px 0 6px;line-height:1.65}
+  .fside a{font-size:12px;text-decoration:none;border-bottom:1px dashed rgba(255,212,121,.5)}
+  .fmid{align-self:center;font-size:24px;color:var(--gold);font-weight:700}
+  .fburst{margin-top:14px;border:1px solid var(--border);border-radius:12px;padding:13px 16px;background:rgba(255,255,255,.02)}
+  .fburst .fb{font-size:14.5px;line-height:1.8;margin:4px 0}
+  .fburst .fb b{color:var(--gold)}
+  .fburst .fbridge{margin-top:9px;padding-top:9px;border-top:1px dashed var(--border);
+    font-size:13.5px;color:var(--eco);line-height:1.7}
+  .fplace{margin-top:12px;font-size:13.5px;line-height:1.7;border-left:3px solid var(--stats);
+    background:rgba(103,232,249,.06);padding:9px 13px;border-radius:0 8px 8px 0}
+  .fplace a.btn-jump{display:inline-block;margin-left:6px;font-size:12.5px;padding:3px 13px;
+    border-radius:999px;background:var(--gold);color:#141005;text-decoration:none;font-weight:600}
+  .forge-progress{text-align:center;font-size:13px;color:var(--dim);margin-top:12px}
+  .forge-progress b{color:var(--gold);font-size:16px}
+  @media(max-width:640px){.fpair{grid-template-columns:1fr}.fmid{display:none}}
+
   /* ---------- 结业闭环（6/6 毕业覆盖层） ---------- */
   #grad{position:fixed;inset:0;background:rgba(7,9,26,.9);backdrop-filter:blur(6px);
     display:none;align-items:center;justify-content:center;z-index:97;padding:20px}
@@ -330,6 +358,21 @@
     </div>
   </section>
 
+  <!-- ================= 碰撞熔炉（34 专业两两组合） ================= -->
+  <section id="forge">
+    <div class="sec-head"><h2>碰撞熔炉</h2><span class="sub">任意两个专业相遇，都会锻出一条新规则——34 个本科专业，共 561 种组合</span></div>
+    <div class="forge-pick">
+      <div class="pick-box"><label>专 业 A</label><select id="forgeA"></select></div>
+      <div class="cross">×</div>
+      <div class="pick-box"><label>专 业 B</label><select id="forgeB"></select></div>
+      <button class="primary" id="btnForge">点火碰撞</button>
+      <button id="btnForgeRand">随机一对</button>
+    </div>
+    <div id="forgeOut"><p class="note" style="text-align:center">左右各选一个专业（可同院，也可跨院），点火后熔炉会给出：<b style="color:#ffd479">火花名</b>、<b style="color:#ffd479">正反双向的融合咒文</b>、<b style="color:#ffd479">桥接洞见</b>与<b style="color:#ffd479">学派落点</b>。</p></div>
+    <div class="forge-progress" id="forgeProg"></div>
+    <div class="realref" style="margin-top:16px">🏛 34 个专业的名称、所属院系与介绍逐条取自学校各学院官网「院系与专业 / 本科课程」页（工商管理学院 fbm · 人文社科学院 fhss · 理工科技学院 fst · 文化与创意学院 scc），任选两个即成一对，C(34,2)=<b>561</b> 种组合全部可碰撞；类别标签与 28 条桥接规则为本作品原创的碰撞引擎。</div>
+  </section>
+
   <!-- ================= 知识手账 ================= -->
   <section id="codex">
     <div class="sec-head"><h2>学派手账</h2><span class="sub">每一条魔法背后的真实知识与它的边界</span></div>
@@ -342,7 +385,7 @@
       <tr><td>标志重捕</td><td>统计 × 生态</td><td>林肯-彼得森指数 N̂=km/x</td><td>假设完全混合、无死亡；违反时估计有偏</td></tr>
       <tr><td>基因封印</td><td>密码 × 生态</td><td>DNA 条形码、汉明距离比对</td><td>近缘种相似度过阈值会误判；本页序列为模拟</td></tr>
     </table>
-    <p class="note" style="margin-top:14px">· <b style="color:#ffd479">真实映射：</b>本作品 6 个实验全部锚定北师港浸大理工科技学院的 4 个系（计算机科学系、统计与数据科学系、数学科学系、生命科学系）与 3 个真实科研平台（广东省数据科学与技术交叉应用重点实验室、广东省教育厅人工智能与多模态数据处理重点实验室、数学/统计学博士后科研流动站）。全校共 <b>6 个学院、13 个系、34 个本科专业（方向）</b>：工商管理学院（会计系 1 · 金融经济系 3 · 管理系 5）、人文社科学院（传播系 3 · 语言文化系 4 · 社会科学系 2）、文化与创意学院（文化创意与设计系 3 · 影视与新媒体系 3 · 音乐系 1）、通识教育学院（教学中心，无本科专业）、博雅智能学院（全校 4 学院 29 个专业参与的「+N」跨学科路径）；其余学院的交叉延伸留作后续版本。<br>
+    <p class="note" style="margin-top:14px">· <b style="color:#ffd479">真实映射：</b>本作品 6 个实验全部锚定北师港浸大理工科技学院的 4 个系（计算机科学系、统计与数据科学系、数学科学系、生命科学系）与 3 个真实科研平台（广东省数据科学与技术交叉应用重点实验室、广东省教育厅人工智能与多模态数据处理重点实验室、数学/统计学博士后科研流动站）。全校共 <b>6 个学院、13 个系、34 个本科专业（方向）</b>：工商管理学院（会计系 1 · 金融经济系 3 · 管理系 5）、人文社科学院（传播系 3 · 语言文化系 4 · 社会科学系 2）、文化与创意学院（文化创意与设计系 3 · 影视与新媒体系 3 · 音乐系 1）、通识教育学院（教学中心，无本科专业）、博雅智能学院（全校 4 学院 29 个专业参与的「+N」跨学科路径）；<b>上方「碰撞熔炉」已把 4 个专业学院的全部 34 个专业两两配对，C(34,2)=561 种组合逐一可碰撞。</b><br>
     · 世界、学派、名称与设定均为本作品原创，未复刻任何已有魔法世界观；页面不含外部素材，可离线演示。<br>
     · 词典回溯所用英语词表来自开源项目 google-10000-english（github.com/first20hours/google-10000-english 的 20k 常用词），仅在本地用于模式查询。</p>
   </section>
@@ -350,7 +393,7 @@
 
 <footer>
   The Midnight Academy · BNBU AI Track 参赛作品 · <span id="footYear"></span><br>
-  单文件静态页面 · 无外部依赖 · 所有数据均为页面内模拟生成
+  单文件静态页面 · 无外部依赖 · 实验数据均为页面内模拟生成，院系与专业信息取自学校官网
 </footer>
 
 <div id="grad">
@@ -426,6 +469,7 @@ function showGrad(){
 }
 function restartAll(){
   try{ localStorage.removeItem(STORE_KEY); }catch(e){}
+  try{ localStorage.removeItem(FORGE_STORE); }catch(e){}
   location.reload();
 }
 let toastTimer = null;
@@ -979,6 +1023,175 @@ const DNA = {
 };
 
 /* =========================================================================
+   碰撞熔炉：34 个专业两两组合 C(34,2)=561
+   7 个类别 → 28 条桥接规则 → 每一对都产出：火花名 / 双向融合咒文 /
+   桥接洞见 / 学派落点，并持久化探索进度。
+   专业名称、院系与介绍取自学校各学院官网「院系与专业 / 本科课程」页。
+   ========================================================================= */
+const FORGE_STORE = 'midnight-forge-v1';
+const CATS = {
+  ai  :{n:'智能与计算', aff:'cipher'},
+  art :{n:'创意与艺术', aff:null},
+  biz :{n:'商业与管理', aff:null},
+  comm:{n:'传播与语言', aff:null},
+  life:{n:'生命与环境', aff:'eco'},
+  math:{n:'数理与数据', aff:'sampling'},
+  psy :{n:'心理与行为', aff:null}
+};
+const AFFL = { cipher:'密码学派', sampling:'统计学派', eco:'生态学派' };
+const CROSS = { 'cipher|sampling':'频率之眼', 'cipher|eco':'基因封印', 'eco|sampling':'标志重捕' };
+const BRIDGES = {
+  'ai|ai'    :{n:'同源奇点', d:'同一套算法在两个方向上互相校验：数据、算力与超参数摆在同一张桌上，同门碰撞最先暴露的，是各自看不见的盲区。'},
+  'ai|art'   :{n:'生成式创作', d:'模型学会了风格，人负责给出意图：提示词是新的画笔，采样参数是新的笔触，而审美判断仍然只属于人。'},
+  'ai|biz'   :{n:'智能决策', d:'当决策流程被写成可优化的目标函数，管理就从经验艺术变成可回测、可复盘的实验。'},
+  'ai|comm'  :{n:'生成式传播', d:'生产被加速，分发被算法接管——传播的问题从「说什么」变成「被谁看见、被如何推荐」。'},
+  'ai|life'  :{n:'基因封印', d:'序列数据的智能比对与模式识别：短指纹加可比对的距离，正是密码学哈希思想在生命数据上的重演。'},
+  'ai|math'  :{n:'频率之眼', d:'算法的每一步都能被写成概率与统计：置信度、误差分布、显著性检验——统计是算法的自我认知。'},
+  'ai|psy'   :{n:'模型读心', d:'行为被记录成特征，心理被拟合成参数：预测得越准，越要回答「这是相关还是因果」这个心理学老问题。'},
+  'art|art'  :{n:'意象叠加', d:'两种媒介在同一叙事里互相翻译，风格的边界开始溶解——同门碰撞最常见的产物，是全新的混合体裁。'},
+  'art|biz'  :{n:'体验经济', d:'创意一旦接上成本、渠道与商业模式，作品就变成产品：审美价值必须折算成能维持创作的现金流。'},
+  'art|comm' :{n:'意义的工艺', d:'传播给出渠道与受众，创意给出形式与情感：同一条信息，换一种媒介就换一种说服力。'},
+  'art|life' :{n:'仿生设计', d:'自然演化四十亿年的结构与配色，是设计最古老的样本库：形态、材料与生态位都是可借用的图纸。'},
+  'art|math' :{n:'算法之美', d:'对称、分形、比例与生成式构图——美感的直觉一旦被写成公式，就能被计算、被变异、被重新发现。'},
+  'art|psy'  :{n:'感知的调色', d:'色彩、节奏与空间如何被感知系统加工，是创意真正生效的物理基础：形式不只装饰，它直接作用于注意与情绪。'},
+  'biz|biz'  :{n:'商业同频', d:'两套商业逻辑在同一个市场相遇，比的是谁先把隐性成本算清楚——同门碰撞最现实，也最先见生死。'},
+  'biz|comm' :{n:'品牌的语法', d:'品牌是一套被反复编码的意义系统：定位、口号与叙事，决定一门生意在公众记忆里的位置。'},
+  'biz|life' :{n:'可持续的账本', d:'资源、排放与物种一旦写进财务报表，环境成本就不再是外部性，而是资产负债表上的数字。'},
+  'biz|math' :{n:'决策的证据', d:'商业问题一旦被写成可估计的量，决策就从经验变成证据：抽样、回归与优化把「我觉得」变成「数据显示」。'},
+  'biz|psy'  :{n:'行为的定价', d:'人不是完全理性的变量：偏好、损失厌恶与从众效应，决定真实世界里价格与政策的最终效果。'},
+  'comm|comm':{n:'语义共振', d:'两套话语体系互相借用词汇与框架，意义在翻译中增殖——同门碰撞最擅长生产新的说法与新的共识。'},
+  'comm|life':{n:'自然的代言', d:'科学只有被讲述才会被关心：数据、物种与危机，都要经过叙事才能进入公共讨论。'},
+  'comm|math':{n:'可计算的叙事', d:'文本可以被分词、计数与建模：词频、情感与传播路径，让「说了什么、传了多远」第一次变成可检验的数字。'},
+  'comm|psy' :{n:'说服的回路', d:'注意、记忆与态度是传播的地下河道：一条信息能否被接受，先取决于它如何被心智加工。'},
+  'life|life':{n:'生态自愈', d:'把两个生命系统并置，养分循环、种群波动与抵抗力会连成一张网——同门碰撞最容易看见系统的韧性与脆弱。'},
+  'life|math':{n:'标志重捕', d:'抽样推断正是种群调查的数学底座：捕一批、标记、放回、再捕一批，就能估计看不见的总体。'},
+  'life|psy' :{n:'亲生命性', d:'自然环境如何恢复注意力与情绪，是心理学与生命科学共同的实验场——人本身就是生态系统的一部分。'},
+  'math|math':{n:'同源共振', d:'两条推导落在同一个公理体系里互相验证：定义越严格，交叉时越容易诞生新的定理与新的工具。'},
+  'math|psy' :{n:'实证的双翼', d:'实验设计与统计推断是心理学的两条腿：效应量、显著性与可重复性，决定一个发现能不能站住。'},
+  'psy|psy'  :{n:'行为回声', d:'两组关于人的研究互为对照，量表、样本与情境的差异会在碰撞中显形——同门碰撞最需要警惕共同的偏差。'}
+};
+const MAJORS = [
+  {n:'会计学', col:'工商管理学院', dep:'会计系', c:'biz', m:'按准则记账与审计追溯', o:'企业的真实财务记录', s:'以国际专业准则为主导，面向 HKICPA 与 CPA Australia 认证的会计人才；已列为珠海市优势学科。', u:'http://fbm.bnbu.edu.cn/acct'},
+  {n:'财务学', col:'工商管理学院', dep:'金融经济系', c:'biz', m:'投资组合构建与风险定价', o:'企业的资金与资本结构', s:'培养金融投资与财务管理领域的工商管理人才，课程覆盖期权期货、金融风险管理与应用计量经济学。', u:'http://fbm.bnbu.edu.cn/fin'},
+  {n:'应用经济学', col:'工商管理学院', dep:'金融经济系', c:'biz', m:'数理建模与统计推断', o:'稀缺资源配置与公共政策', s:'用严谨的数理逻辑与统计方法研究资源配置、成本收益与宏观调控，构建博弈、预测与仿真方法。', u:'http://fbm.bnbu.edu.cn/ae'},
+  {n:'商业分析', col:'工商管理学院', dep:'金融经济系', c:'biz', m:'统计决策与运筹优化', o:'商业决策与供应链', s:'融合工商管理与现代商业分析：商业研究方法、统计决策、数据库、运筹优化与金融科技。', u:'http://fbm.bnbu.edu.cn/busa'},
+  {n:'人力资源管理', col:'工商管理学院', dep:'管理系', c:'biz', m:'实习实践与组织行为评估', o:'组织中的人与绩效', s:'以实习课程为核心，把课堂知识应用到现实世界，培养与未来职业高度适配的管理人才。', u:'http://fbm.bnbu.edu.cn/mhr'},
+  {n:'市场营销管理', col:'工商管理学院', dep:'管理系', c:'biz', m:'数字营销与品牌管理', o:'消费者与市场需求', s:'全国首个获数字营销协会（DMI）国际权威认证的市场营销管理专业，毕业即获三证书。', u:'http://fbm.bnbu.edu.cn/mkt'},
+  {n:'电子商务与资讯系统管理', col:'工商管理学院', dep:'管理系', c:'biz', m:'信息系统与大数据运营', o:'数字商业平台与交易', s:'培养既懂商业管理又懂信息技术的复合型人才，强调大数据环境下的信息科技能力。', u:'http://fbm.bnbu.edu.cn/ebis'},
+  {n:'创业与创新管理', col:'工商管理学院', dep:'管理系', c:'biz', m:'商业模式设计与创新管理', o:'初创企业与组织成长', s:'面向企业从初创到成熟各阶段，培养以创新推动高质量增长的管理人才。', u:'http://fbm.bnbu.edu.cn/epin'},
+  {n:'数字媒体管理', col:'工商管理学院', dep:'管理系', c:'biz', m:'数据驱动的媒体运营', o:'数字媒体商业生态', s:'课程含数据驱动媒体管理、人工智能与数据科学管理、社交媒体管理与数字商业模式。', u:'http://fbm.bnbu.edu.cn/dmm'},
+  {n:'中华文化与国际传播', col:'人文社科学院', dep:'传播系', c:'comm', m:'跨文化阐释与国际叙事', o:'中华文化的当代表达', s:'厚植本土、汇通全球，培养既深植中华文化又能面向世界传播的新型人才。', u:'http://fhss.bnbu.edu.cn/ccgc'},
+  {n:'媒体与传播学', col:'人文社科学院', dep:'传播系', c:'comm', m:'报道、编辑与纪录片制作', o:'公共信息与媒介事件', s:'培养未来传播及文化界领袖，强调过硬的写作思辨与全面的媒介素养训练。', u:'http://fhss.bnbu.edu.cn/mcom'},
+  {n:'公共关系与广告学', col:'人文社科学院', dep:'传播系', c:'comm', m:'传播策略与广告创意', o:'组织形象与公众关系', s:'系统学习传播学、广告学与公共关系学，掌握传统媒体与新媒体的传播规律。', u:'http://fhss.bnbu.edu.cn/pra'},
+  {n:'应用翻译学', col:'人文社科学院', dep:'语言文化系', c:'comm', m:'双语转换与口译实践', o:'跨语言流动的意义', s:'以培养具备双语和跨文化素质的翻译与口译工作者为目标，强调批判性思维与跨学科学习。', u:'http://fhss.bnbu.edu.cn/ats'},
+  {n:'数字跨文化研究', col:'人文社科学院', dep:'语言文化系', c:'comm', m:'数字内容创作与跨文化分析', o:'多元文化语境中的数字沟通', s:'融合中英双语沟通、跨文化理解与人工智能数字技术，面向全球受众进行传播。', u:'http://fhss.bnbu.edu.cn/dis'},
+  {n:'英语语言文学', col:'人文社科学院', dep:'语言文化系', c:'comm', m:'文本细读与文学批评', o:'英语文学与语言', s:'英语语言与文学研究（ELLS）荣誉文学学士，为跨国界工作与复杂国际关系做准备。', u:'http://fhss.bnbu.edu.cn/ells'},
+  {n:'数字人文跨学科研究', col:'人文社科学院', dep:'语言文化系', c:'comm', m:'人文语境解读与技术应用', o:'技术背后的人文议题', s:'深度融合技术与人文，培养既精通技术又深刻理解其人文语境的新型人才。', u:'http://fhss.bnbu.edu.cn/tdh'},
+  {n:'数字社会科学', col:'人文社科学院', dep:'社会科学系', c:'comm', m:'数字社会调查与文化分析', o:'社会、文化与技术的新连接', s:'研究社会、文化和技术之间新的数字联系，及其带来的经济、社会与文化挑战。', u:'http://fhss.bnbu.edu.cn/dss'},
+  {n:'全球化与发展', col:'人文社科学院', dep:'社会科学系', c:'comm', m:'全球化事务管理与数字化技能', o:'跨国公共与商业组织', s:'为未来领袖提供国际化视野与坚实的数字化技能培训，管理全球化与发展动态事务。', u:'http://fhss.bnbu.edu.cn/gad'},
+  {n:'应用数学', col:'理工科技学院', dep:'数学科学系', c:'math', m:'数学建模与算法推导', o:'结构、规律与可计算性', s:'数学既是纯科学又是建模工具：从有效算法、金融罕见事件到气候预测与基因组研究。', u:'http://fst.bnbu.edu.cn/am'},
+  {n:'金融数学', col:'理工科技学院', dep:'数学科学系', c:'math', m:'随机建模与数值计算', o:'不确定环境下的资产定价', s:'源于两次华尔街革命，研究不确定环境下的最优投资策略与资产定价问题。', u:'http://fst.bnbu.edu.cn/fm'},
+  {n:'统计学', col:'理工科技学院', dep:'统计与数据科学系', c:'math', m:'抽样、推断与高维检验', o:'随机数据中的规律', s:'统计与数据科学系本科专业，背靠学校数学、统计学两个博士后科研流动站。', u:'http://fst.bnbu.edu.cn/stat'},
+  {n:'数据科学', col:'理工科技学院', dep:'统计与数据科学系', c:'math', m:'数据建模、挖掘与可视化', o:'大规模多维数据', s:'2017 年成立的前沿交叉学科，国内第二批开设，覆盖分布式存储、数据挖掘与可视化。', u:'http://fst.bnbu.edu.cn/ds'},
+  {n:'人工智能', col:'理工科技学院', dep:'计算机科学系', c:'ai', m:'机器学习与模式识别', o:'图像、语言与智能行为', s:'强势兴起的交叉学科，已广泛应用于自然语言处理、计算机视觉与图像处理等领域。', u:'http://fst.bnbu.edu.cn/ai'},
+  {n:'计算机科学与技术', col:'理工科技学院', dep:'计算机科学系', c:'ai', m:'软件工程与系统构建', o:'计算系统与物联网', s:'2005 年成立，学校最早五个专业之一；国家级一流本科专业建设点。', u:'http://fst.bnbu.edu.cn/cst'},
+  {n:'环境科学', col:'理工科技学院', dep:'生命科学系', c:'life', m:'环境监测与生态评估', o:'人与自然环境的关系', s:'跨学科专业，研究生态破坏、气候变化、污染与物种大灭绝等人与自然的复杂关系。', u:'http://fst.bnbu.edu.cn/envs'},
+  {n:'食品科学与工程', col:'理工科技学院', dep:'生命科学系', c:'life', m:'成分分析与安全检测', o:'食品、营养与生产链', s:'培养精通食品生产、销售与管理及营养学的国际化人才，服务食品产业与监管机构。', u:'http://fst.bnbu.edu.cn/fst'},
+  {n:'应用心理学', col:'理工科技学院', dep:'生命科学系', c:'psy', m:'实验设计与行为测量', o:'人的心理与行为规律', s:'2010 年成立，课程涵盖应用型与研究型两大方向，并提供培训、研究与实习机会。', u:'http://fst.bnbu.edu.cn/apsy'},
+  {n:'文化创意与管理', col:'文化与创意学院', dep:'文化创意与设计系', c:'art', m:'文化资源的创意转化与产业运营', o:'文化创意产业', s:'文化创意产业是国际经济体系中最具活力的新兴产业，本专业兼顾创意与管理两端。', u:'http://scc.bnbu.edu.cn/ccm'},
+  {n:'媒体艺术与设计', col:'文化与创意学院', dep:'文化创意与设计系', c:'art', m:'视觉、数字影音与互动设计', o:'艺术设计表达', s:'不局限于视觉艺术、数字影音设计、互动设计与社会设计，追求跨领域的创造成果。', u:'http://scc.bnbu.edu.cn/mad'},
+  {n:'旅游、酒店与会展管理', col:'文化与创意学院', dep:'文化创意与设计系', c:'art', m:'服务设计与体验运营', o:'旅游、酒店与会展现场', s:'培养有创意的问题解决者、批判性思考者与服务领袖，管理现实世界的服务问题。', u:'http://scc.bnbu.edu.cn/them'},
+  {n:'动画与互动媒体', col:'文化与创意学院', dep:'影视与新媒体系', c:'art', m:'动画、影像与互动叙事', o:'动画、游戏与新媒体内容', s:'面向动画、电影、电视、游戏开发、互动媒体与新媒体行业培养专业人才。', u:'http://scc.bnbu.edu.cn/aim'},
+  {n:'影视学', col:'文化与创意学院', dep:'影视与新媒体系', c:'art', m:'影视制作与传媒研究', o:'电影、电视与新媒体', s:'成立于 2006 年，课程结合香港浸会大学传理学院的电影、电视及新媒体课程。', u:'http://scc.bnbu.edu.cn/ctv'},
+  {n:'游戏设计', col:'文化与创意学院', dep:'影视与新媒体系', c:'art', m:'游戏机制设计与引擎实现', o:'游戏与虚拟世界的体验', s:'涵盖游戏引擎、策划、制作与项目管理，并涉及虚拟现实、动作捕捉与生成式 AI。', u:'http://scc.bnbu.edu.cn/gd'},
+  {n:'音乐表演', col:'文化与创意学院', dep:'音乐系', c:'art', m:'演奏与舞台表达', o:'音乐作品与现场', s:'面向中国及全球文化与创意产业，培养具有国际竞争力的音乐专业人才。', u:'http://scc.bnbu.edu.cn/mus'}
+];
+
+const Forge = {
+  visited:{},
+  total(){ return MAJORS.length * (MAJORS.length - 1) / 2; },   // C(34,2) = 561
+  key(i,j){ return i < j ? i+'-'+j : j+'-'+i; },
+  place(a,b){
+    const A = CATS[a.c].aff, B = CATS[b.c].aff;
+    if(A && A === B) return {k:'同门', n:AFFL[A]+' · 同门词条',
+      d:'这对专业共享「'+AFFL[A]+'」的亲和领域，碰撞结果可直接编入该学派手账的正统词条。', jump:'#schools'};
+    if(A && B) return {k:'交汇', n:'交汇圣坛 · '+CROSS[[A,B].sort().join('|')],
+      d:'两个真学派两两相遇——这正是交汇圣坛上才有的组合，需要联手完成对应实验才能验证它。', jump:'#altar'};
+    if(A || B){ const p = A || B;
+      return {k:'客座', n:AFFL[p]+' · 外门客座',
+        d:'「'+AFFL[p]+'」愿意收留这条碰撞，但手账里还没有对应词条——熔炉先把它记为待编目。', jump:'#schools'}; }
+    return {k:'空白', n:'圣坛之外 · 空白之地',
+      d:'三个学派都尚未认领这对组合：火花真实存在，只是还没有人替它命名——词条草稿已由熔炉保留。', jump:null};
+  },
+  side(m){
+    return '<div class="fside"><div class="fname">'+m.n+'</div>'+
+      '<div class="fwhere">'+m.col+' · '+m.dep+'｜类别：'+CATS[m.c].n+'</div>'+
+      '<p>'+m.s+'</p>'+
+      '<p style="color:#9aa3c7;font-size:12.5px">方法「'+m.m+'」· 对象「'+m.o+'」</p>'+
+      '<a href="'+m.u+'" target="_blank" rel="noopener">'+m.u+'</a></div>';
+  },
+  render(i,j){
+    const a = MAJORS[i], b = MAJORS[j];
+    const br = BRIDGES[[a.c, b.c].sort().join('|')];
+    const pl = this.place(a,b);
+    document.getElementById('forgeOut').innerHTML =
+      '<div class="fpair">'+this.side(a)+'<div class="fmid">⊗</div>'+this.side(b)+'</div>'+
+      '<div class="fburst">'+
+        '<div class="fb"><b>火花「'+br.n+'」</b>　'+a.n+' ⊗ '+b.n+'</div>'+
+        '<div class="fb">正向：<b>'+a.n+'</b> 以「'+a.m+'」作用于 <b>'+b.n+'</b> 的「'+b.o+'」。</div>'+
+        '<div class="fb">反向：<b>'+b.n+'</b> 以「'+b.m+'」作用于 <b>'+a.n+'</b> 的「'+a.o+'」——同一条规则换向再生。</div>'+
+        '<div class="fbridge">桥接洞见（'+CATS[a.c].n+' × '+CATS[b.c].n+'）：'+br.d+'</div>'+
+      '</div>'+
+      '<div class="fplace"><b>学派落点 · '+pl.n+'</b><br>'+pl.d+
+        (pl.jump ? '<a class="btn-jump" href="'+pl.jump+'">前往查看</a>' : '')+'</div>';
+  },
+  prog(){
+    const ks = Object.keys(this.visited);
+    const by = {'交汇':0,'同门':0,'客座':0,'空白':0};
+    ks.forEach(k=>{
+      const p = k.split('-');
+      by[this.place(MAJORS[+p[0]], MAJORS[+p[1]]).k]++;
+    });
+    document.getElementById('forgeProg').innerHTML =
+      '已碰撞 <b>'+ks.length+'</b> / '+this.total()+' 种组合（'+(ks.length/this.total()*100).toFixed(1)+'%）'+
+      '　·　落点分布：交汇圣坛 '+by['交汇']+' · 学派同门 '+by['同门']+
+      ' · 外门客座 '+by['客座']+' · 空白之地 '+by['空白'];
+  },
+  pick(i,j){
+    if(i === j){ toast('⛏ 碰撞发生在任意两个专业之间——请换一个专业'); return; }
+    const k = this.key(i,j);
+    let fresh = false;
+    if(!this.visited[k]){
+      this.visited[k] = 1; fresh = true;
+      try{ localStorage.setItem(FORGE_STORE, JSON.stringify(Object.keys(this.visited))); }catch(e){}
+    }
+    this.render(i,j);
+    this.prog();
+    if(fresh) toast('💥 已探索 ' + Object.keys(this.visited).length + ' / ' + this.total() + ' 种专业组合');
+  },
+  init(){
+    const A = document.getElementById('forgeA'), B = document.getElementById('forgeB');
+    const cols = [];
+    MAJORS.forEach(m=>{ if(cols.indexOf(m.col) < 0) cols.push(m.col); });
+    const html = cols.map(col=>{
+      const opts = MAJORS.map((m,idx)=> m.col===col ? '<option value="'+idx+'">'+m.n+'</option>' : '').join('');
+      return '<optgroup label="'+col+'">'+opts+'</optgroup>';
+    }).join('');
+    A.innerHTML = html; B.innerHTML = html;
+    A.value = '22'; B.value = '20';               // 默认：人工智能 × 统计学
+    document.getElementById('btnForge').onclick = ()=> this.pick(+A.value, +B.value);
+    document.getElementById('btnForgeRand').onclick = ()=>{
+      let i = Math.floor(Math.random()*MAJORS.length), j = i;
+      while(j === i) j = Math.floor(Math.random()*MAJORS.length);
+      A.value = i; B.value = j; this.pick(i,j);
+    };
+    try{ (JSON.parse(localStorage.getItem(FORGE_STORE) || '[]')).forEach(k=>{ this.visited[k] = 1; }); }catch(e){}
+    this.prog();
+    this.render(22,20);                            // 首屏示例：人工智能 × 统计学 → 频率之眼
+  }
+};
+
+/* =========================================================================
    交互装配：tab 切换、进度、页脚
    ========================================================================= */
 function initUI(){
@@ -1007,6 +1220,7 @@ Web.init();
 Freq.init();
 Recap.init();
 DNA.init();
+Forge.init();
 initUI();
 const restored = loadProgress();
 if(restored === 6){
