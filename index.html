@@ -30,9 +30,22 @@
   .tag{display:inline-block;border:1px solid var(--border);border-radius:999px;
     padding:3px 14px;font-size:13px;color:var(--dim);margin:14px 4px 0;background:rgba(255,255,255,.03)}
 
+  /* ---------- 顶部站点导航 ---------- */
+  .topnav{position:sticky;top:0;z-index:95;display:flex;align-items:center;gap:20px;
+    height:56px;padding:0 18px;background:rgba(10,13,36,.94);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+  .topnav .brand{display:flex;align-items:baseline;gap:9px;text-decoration:none}
+  .topnav .brand b{font-family:Georgia,"Songti SC",serif;color:#fff;font-size:19px;font-weight:600}
+  .topnav .brand i{font-style:normal;color:var(--dim);font-size:11px;letter-spacing:1px}
+  .topnav nav{display:flex;gap:2px;margin-left:auto;flex-wrap:wrap}
+  .topnav nav a{padding:7px 15px;border-radius:999px;color:var(--dim);
+    text-decoration:none;font-size:14px;transition:.2s}
+  .topnav nav a:hover{color:#fff;background:rgba(255,255,255,.05)}
+  .topnav nav a.on{color:var(--gold);background:rgba(255,212,121,.12);font-weight:600}
+
   /* ---------- progress ---------- */
-  .progress{position:sticky;top:0;z-index:9;background:rgba(10,13,36,.92);
-    backdrop-filter:blur(6px);border-bottom:1px solid var(--border);padding:10px 0}
+  .progress{position:sticky;top:56px;z-index:94;background:rgba(10,13,36,.92);
+    backdrop-filter:blur(6px);border-bottom:1px solid var(--border);padding:9px 0}
   .progress .inner{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center}
   .chip{font-size:13px;border:1px solid var(--border);border-radius:999px;
     padding:4px 13px;color:var(--dim);text-decoration:none;transition:.2s}
@@ -173,18 +186,23 @@
     border-radius:999px;background:var(--gold);color:#141005;text-decoration:none;font-weight:600}
   @media(max-width:640px){.fpair{grid-template-columns:1fr}.fmid{display:none}#bubbles{height:400px}}
 
-  /* ---------- 侧边圆点导航 & 入场动画 ---------- */
-  #dots{position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:96;
-    display:flex;flex-direction:column;gap:14px}
-  #dots a{position:relative;width:9px;height:9px;border-radius:50%;background:var(--border);transition:.25s}
-  #dots a.on{background:var(--gold);box-shadow:0 0 10px var(--gold);transform:scale(1.35)}
-  #dots a span{position:absolute;right:19px;top:50%;transform:translateY(-50%);white-space:nowrap;
-    font-size:12px;color:var(--gold);background:rgba(10,13,36,.92);border:1px solid var(--border);
-    padding:2px 10px;border-radius:999px;opacity:0;pointer-events:none;transition:.2s}
-  #dots a:hover span{opacity:1}
-  @media(max-width:960px){#dots{display:none}}
-  section.rv{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
-  section.rv.in{opacity:1;transform:none}
+  /* ---------- 分页视图与嵌套子页 ---------- */
+  .view{display:none}
+  .view.on{display:block;animation:viewIn .38s ease}
+  @keyframes viewIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .crumb{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--dim);margin:0 0 18px}
+  .crumb a{color:var(--dim);text-decoration:none;border-bottom:1px dashed rgba(154,162,216,.5)}
+  .crumb a:hover{color:var(--gold);border-color:var(--gold)}
+  .crumb b{color:#fff;font-weight:600}
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px}
+  .tile{display:block;background:var(--panel);border:1px solid var(--border);border-radius:16px;
+    padding:22px 22px 18px;text-decoration:none;color:var(--ink);transition:.25s}
+  .tile:hover{transform:translateY(-3px);border-color:var(--gold);
+    box-shadow:0 12px 36px rgba(0,0,0,.4)}
+  .tile h3{margin:4px 0 6px;font-size:19px;color:#fff}
+  .tile p{margin:0;font-size:13.5px;color:var(--dim);line-height:1.7}
+  .tile .go{display:inline-block;margin-top:14px;font-size:12.5px;color:var(--gold)}
+  .view.sub .card,.view.sub .panel{max-width:830px}
 
   /* ---------- 结业闭环（6/6 毕业覆盖层） ---------- */
   #grad{position:fixed;inset:0;background:rgba(7,9,26,.9);backdrop-filter:blur(6px);
@@ -211,26 +229,25 @@
 </head>
 <body>
 
-<header class="hero">
-  <div class="moon"></div>
-  <div class="zh">午 夜 学 园</div>
-  <h1>The Midnight Academy</h1>
-  <p>每个学科是一个古老学派，每一种魔法都来自可以触摸的真实规则。<br>
-     本作品以<b>北师香港浸会大学</b>真实的学院、专业与科研平台为骨架。</p>
-  <span class="tag">原型：北师港浸大 · 博文雅志，真知笃行</span>
-  <span class="tag">全站零依赖 · 离线可玩</span>
-  <span class="tag">3 学派试炼 × 3 交汇实验 × 561 种专业碰撞</span>
+<header class="topnav">
+  <a class="brand" href="#/home"><b>午夜学园</b><i>THE MIDNIGHT ACADEMY</i></a>
+  <nav>
+    <a href="#/schools" data-nav="schools">学派大厅</a>
+    <a href="#/altar" data-nav="altar">交汇圣坛</a>
+    <a href="#/forge" data-nav="forge">碰撞熔炉</a>
+    <a href="#/codex" data-nav="codex">学派手账</a>
+  </nav>
 </header>
 
 <div class="progress">
   <div class="wrap inner">
     <span class="lbl">掌握度</span>
-    <a class="chip" href="#schools" data-trial="cipher">密码试炼</a>
-    <a class="chip" href="#schools" data-trial="sampling">统计试炼</a>
-    <a class="chip" href="#schools" data-trial="web">生态试炼</a>
-    <a class="chip" href="#altar" data-trial="freq">频率分析</a>
-    <a class="chip" href="#altar" data-trial="recapture">标志重捕</a>
-    <a class="chip" href="#altar" data-trial="dna">基因封印</a>
+    <a class="chip" href="#/schools/cipher" data-trial="cipher">密码试炼</a>
+    <a class="chip" href="#/schools/sampling" data-trial="sampling">统计试炼</a>
+    <a class="chip" href="#/schools/web" data-trial="web">生态试炼</a>
+    <a class="chip" href="#/altar/freq" data-trial="freq">频率分析</a>
+    <a class="chip" href="#/altar/recapture" data-trial="recapture">标志重捕</a>
+    <a class="chip" href="#/altar/dna" data-trial="dna">基因封印</a>
     <span id="doneCount">0 / 6</span>
     <button id="btnRestart" title="清空进度，从头体验全部试炼">↻ 重新开始</button>
   </div>
@@ -238,10 +255,46 @@
 
 <main class="wrap">
 
-  <!-- ================= 学派大厅 ================= -->
-  <section id="schools" class="rv">
+  <!-- ================= 首页 ================= -->
+  <section class="view" id="v-home">
+    <div class="hero">
+      <div class="moon"></div>
+      <div class="zh">午 夜 学 园</div>
+      <h1>The Midnight Academy</h1>
+      <p>每个学科是一个古老学派，每一种魔法都来自可以触摸的真实规则——<br>而最惊人的魔法，出现在学派相遇的地方。</p>
+      <span class="tag">全站零依赖 · 离线可玩</span>
+      <span class="tag">3 学派试炼 × 3 交汇实验 × 561 种专业碰撞</span>
+    </div>
+  </section>
+
+  <!-- ================= 学派大厅（列表页） ================= -->
+  <section class="view" id="v-schools">
     <div class="sec-head"><h2>学派大厅</h2><span class="sub">三个学派，三种真实知识的魔法化</span></div>
-    <div class="grid">
+    <div class="tiles">
+      <a class="tile" href="#/schools/cipher">
+        <span class="kicker">SCHOOL OF CIPHERS</span>
+        <h3>🔤 密码学派 · 封印之语</h3>
+        <p>用一把「关键词钥匙」重排字母表——明文如何变成密文，映射一目了然。</p>
+        <span class="go">进入学派 →</span>
+      </a>
+      <a class="tile" href="#/schools/sampling">
+        <span class="kicker">SCHOOL OF STATISTICS</span>
+        <h3>🎲 统计学派 · 命运抽样</h3>
+        <p>一只一只抽样，看均值与 95% 置信区间如何随样本量收敛。</p>
+        <span class="go">进入学派 →</span>
+      </a>
+      <a class="tile" href="#/schools/web">
+        <span class="kicker">SCHOOL OF ECOLOGY</span>
+        <h3>🌿 生态学派 · 万物之网</h3>
+        <p>草 → 兔 → 狐 的食物链推演，移出任一物种观察营养级联。</p>
+        <span class="go">进入学派 →</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ================= 子页：密码学派 ================= -->
+  <section class="view sub" id="v-school-cipher">
+    <div class="crumb"><a href="#/schools">学派大厅</a><span>›</span><b>密码学派 · 封印之语</b></div>
 
       <!-- 密码学派 -->
       <div class="card crypto">
@@ -261,6 +314,11 @@
         <div class="rule">知识规则：单表替换只重排字母表，每个明文字母永远对应同一个密文字母。</div>
         <div class="limit"><b>魔法的边界：</b>字母表被重排了 26 次，但字母的<b>使用频率</b>原封不动地泄露进密文——这正是下一个实验要利用的弱点。</div>
       </div>
+  </section>
+
+  <!-- ================= 子页：统计学派 ================= -->
+  <section class="view sub" id="v-school-sampling">
+    <div class="crumb"><a href="#/schools">学派大厅</a><span>›</span><b>统计学派 · 命运抽样</b></div>
 
       <!-- 统计学派 -->
       <div class="card stats">
@@ -277,6 +335,11 @@
         <div class="rule">知识规则：大数定律——样本均值随 n 增大收敛到总体均值；95% 置信区间 ≈ x̄ ± 1.96·s/√n。</div>
         <div class="limit"><b>魔法的边界：</b>样本太少时区间宽得像雾。抽满 30 只再看，真实均值（160）几乎总落在区间内——但也并非绝对。</div>
       </div>
+  </section>
+
+  <!-- ================= 子页：生态学派 ================= -->
+  <section class="view sub" id="v-school-web">
+    <div class="crumb"><a href="#/schools">学派大厅</a><span>›</span><b>生态学派 · 万物之网</b></div>
 
       <!-- 生态学派 -->
       <div class="card eco">
@@ -297,18 +360,36 @@
         <div class="rule">知识规则：营养级联——捕食者减少会让猎物激增，进而压垮植被；种群按离散时间的逻辑斯蒂方程振荡。</div>
         <div class="limit"><b>魔法的边界：</b>模型只有三个物种和两参数，真实生态系统有几十条反馈环。它演示的是<b>方向</b>，不是精确预言。</div>
       </div>
+  </section>
+
+  <!-- ================= 交汇圣坛（列表页） ================= -->
+  <section class="view" id="v-altar">
+    <div class="sec-head"><h2>交汇圣坛</h2><span class="sub">当两个学派相遇——单一学科无法实现的力量</span></div>
+    <div class="tiles">
+      <a class="tile" href="#/altar/freq">
+        <span class="kicker">密码 × 统计</span>
+        <h3>🔮 频率之眼</h3>
+        <p>密文里藏着英语字母的频率指纹——两派联手，两步破译。</p>
+        <span class="go">进入实验 →</span>
+      </a>
+      <a class="tile" href="#/altar/recapture">
+        <span class="kicker">统计 × 生态</span>
+        <h3>🐟 月光池塘 · 标志重捕</h3>
+        <p>给鱼做上标记再重捕，用样本估计整个池塘的种群数量。</p>
+        <span class="go">进入实验 →</span>
+      </a>
+      <a class="tile" href="#/altar/dna">
+        <span class="kicker">密码 × 生态</span>
+        <h3>🧬 基因封印 · eDNA 条形码</h3>
+        <p>水样里的未知 DNA，用「短序列指纹」比对认主。</p>
+        <span class="go">进入实验 →</span>
+      </a>
     </div>
   </section>
 
-  <!-- ================= 交汇圣坛 ================= -->
-  <section id="altar" class="rv">
-    <div class="sec-head"><h2>交汇圣坛</h2><span class="sub">当两个学派相遇——单一学科无法实现的力量</span></div>
-
-    <div class="tabs">
-      <button class="tab active" data-panel="p-freq">🔮 密码 × 统计</button>
-      <button class="tab" data-panel="p-recap">🐟 统计 × 生态</button>
-      <button class="tab" data-panel="p-dna">🧬 密码 × 生态</button>
-    </div>
+  <!-- ================= 子页：频率之眼 ================= -->
+  <section class="view sub" id="v-altar-freq">
+    <div class="crumb"><a href="#/altar">交汇圣坛</a><span>›</span><b>频率之眼 · 密码 × 统计</b></div>
 
     <!-- 组合一：频率分析 -->
     <div class="panel active" id="p-freq">
@@ -336,9 +417,14 @@
       <div class="rule">知识规则：第一步用英语字母频率序（E&gt;T&gt;A&gt;O&gt;I&gt;N…）给密文字母排座位；第二步用「单词模式 + 词典回溯」——每个密文单词的重复结构（如 LEVEL 是 01230 型）只允许词典里的词进入，逐词约束、冲突回退，把四成的猜测收敛成完整答案。</div>
       <div class="limit"><b>魔法的边界：</b>纯频率在短文本上只能还原约四成（统计样本不足）；词典里没有的生词会被跳过留白。两步缺一不可——这正是密码学离不开统计学的原因。</div>
     </div>
+  </section>
+
+  <!-- ================= 子页：标志重捕 ================= -->
+  <section class="view sub" id="v-altar-recapture">
+    <div class="crumb"><a href="#/altar">交汇圣坛</a><span>›</span><b>标志重捕 · 统计 × 生态</b></div>
 
     <!-- 组合二：标志重捕 -->
-    <div class="panel" id="p-recap">
+    <div class="panel active" id="p-recap">
       <div class="combo-title">
         <h3>月光池塘 · 标志重捕</h3><span class="plus">统计估计</span><span>×</span><span class="plus">生态调查</span>
       </div>
@@ -362,9 +448,14 @@
       <div class="rule">知识规则：N̂ = k·m / x（x 为重捕中带标记的条数）；区间宽度 ∝ 1/√x，标记越多越准。</div>
       <div class="limit"><b>魔法的边界：</b>公式假设标记鱼<b>完全混合、无死亡、二次捕捞等概率</b>——真实调查里鱼会学乖、会搬家，估计因此有偏。</div>
     </div>
+  </section>
+
+  <!-- ================= 子页：基因封印 ================= -->
+  <section class="view sub" id="v-altar-dna">
+    <div class="crumb"><a href="#/altar">交汇圣坛</a><span>›</span><b>基因封印 · 密码 × 生态</b></div>
 
     <!-- 组合三：DNA 条形码 -->
-    <div class="panel" id="p-dna">
+    <div class="panel active" id="p-dna">
       <div class="combo-title">
         <h3>基因封印 · eDNA 条形码</h3><span class="plus">密码指纹</span><span>×</span><span class="plus">生态监测</span>
       </div>
@@ -378,7 +469,7 @@
   </section>
 
   <!-- ================= 碰撞熔炉（拖拽泡泡碰撞） ================= -->
-  <section id="forge" class="rv">
+  <section class="view" id="v-forge">
     <div class="sec-head"><h2>碰撞熔炉</h2><span class="sub">34 个专业泡泡 · 561 种碰撞</span></div>
     <div class="stage">
       <canvas id="bubbles"></canvas>
@@ -395,7 +486,7 @@
   </section>
 
   <!-- ================= 知识手账 ================= -->
-  <section id="codex" class="rv">
+  <section class="view" id="v-codex">
     <div class="sec-head"><h2>学派手账</h2><span class="sub">每一条魔法背后的真实知识与它的边界</span></div>
     <table class="codex">
       <tr><th style="width:19%">魔法</th><th style="width:15%">学派组合</th><th style="width:33%">真实知识（规则从何而来）</th><th>局限（为什么它不是万能的）</th></tr>
@@ -406,14 +497,14 @@
       <tr><td>标志重捕</td><td>统计 × 生态</td><td>林肯-彼得森指数 N̂=km/x</td><td>假设完全混合、无死亡；违反时估计有偏</td></tr>
       <tr><td>基因封印</td><td>密码 × 生态</td><td>DNA 条形码、汉明距离比对</td><td>近缘种相似度过阈值会误判；本页序列为模拟</td></tr>
     </table>
-    <p class="note" style="margin-top:14px">· 真实信息：6 个实验锚定北师港浸大理工科技学院 4 个系与 3 个省级重点实验室 / 博士后流动站；34 个专业的院系与介绍取自各学院官网「院系与专业」页，全站共 561 种专业组合可碰撞。<br>
+    <p class="note" style="margin-top:14px">· 真实信息：6 个实验锚定真实院系与省级重点实验室 / 博士后科研流动站；34 个专业的院系与介绍取自各学院官网「院系与专业」页，全站共 561 种专业组合可碰撞。<br>
     · 世界、学派与设定为本作品原创；词典回溯使用开源词表 google-10000-english，仅在本地查询，页面离线可玩。</p>
   </section>
 </main>
 
 <footer>
-  The Midnight Academy · BNBU AI Track 参赛作品 · <span id="footYear"></span><br>
-  单文件静态页面 · 无外部依赖 · 实验数据均为页面内模拟生成，院系与专业信息取自学校官网
+  The Midnight Academy · AI Track 参赛作品 · <span id="footYear"></span><br>
+  单文件静态页面 · 无外部依赖 · 实验数据均为页面内模拟生成，专业信息取自各学院官网
 </footer>
 
 <div id="grad">
@@ -430,13 +521,6 @@
     </div>
   </div>
 </div>
-
-<nav id="dots">
-  <a href="#schools" data-sec="schools"><span>学派大厅</span></a>
-  <a href="#altar" data-sec="altar"><span>交汇圣坛</span></a>
-  <a href="#forge" data-sec="forge"><span>碰撞熔炉</span></a>
-  <a href="#codex" data-sec="codex"><span>学派手账</span></a>
-</nav>
 
 <div id="fmodal">
   <div class="fmodal-card">
@@ -576,10 +660,12 @@ const Cipher = {
       markTrial('cipher');
     };
     document.getElementById('btnUnseal').onclick = ()=>{
-      const {plain, alpha} = sear();
+      const {alpha} = sear();
       const sealed = document.getElementById('cipherOut').textContent;
+      const inv = this.invert(alpha);               // 密文字母 → 明文字母
       document.getElementById('cipherOut').textContent =
-        sealed === '—' ? '先施放封印' : this.apply(sealed, this.invert(alpha));
+        sealed === '—' ? '先施放封印'
+          : sealed.toUpperCase().replace(/[A-Z]/g, c => inv[c] || c);
     };
   }
 };
@@ -1074,6 +1160,8 @@ const CATS = {
 };
 const AFFL = { cipher:'密码学派', sampling:'统计学派', eco:'生态学派' };
 const CROSS = { 'cipher|sampling':'频率之眼', 'cipher|eco':'基因封印', 'eco|sampling':'标志重捕' };
+const SCHOOL_ROUTE = { cipher:'#/schools/cipher', sampling:'#/schools/sampling', eco:'#/schools/web' };
+const CROSS_ROUTE  = { 'cipher|sampling':'#/altar/freq', 'cipher|eco':'#/altar/dna', 'eco|sampling':'#/altar/recapture' };
 const BRIDGES = {
   'ai|ai'    :{n:'同源奇点', d:'同一套算法在两个方向上互相校验：数据、算力与超参数摆在同一张桌上，同门碰撞最先暴露的，是各自看不见的盲区。'},
   'ai|art'   :{n:'生成式创作', d:'模型学会了风格，人负责给出意图：提示词是新的画笔，采样参数是新的笔触，而审美判断仍然只属于人。'},
@@ -1148,12 +1236,12 @@ const Forge = {
   place(a,b){
     const A = CATS[a.c].aff, B = CATS[b.c].aff;
     if(A && A === B) return {k:'同门', n:AFFL[A]+' · 同门词条',
-      d:'这对专业共享「'+AFFL[A]+'」的亲和领域，碰撞结果可直接编入该学派手账的正统词条。', jump:'#schools'};
+      d:'这对专业共享「'+AFFL[A]+'」的亲和领域，碰撞结果可直接编入该学派手账的正统词条。', jump:SCHOOL_ROUTE[A]};
     if(A && B) return {k:'交汇', n:'交汇圣坛 · '+CROSS[[A,B].sort().join('|')],
-      d:'两个真学派两两相遇——这正是交汇圣坛上才有的组合，需要联手完成对应实验才能验证它。', jump:'#altar'};
+      d:'两个真学派两两相遇——这正是交汇圣坛上才有的组合，需要联手完成对应实验才能验证它。', jump:CROSS_ROUTE[[A,B].sort().join('|')]};
     if(A || B){ const p = A || B;
       return {k:'客座', n:AFFL[p]+' · 外门客座',
-        d:'「'+AFFL[p]+'」愿意收留这条碰撞，但手账里还没有对应词条——熔炉先把它记为待编目。', jump:'#schools'}; }
+        d:'「'+AFFL[p]+'」愿意收留这条碰撞，但手账里还没有对应词条——熔炉先把它记为待编目。', jump:SCHOOL_ROUTE[p]}; }
     return {k:'空白', n:'圣坛之外 · 空白之地',
       d:'三个学派都尚未认领这对组合：火花真实存在，只是还没有人替它命名——词条草稿已由熔炉保留。', jump:null};
   },
@@ -1231,7 +1319,7 @@ const Field = {
   FONT:'"PingFang SC","Microsoft YaHei",system-ui,sans-serif',
   cvs:null, ctx:null, W:0, H:0, dpr:1, vis:true,
   bs:[], fx:[], cnt:null, sel:-1, drag:-1, hover:-1,
-  down:null, pp:null, moved:false, firstHit:false, raf:0,
+  down:null, pp:null, moved:false, firstHit:false, raf:0, laid:false,
 
   rgba(hex,a){
     const n = parseInt(hex.slice(1),16);
@@ -1242,14 +1330,31 @@ const Field = {
     return (20 + m.n.length * 2.2) * s;
   },
   resize(){
+    const w = this.cvs.clientWidth, h = this.cvs.clientHeight;
+    if(w < 40 || h < 40) return;                  // 视图隐藏时跳过（clientWidth 为 0）
     const dpr = this.dpr = window.devicePixelRatio || 1;
-    this.W = this.cvs.clientWidth; this.H = this.cvs.clientHeight;
+    this.W = w; this.H = h;
     this.cvs.width = this.W * dpr; this.cvs.height = this.H * dpr;
     this.ctx.setTransform(dpr,0,0,dpr,0,0);
+    if(!this.laid){ this.lay(); this.laid = true; return; }
     this.bs.forEach(b=>{
       b.x = Math.min(Math.max(b.x, b.r), Math.max(b.r, this.W - b.r));
       b.y = Math.min(Math.max(b.y, 44 + b.r), Math.max(44 + b.r, this.H - 56 - b.r));
     });
+  },
+  lay(){                                           // 首次可见时布置泡泡
+    this.bs = MAJORS.map((m, i) => {
+      const r = this.radius(m);
+      let x = r, y = 44 + r, ok = false, tries = 0;
+      while(!ok && tries++ < 80){
+        x = r + Math.random() * Math.max(1, this.W - 2*r);
+        y = 44 + r + Math.random() * Math.max(1, this.H - 100 - 2*r);
+        ok = this.bs.every(b => Math.hypot(b.x - x, b.y - y) > b.r + r + 4);
+      }
+      const a = Math.random() * Math.PI * 2, sp = .3 + Math.random() * .4;
+      return { i, x, y, r, vx:Math.cos(a)*sp, vy:Math.sin(a)*sp };
+    });
+    this.refresh();
   },
   refresh(){                                     // 每个泡泡参与过的碰撞次数
     this.cnt = MAJORS.map(()=>0);
@@ -1398,19 +1503,7 @@ const Field = {
   init(){
     this.cvs = document.getElementById('bubbles');
     this.ctx = this.cvs.getContext('2d');
-    this.resize();
-    this.bs = MAJORS.map((m, i) => {               // 随机落点，尽量不重叠
-      const r = this.radius(m);
-      let x = r, y = 44 + r, ok = false, tries = 0;
-      while(!ok && tries++ < 80){
-        x = r + Math.random() * Math.max(1, this.W - 2*r);
-        y = 44 + r + Math.random() * Math.max(1, this.H - 100 - 2*r);
-        ok = this.bs.every(b => Math.hypot(b.x - x, b.y - y) > b.r + r + 4);
-      }
-      const a = Math.random() * Math.PI * 2, sp = .3 + Math.random() * .4;
-      return { i, x, y, r, vx:Math.cos(a)*sp, vy:Math.sin(a)*sp };
-    });
-    this.refresh();
+    this.resize();                                 // 泡泡布置延迟到首次可见时
 
     const P = e => { const rc = this.cvs.getBoundingClientRect();
                      return { x:e.clientX - rc.left, y:e.clientY - rc.top }; };
@@ -1488,18 +1581,38 @@ const Field = {
 };
 
 /* =========================================================================
-   交互装配：tab 切换、进度、页脚
+   路由与页面切换：hash 驱动的分页视图（列表页 → 嵌套子页）
+   ========================================================================= */
+const ROUTES = {
+  '/home':'v-home',
+  '/schools':'v-schools',
+  '/schools/cipher':'v-school-cipher',
+  '/schools/sampling':'v-school-sampling',
+  '/schools/web':'v-school-web',
+  '/altar':'v-altar',
+  '/altar/freq':'v-altar-freq',
+  '/altar/recapture':'v-altar-recapture',
+  '/altar/dna':'v-altar-dna',
+  '/forge':'v-forge',
+  '/codex':'v-codex'
+};
+function route(){
+  const h = location.hash.replace(/^#/, '') || '/home';
+  if(!ROUTES[h]){ location.hash = '#/home'; return; }
+  document.querySelectorAll('.view').forEach(v => v.classList.toggle('on', v.id === ROUTES[h]));
+  const top = h.split('/')[1];
+  document.querySelectorAll('.topnav nav a').forEach(a => a.classList.toggle('on', a.dataset.nav === top));
+  document.documentElement.scrollTop = 0; document.body.scrollTop = 0;   // 立即回到页顶
+  // 视图切换后重新量取画布尺寸并重绘（隐藏时 clientWidth 为 0）
+  Sampling.render(); Web.drawSeries(); Freq.drawHistogram(false);
+  if(top === 'forge') Field.resize();
+}
+addEventListener('hashchange', route);
+
+/* =========================================================================
+   交互装配：进度、页脚
    ========================================================================= */
 function initUI(){
-  document.querySelectorAll('.tab').forEach(t=>{
-    t.onclick = ()=>{
-      document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
-      document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
-      t.classList.add('active');
-      document.getElementById(t.dataset.panel).classList.add('active');
-      if(t.dataset.panel==='p-freq') Freq.drawHistogram(false);
-    };
-  });
   document.getElementById('footYear').textContent = '2026';
   document.getElementById('btnRestart').onclick = ()=>{
     if(confirm('清空进度，重新体验全部试炼？')) restartAll();
@@ -1508,33 +1621,6 @@ function initUI(){
     document.getElementById('grad').classList.remove('show');
   };
   document.getElementById('btnGradRestart').onclick = restartAll;
-
-  // 区块入场动画
-  if(window.IntersectionObserver){
-    const io = new IntersectionObserver(es => es.forEach(e=>{
-      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
-    }), { threshold:.06 });
-    document.querySelectorAll('section.rv').forEach(s => io.observe(s));
-  }else{
-    document.querySelectorAll('section.rv').forEach(s => s.classList.add('in'));
-  }
-
-  // 侧边圆点导航：平滑跳转 + 当前区块高亮
-  const dots = [].map.call(document.querySelectorAll('#dots a'), a => ({
-    a, el: document.getElementById(a.dataset.sec)
-  })).filter(d => d.el);
-  dots.forEach(d => d.a.onclick = e => {
-    e.preventDefault();
-    d.el.scrollIntoView({ behavior:'smooth' });
-  });
-  const syncDots = () => {
-    const y = scrollY + innerHeight * .35;
-    let cur = dots[0];
-    dots.forEach(d => { if(d.el.offsetTop <= y) cur = d; });
-    dots.forEach(d => d.a.classList.toggle('on', d === cur));
-  };
-  addEventListener('scroll', syncDots, { passive:true });
-  syncDots();
 }
 
 Cipher.init();
@@ -1546,6 +1632,7 @@ DNA.init();
 Forge.init();
 Field.init();
 initUI();
+route();
 const restored = loadProgress();
 if(restored === 6){
   showGrad();
