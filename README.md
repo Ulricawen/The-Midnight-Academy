@@ -73,11 +73,40 @@ PhET 每个仿真覆盖单一学科、演示单一现象；本作品的差异在
 - 开源来源：词典回溯使用 [google-10000-english](https://github.com/first20hours/google-10000-english) 的 20k 常用词表，已内联进 `index.html` 常量 `DICT_WORDS`，仅本地用于模式查询。
 - 世界观、学派名称与全部设定均为本作品原创，未复刻任何已有作品的角色、名称与设定；页面不含外部素材，无 AI 生成的美术图片。
 
-## 8. 文件清单
+## 8. 功能实现状态
+
+> 按提交规则如实标注；状态与代码一一对应，截图证据见 `screenshots/`。
+
+| # | 功能 | 状态 | 代码依据（index.html 内） | 截图 |
+|---|---|---|---|---|
+| 1 | 密码试炼：关键词单表替换加密/解密、字母表映射展示 | ✅ 已实现 | `Cipher` 模块 | `screenshots/02-cipher.png` |
+| 2 | 统计试炼：正态抽样、样本均值与 95% 置信区间直方图 | ✅ 已实现 | `Sampling` 模块 | `screenshots/03-sampling.png` |
+| 3 | 生态试炼：草-兔-狐 150 代推演、移出任一物种观察营养级联 | ✅ 已实现 | `Web` 模块 | `screenshots/04-web.png` |
+| 4 | 频率之眼（密码×统计）：频率初值 + 词典回溯两步破译、手动修正映射、还原度显示 | ✅ 已实现 | `Freq` 模块（`dictSolve`） | `screenshots/05-freq.png` |
+| 5 | 月光池塘（统计×生态）：标志重捕估计、调查台账、揭晓真值 | ✅ 已实现 | `Recap` 模块 | `screenshots/06-recap.png` |
+| 6 | 基因封印（密码×生态）：eDNA 序列比对、相似度与 97% 阈值判定 | ✅ 已实现 | `DNA` 模块 | `screenshots/07-dna.png` |
+| 7 | 掌握度进度：0/6 计数、完成徽章高亮、localStorage 刷新恢复 | ✅ 已实现 | `markTrial` / `loadProgress` / `saveProgress` | `screenshots/08-progress.png` |
+| 8 | 结业闭环：6/6 触发毕业徽章覆盖层，含已掌握清单与重新开始 | ✅ 已实现 | `showGrad` / `#grad` 覆盖层 | `screenshots/09-graduation.png` |
+| 9 | 重新开始：清空进度重新体验（进度条按钮 + 结业层按钮） | ✅ 已实现 | `restartAll` | `screenshots/08-progress.png` |
+| 10 | 学派手账：6 条魔法的「真实知识 × 局限」对照表 | ✅ 已实现 | 学派手账 section | `screenshots/10-codex.png` |
+| 11 | 真实信息锚定：6 处院系/科研平台金色标注 + 真实映射总说明 | ✅ 已实现 | `.realref` 标注 | `screenshots/10-codex.png` |
+| 12 | 首访引导提示与完成 toast 反馈 | ✅ 已实现 | `toast` / 启动逻辑 | — |
+| 13 | 移动端自适应（卡片栅格 auto-fit、断点样式） | ✅ 已实现 | `.grid` / `@media` | — |
+| 14 | 音效、多语言、用户账号 | ⬜ 未实现 | — | — |
+| 15 | 真实物种基因库比对（当前为页面内模拟序列） | ⬜ 未实现（见模拟数据声明） | — | — |
+
+## 9. 核心文件清单
 
 ```
 midnight-academy/
-├── index.html      # 作品本体（单文件，零依赖）
-├── README.md       # 本文件（提交材料）
-└── AI_USAGE.md     # AI 使用说明
+├── index.html        # 作品本体：单文件（HTML+CSS+JS 约 200KB），零依赖、离线可运行
+│                     #   ├─ 学派大厅 3 试炼（Cipher / Sampling / Web）
+│                     #   ├─ 交汇圣坛 3 实验（Freq / Recap / DNA）
+│                     #   ├─ 进度与结业系统（markTrial / loadProgress / showGrad / restartAll）
+│                     #   └─ 内置 20k 英语词表常量 DICT_WORDS（开源来源见 §7）
+├── README.md         # 本文件：项目说明、功能实现状态、设计取舍
+├── AI_USAGE.md       # AI 使用说明（规则要求）
+├── ai-logs/          # AI 对话记录节选（规则要求）
+├── screenshots/      # 实际运行截图 8 张（规则要求 3–8 张）
+└── （Git 历史）       # 开赛后按功能逐次提交
 ```
