@@ -12,6 +12,7 @@
     --border:#2c3472;
   }
   *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
   body{margin:0;background:linear-gradient(180deg,var(--bg),var(--bg2) 60%,var(--bg));
     color:var(--ink);font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;line-height:1.65}
   h1,h2,h3{font-family:Georgia,"Songti SC",serif;font-weight:600;line-height:1.3}
@@ -39,7 +40,7 @@
   #doneCount{color:var(--gold);font-size:13px;margin-left:6px}
 
   /* ---------- sections ---------- */
-  section{padding:44px 0 8px}
+  section{padding:44px 0 8px;scroll-margin-top:64px}
   .sec-head{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--border);
     padding-bottom:10px;margin-bottom:24px}
   .sec-head h2{font-size:26px;margin:0;color:#fff}
@@ -55,12 +56,6 @@
   .limit{font-size:13px;color:var(--dim)}
   .limit b{color:#ffb4b4;font-weight:600}
   .note{font-size:13px;color:var(--dim)}
-  .affil{font-size:13px;background:rgba(103,232,249,.07);border:1px dashed rgba(103,232,249,.4);
-    border-radius:8px;padding:7px 11px;color:#bfeef7;margin:0}
-  .affil b{color:var(--stats);font-weight:600}
-  .affil span{color:var(--dim);font-size:12.5px}
-  .realref{font-size:13px;color:#ffd479;background:rgba(255,212,121,.07);
-    border-left:3px solid var(--gold);padding:7px 12px;border-radius:0 8px 8px 0;margin:6px 0}
 
   /* ---------- controls ---------- */
   button{font:inherit;cursor:pointer;border-radius:9px;border:1px solid var(--border);
@@ -131,14 +126,35 @@
     opacity:0;transition:.3s;z-index:99;pointer-events:none}
   #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-  /* ---------- 碰撞熔炉 ---------- */
-  .forge-pick{display:flex;gap:16px;align-items:flex-end;justify-content:center;flex-wrap:wrap;margin:6px 0 20px}
-  .pick-box{display:flex;flex-direction:column;gap:6px;min-width:240px;flex:1;max-width:380px}
-  .pick-box label{font-size:12.5px;color:var(--dim);letter-spacing:2px}
-  .pick-box select{background:var(--panel);color:var(--ink);border:1px solid var(--border);
-    border-radius:10px;padding:11px 12px;font-size:14.5px;cursor:pointer}
-  .pick-box select:focus{outline:none;border-color:var(--gold)}
-  .cross{font-size:28px;color:var(--gold);padding-bottom:4px;font-weight:700}
+  /* ---------- 碰撞熔炉（泡泡舞台） ---------- */
+  .stage{position:relative;border:1px solid var(--border);border-radius:16px;overflow:hidden;
+    background:radial-gradient(900px 320px at 50% 0%,rgba(103,232,249,.07),transparent 70%),
+               radial-gradient(700px 300px at 80% 100%,rgba(255,212,121,.05),transparent 70%),rgba(255,255,255,.02)}
+  #bubbles{display:block;width:100%;height:480px;touch-action:none;cursor:grab}
+  #bubbles.grabbing{cursor:grabbing}
+  .stage-tip{position:absolute;top:12px;left:50%;transform:translateX(-50%);max-width:92%;
+    font-size:12.5px;color:var(--dim);background:rgba(10,13,36,.75);border:1px solid var(--border);
+    border-radius:999px;padding:5px 16px;pointer-events:none;transition:.5s;text-align:center}
+  .stage-tip.hide{opacity:0}
+  .stage-bar{position:absolute;left:0;right:0;bottom:0;display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+    padding:26px 14px 9px;font-size:12.5px;color:var(--dim);
+    background:linear-gradient(180deg,transparent,rgba(10,13,36,.9) 45%);pointer-events:none}
+  .stage-bar b{color:var(--gold);font-size:15px}
+  .stage-bar .spacer{flex:1}
+  .stage-bar button{padding:4px 13px;font-size:12.5px;pointer-events:auto}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:12px;font-size:12.5px;color:var(--dim)}
+  .legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle}
+  /* 结果弹窗 */
+  #fmodal{position:fixed;inset:0;background:rgba(7,9,26,.82);backdrop-filter:blur(5px);z-index:98;
+    display:none;align-items:center;justify-content:center;padding:20px}
+  #fmodal.show{display:flex}
+  .fmodal-card{position:relative;max-width:840px;width:100%;max-height:86vh;overflow:auto;
+    background:var(--panel);border:1px solid var(--gold);border-radius:16px;padding:24px 24px 20px;
+    box-shadow:0 0 70px rgba(255,212,121,.2);animation:cardIn .45s cubic-bezier(.2,.9,.3,1.25)}
+  @keyframes cardIn{from{opacity:0;transform:translateY(26px) scale(.93)}to{opacity:1;transform:none}}
+  #btnFclose{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;
+    padding:0;font-size:19px;line-height:1;background:var(--panel2)}
+  /* 结果卡（弹窗内） */
   .fpair{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:stretch}
   .fside{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:13px 15px}
   .fside .fname{font-size:16.5px;color:var(--gold);font-weight:600}
@@ -155,9 +171,20 @@
     background:rgba(103,232,249,.06);padding:9px 13px;border-radius:0 8px 8px 0}
   .fplace a.btn-jump{display:inline-block;margin-left:6px;font-size:12.5px;padding:3px 13px;
     border-radius:999px;background:var(--gold);color:#141005;text-decoration:none;font-weight:600}
-  .forge-progress{text-align:center;font-size:13px;color:var(--dim);margin-top:12px}
-  .forge-progress b{color:var(--gold);font-size:16px}
-  @media(max-width:640px){.fpair{grid-template-columns:1fr}.fmid{display:none}}
+  @media(max-width:640px){.fpair{grid-template-columns:1fr}.fmid{display:none}#bubbles{height:400px}}
+
+  /* ---------- 侧边圆点导航 & 入场动画 ---------- */
+  #dots{position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:96;
+    display:flex;flex-direction:column;gap:14px}
+  #dots a{position:relative;width:9px;height:9px;border-radius:50%;background:var(--border);transition:.25s}
+  #dots a.on{background:var(--gold);box-shadow:0 0 10px var(--gold);transform:scale(1.35)}
+  #dots a span{position:absolute;right:19px;top:50%;transform:translateY(-50%);white-space:nowrap;
+    font-size:12px;color:var(--gold);background:rgba(10,13,36,.92);border:1px solid var(--border);
+    padding:2px 10px;border-radius:999px;opacity:0;pointer-events:none;transition:.2s}
+  #dots a:hover span{opacity:1}
+  @media(max-width:960px){#dots{display:none}}
+  section.rv{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+  section.rv.in{opacity:1;transform:none}
 
   /* ---------- 结业闭环（6/6 毕业覆盖层） ---------- */
   #grad{position:fixed;inset:0;background:rgba(7,9,26,.9);backdrop-filter:blur(6px);
@@ -188,13 +215,11 @@
   <div class="moon"></div>
   <div class="zh">午 夜 学 园</div>
   <h1>The Midnight Academy</h1>
-  <p>只在梦中开启的学院。每个学科是一个古老学派，每一种魔法都来自真实的规则——
-     你可以操作它、试验它、看见它的边界。而最惊人的魔法，出现在学派相遇的地方。<br>
-     本作品以<b>北师香港浸会大学（BNBU）</b>真实的学院、专业与科研平台为骨架搭建。</p>
+  <p>每个学科是一个古老学派，每一种魔法都来自可以触摸的真实规则。<br>
+     本作品以<b>北师香港浸会大学</b>真实的学院、专业与科研平台为骨架。</p>
   <span class="tag">原型：北师港浸大 · 博文雅志，真知笃行</span>
   <span class="tag">全站零依赖 · 离线可玩</span>
-  <span class="tag">3 学派试炼 × 3 交汇实验</span>
-  <span class="tag">3 学派 × 3 真实科研交叉平台</span>
+  <span class="tag">3 学派试炼 × 3 交汇实验 × 561 种专业碰撞</span>
 </header>
 
 <div class="progress">
@@ -214,7 +239,7 @@
 <main class="wrap">
 
   <!-- ================= 学派大厅 ================= -->
-  <section id="schools">
+  <section id="schools" class="rv">
     <div class="sec-head"><h2>学派大厅</h2><span class="sub">三个学派，三种真实知识的魔法化</span></div>
     <div class="grid">
 
@@ -235,7 +260,6 @@
         <div class="out" id="cipherMap" style="font-size:12px">—</div>
         <div class="rule">知识规则：单表替换只重排字母表，每个明文字母永远对应同一个密文字母。</div>
         <div class="limit"><b>魔法的边界：</b>字母表被重排了 26 次，但字母的<b>使用频率</b>原封不动地泄露进密文——这正是下一个实验要利用的弱点。</div>
-        <div class="realref">🏛 北师港浸大对应院系：理工科技学院 · <b>计算机科学系</b>（人工智能 / 计算机科学与技术，均为国家级一流本科专业建设点）</div>
       </div>
 
       <!-- 统计学派 -->
@@ -252,7 +276,6 @@
         <canvas id="sampleCanvas" height="200"></canvas>
         <div class="rule">知识规则：大数定律——样本均值随 n 增大收敛到总体均值；95% 置信区间 ≈ x̄ ± 1.96·s/√n。</div>
         <div class="limit"><b>魔法的边界：</b>样本太少时区间宽得像雾。抽满 30 只再看，真实均值（160）几乎总落在区间内——但也并非绝对。</div>
-        <div class="realref">🏛 北师港浸大对应院系：理工科技学院 · <b>统计与数据科学系</b>（统计学、数据科学）；统计学是学校两个<b>博士后科研流动站</b>之一</div>
       </div>
 
       <!-- 生态学派 -->
@@ -273,13 +296,12 @@
         <canvas id="webCanvas" height="220"></canvas>
         <div class="rule">知识规则：营养级联——捕食者减少会让猎物激增，进而压垮植被；种群按离散时间的逻辑斯蒂方程振荡。</div>
         <div class="limit"><b>魔法的边界：</b>模型只有三个物种和两参数，真实生态系统有几十条反馈环。它演示的是<b>方向</b>，不是精确预言。</div>
-        <div class="realref">🏛 北师港浸大对应院系：理工科技学院 · <b>生命科学系</b>（环境科学、食品科学与工程）；农业科学已进入 ESI 全球前 1%</div>
       </div>
     </div>
   </section>
 
   <!-- ================= 交汇圣坛 ================= -->
-  <section id="altar">
+  <section id="altar" class="rv">
     <div class="sec-head"><h2>交汇圣坛</h2><span class="sub">当两个学派相遇——单一学科无法实现的力量</span></div>
 
     <div class="tabs">
@@ -313,7 +335,6 @@
       <div class="stat" id="freqStat">还原度未知</div>
       <div class="rule">知识规则：第一步用英语字母频率序（E&gt;T&gt;A&gt;O&gt;I&gt;N…）给密文字母排座位；第二步用「单词模式 + 词典回溯」——每个密文单词的重复结构（如 LEVEL 是 01230 型）只允许词典里的词进入，逐词约束、冲突回退，把四成的猜测收敛成完整答案。</div>
       <div class="limit"><b>魔法的边界：</b>纯频率在短文本上只能还原约四成（统计样本不足）；词典里没有的生词会被跳过留白。两步缺一不可——这正是密码学离不开统计学的原因。</div>
-      <div class="realref">🔬 北师港浸大对应科研平台：<b>广东省数据科学与技术交叉应用重点实验室</b>——正是「统计与数据科学 × 计算机科学」的学科交叉</div>
     </div>
 
     <!-- 组合二：标志重捕 -->
@@ -340,7 +361,6 @@
       <div class="out" id="recapLedger" style="font-size:12.5px">—</div>
       <div class="rule">知识规则：N̂ = k·m / x（x 为重捕中带标记的条数）；区间宽度 ∝ 1/√x，标记越多越准。</div>
       <div class="limit"><b>魔法的边界：</b>公式假设标记鱼<b>完全混合、无死亡、二次捕捞等概率</b>——真实调查里鱼会学乖、会搬家，估计因此有偏。</div>
-      <div class="realref">🔬 北师港浸大对应科研平台：<b>数学、统计学两个博士后科研流动站</b> × 理工科技学院生命科学系——抽样推断正是种群调查的数学底座</div>
     </div>
 
     <!-- 组合三：DNA 条形码 -->
@@ -354,27 +374,28 @@
       <div id="dnaRefs"></div>
       <div class="rule">知识规则：条形码用一段 ~36 位短序列区分物种，相似度 ≥ 97% 判为同种——短指纹 + 可比对的距离，和密码学的哈希思想同构。</div>
       <div class="limit"><b>魔法的边界：</b>近缘种相似度可能高于阈值造成误判；本页序列是<b>模拟数据</b>，真实条形码来自基因库比对。</div>
-      <div class="realref">🔬 北师港浸大对应科研平台：<b>广东省教育厅人工智能与多模态数据处理重点实验室</b>——序列数据的智能比对与模式识别</div>
     </div>
   </section>
 
-  <!-- ================= 碰撞熔炉（34 专业两两组合） ================= -->
-  <section id="forge">
-    <div class="sec-head"><h2>碰撞熔炉</h2><span class="sub">任意两个专业相遇，都会锻出一条新规则——34 个本科专业，共 561 种组合</span></div>
-    <div class="forge-pick">
-      <div class="pick-box"><label>专 业 A</label><select id="forgeA"></select></div>
-      <div class="cross">×</div>
-      <div class="pick-box"><label>专 业 B</label><select id="forgeB"></select></div>
-      <button class="primary" id="btnForge">点火碰撞</button>
-      <button id="btnForgeRand">随机一对</button>
+  <!-- ================= 碰撞熔炉（拖拽泡泡碰撞） ================= -->
+  <section id="forge" class="rv">
+    <div class="sec-head"><h2>碰撞熔炉</h2><span class="sub">34 个专业泡泡 · 561 种碰撞</span></div>
+    <div class="stage">
+      <canvas id="bubbles"></canvas>
+      <div class="stage-tip" id="stageTip">按住一个泡泡拖到另一个泡泡上松手，或「点一下 A、再点一下 B」</div>
+      <div class="stage-bar">
+        <b id="forgeProg">已碰撞 0 / 561</b>
+        <span id="forgeKind">拖动泡泡开始碰撞</span>
+        <span class="spacer"></span>
+        <button id="btnForgeRand">🎲 随机碰撞</button>
+        <button id="btnForgeClear">清空探索</button>
+      </div>
     </div>
-    <div id="forgeOut"><p class="note" style="text-align:center">左右各选一个专业（可同院，也可跨院），点火后熔炉会给出：<b style="color:#ffd479">火花名</b>、<b style="color:#ffd479">正反双向的融合咒文</b>、<b style="color:#ffd479">桥接洞见</b>与<b style="color:#ffd479">学派落点</b>。</p></div>
-    <div class="forge-progress" id="forgeProg"></div>
-    <div class="realref" style="margin-top:16px">🏛 34 个专业的名称、所属院系与介绍逐条取自学校各学院官网「院系与专业 / 本科课程」页（工商管理学院 fbm · 人文社科学院 fhss · 理工科技学院 fst · 文化与创意学院 scc），任选两个即成一对，C(34,2)=<b>561</b> 种组合全部可碰撞；类别标签与 28 条桥接规则为本作品原创的碰撞引擎。</div>
+    <div class="legend" id="legend"></div>
   </section>
 
   <!-- ================= 知识手账 ================= -->
-  <section id="codex">
+  <section id="codex" class="rv">
     <div class="sec-head"><h2>学派手账</h2><span class="sub">每一条魔法背后的真实知识与它的边界</span></div>
     <table class="codex">
       <tr><th style="width:19%">魔法</th><th style="width:15%">学派组合</th><th style="width:33%">真实知识（规则从何而来）</th><th>局限（为什么它不是万能的）</th></tr>
@@ -385,9 +406,8 @@
       <tr><td>标志重捕</td><td>统计 × 生态</td><td>林肯-彼得森指数 N̂=km/x</td><td>假设完全混合、无死亡；违反时估计有偏</td></tr>
       <tr><td>基因封印</td><td>密码 × 生态</td><td>DNA 条形码、汉明距离比对</td><td>近缘种相似度过阈值会误判；本页序列为模拟</td></tr>
     </table>
-    <p class="note" style="margin-top:14px">· <b style="color:#ffd479">真实映射：</b>本作品 6 个实验全部锚定北师港浸大理工科技学院的 4 个系（计算机科学系、统计与数据科学系、数学科学系、生命科学系）与 3 个真实科研平台（广东省数据科学与技术交叉应用重点实验室、广东省教育厅人工智能与多模态数据处理重点实验室、数学/统计学博士后科研流动站）。全校共 <b>6 个学院、13 个系、34 个本科专业（方向）</b>：工商管理学院（会计系 1 · 金融经济系 3 · 管理系 5）、人文社科学院（传播系 3 · 语言文化系 4 · 社会科学系 2）、文化与创意学院（文化创意与设计系 3 · 影视与新媒体系 3 · 音乐系 1）、通识教育学院（教学中心，无本科专业）、博雅智能学院（全校 4 学院 29 个专业参与的「+N」跨学科路径）；<b>上方「碰撞熔炉」已把 4 个专业学院的全部 34 个专业两两配对，C(34,2)=561 种组合逐一可碰撞。</b><br>
-    · 世界、学派、名称与设定均为本作品原创，未复刻任何已有魔法世界观；页面不含外部素材，可离线演示。<br>
-    · 词典回溯所用英语词表来自开源项目 google-10000-english（github.com/first20hours/google-10000-english 的 20k 常用词），仅在本地用于模式查询。</p>
+    <p class="note" style="margin-top:14px">· 真实信息：6 个实验锚定北师港浸大理工科技学院 4 个系与 3 个省级重点实验室 / 博士后流动站；34 个专业的院系与介绍取自各学院官网「院系与专业」页，全站共 561 种专业组合可碰撞。<br>
+    · 世界、学派与设定为本作品原创；词典回溯使用开源词表 google-10000-english，仅在本地查询，页面离线可玩。</p>
   </section>
 </main>
 
@@ -408,6 +428,20 @@
       <button class="primary" id="btnGradClose">继续探索</button>
       <button id="btnGradRestart">重新开始整座学院</button>
     </div>
+  </div>
+</div>
+
+<nav id="dots">
+  <a href="#schools" data-sec="schools"><span>学派大厅</span></a>
+  <a href="#altar" data-sec="altar"><span>交汇圣坛</span></a>
+  <a href="#forge" data-sec="forge"><span>碰撞熔炉</span></a>
+  <a href="#codex" data-sec="codex"><span>学派手账</span></a>
+</nav>
+
+<div id="fmodal">
+  <div class="fmodal-card">
+    <button id="btnFclose" title="关闭">×</button>
+    <div id="forgeOut"></div>
   </div>
 </div>
 
@@ -1152,42 +1186,304 @@ const Forge = {
       const p = k.split('-');
       by[this.place(MAJORS[+p[0]], MAJORS[+p[1]]).k]++;
     });
-    document.getElementById('forgeProg').innerHTML =
-      '已碰撞 <b>'+ks.length+'</b> / '+this.total()+' 种组合（'+(ks.length/this.total()*100).toFixed(1)+'%）'+
-      '　·　落点分布：交汇圣坛 '+by['交汇']+' · 学派同门 '+by['同门']+
-      ' · 外门客座 '+by['客座']+' · 空白之地 '+by['空白'];
+    document.getElementById('forgeProg').textContent = '已碰撞 ' + ks.length + ' / ' + this.total();
+    document.getElementById('forgeKind').textContent = ks.length ?
+      ('落点 · 交汇 ' + by['交汇'] + ' · 同门 ' + by['同门'] +
+       ' · 客座 ' + by['客座'] + ' · 空白 ' + by['空白']) : '';
+    Field.refresh();
   },
   pick(i,j){
-    if(i === j){ toast('⛏ 碰撞发生在任意两个专业之间——请换一个专业'); return; }
+    if(i === j) return;
     const k = this.key(i,j);
     let fresh = false;
     if(!this.visited[k]){
       this.visited[k] = 1; fresh = true;
       try{ localStorage.setItem(FORGE_STORE, JSON.stringify(Object.keys(this.visited))); }catch(e){}
     }
-    this.render(i,j);
     this.prog();
     if(fresh) toast('💥 已探索 ' + Object.keys(this.visited).length + ' / ' + this.total() + ' 种专业组合');
   },
+  open(i,j){
+    this.render(i,j);
+    document.getElementById('fmodal').classList.add('show');
+  },
   init(){
-    const A = document.getElementById('forgeA'), B = document.getElementById('forgeB');
-    const cols = [];
-    MAJORS.forEach(m=>{ if(cols.indexOf(m.col) < 0) cols.push(m.col); });
-    const html = cols.map(col=>{
-      const opts = MAJORS.map((m,idx)=> m.col===col ? '<option value="'+idx+'">'+m.n+'</option>' : '').join('');
-      return '<optgroup label="'+col+'">'+opts+'</optgroup>';
-    }).join('');
-    A.innerHTML = html; B.innerHTML = html;
-    A.value = '22'; B.value = '20';               // 默认：人工智能 × 统计学
-    document.getElementById('btnForge').onclick = ()=> this.pick(+A.value, +B.value);
-    document.getElementById('btnForgeRand').onclick = ()=>{
-      let i = Math.floor(Math.random()*MAJORS.length), j = i;
-      while(j === i) j = Math.floor(Math.random()*MAJORS.length);
-      A.value = i; B.value = j; this.pick(i,j);
-    };
     try{ (JSON.parse(localStorage.getItem(FORGE_STORE) || '[]')).forEach(k=>{ this.visited[k] = 1; }); }catch(e){}
     this.prog();
-    this.render(22,20);                            // 首屏示例：人工智能 × 统计学 → 频率之眼
+    const modal = document.getElementById('fmodal');
+    document.getElementById('btnFclose').onclick = ()=> modal.classList.remove('show');
+    modal.addEventListener('click', e=>{
+      if(e.target === modal || (e.target.closest && e.target.closest('a[href^="#"]')))
+        modal.classList.remove('show');            // 点遮罩或「前往查看」都先关弹窗
+    });
+    document.addEventListener('keydown', e=>{ if(e.key === 'Escape') modal.classList.remove('show'); });
+    document.getElementById('legend').innerHTML = Object.keys(CATS).map(k=>
+      '<span><i style="background:' + Field.COL[k] + '"></i>' + CATS[k].n + '</span>').join('');
+  }
+};
+
+/* =========================================================================
+   Field — 泡泡舞台：34 个专业泡泡漂浮，拖拽 / 连点两下碰撞出火花
+   ========================================================================= */
+const Field = {
+  COL:{ ai:'#a78bfa', math:'#67e8f9', life:'#86efac', biz:'#ffd479',
+        comm:'#7dd3fc', art:'#f472b6', psy:'#fca5a5' },
+  FONT:'"PingFang SC","Microsoft YaHei",system-ui,sans-serif',
+  cvs:null, ctx:null, W:0, H:0, dpr:1, vis:true,
+  bs:[], fx:[], cnt:null, sel:-1, drag:-1, hover:-1,
+  down:null, pp:null, moved:false, firstHit:false, raf:0,
+
+  rgba(hex,a){
+    const n = parseInt(hex.slice(1),16);
+    return 'rgba(' + (n>>16) + ',' + ((n>>8)&255) + ',' + (n&255) + ',' + a + ')';
+  },
+  radius(m){                                    // 泡泡半径（小屏自适应缩小）
+    const s = Math.max(.6, Math.min(1, this.W / 860));
+    return (20 + m.n.length * 2.2) * s;
+  },
+  resize(){
+    const dpr = this.dpr = window.devicePixelRatio || 1;
+    this.W = this.cvs.clientWidth; this.H = this.cvs.clientHeight;
+    this.cvs.width = this.W * dpr; this.cvs.height = this.H * dpr;
+    this.ctx.setTransform(dpr,0,0,dpr,0,0);
+    this.bs.forEach(b=>{
+      b.x = Math.min(Math.max(b.x, b.r), Math.max(b.r, this.W - b.r));
+      b.y = Math.min(Math.max(b.y, 44 + b.r), Math.max(44 + b.r, this.H - 56 - b.r));
+    });
+  },
+  refresh(){                                     // 每个泡泡参与过的碰撞次数
+    this.cnt = MAJORS.map(()=>0);
+    Object.keys(Forge.visited).forEach(k=>{
+      const p = k.split('-');
+      this.cnt[+p[0]]++; this.cnt[+p[1]]++;
+    });
+  },
+  hit(p, ex){                                    // 命中检测（可排除某个泡泡）
+    let best = -1, bd = 1e9;
+    for(const b of this.bs){
+      if(b.i === ex) continue;
+      const d = Math.hypot(b.x - p.x, b.y - p.y);
+      if(d <= b.r + 4 && d < bd){ bd = d; best = b.i; }
+    }
+    return best;
+  },
+
+  /* ---------- 火花特效 ---------- */
+  spark(x, y, ca, cb){
+    ca = ca || '#ffd479'; cb = cb || ca;
+    for(let i = 0; i < 46; i++){
+      const a = Math.random() * Math.PI * 2, sp = 1.5 + Math.random() * 5.5;
+      this.fx.push({ t:'p', x, y, vx:Math.cos(a)*sp, vy:Math.sin(a)*sp,
+        s:1.4 + Math.random()*2.4, life:34 + Math.random()*30, max:64,
+        c:[ '#ffd479', '#fff3cf', ca, cb ][i % 4] });
+    }
+    this.fx.push({ t:'r', x, y, r0:6, r1:74, life:30, max:30, c:'#ffffff', lw:3, a:.9 });
+    this.fx.push({ t:'r', x, y, r0:10, r1:110, life:44, max:44, c:'#ffd479', lw:2.4, a:.75 });
+    if(navigator.vibrate) try{ navigator.vibrate(18); }catch(e){}
+  },
+  collide(i, j){
+    if(i === j) return;
+    const a = this.bs[i], b = this.bs[j];
+    this.spark((a.x + b.x) / 2, (a.y + b.y) / 2,
+               this.COL[MAJORS[i].c], this.COL[MAJORS[j].c]);
+    const dx = b.x - a.x || .01, dy = b.y - a.y || .01, d = Math.hypot(dx, dy) || 1;
+    a.vx = -dx/d*3.2; a.vy = -dy/d*3.2;           // 反冲弹开
+    b.vx =  dx/d*3.2; b.vy =  dy/d*3.2;
+    Forge.pick(i, j);
+    if(!this.firstHit){
+      this.firstHit = true;
+      document.getElementById('stageTip').classList.add('hide');
+    }
+    setTimeout(()=>Forge.open(i, j), 480);        // 火花后弹出碰撞结果
+  },
+
+  /* ---------- 物理与绘制 ---------- */
+  tick(){
+    const top = 44, bot = this.H - 56;
+    for(const b of this.bs){
+      if(b.i === this.drag) continue;
+      b.x += b.vx; b.y += b.vy;
+      if(b.x < b.r){ b.x = b.r; b.vx = Math.abs(b.vx); }
+      if(b.x > this.W - b.r){ b.x = this.W - b.r; b.vx = -Math.abs(b.vx); }
+      if(b.y < top + b.r){ b.y = top + b.r; b.vy = Math.abs(b.vy); }
+      if(b.y > bot - b.r){ b.y = bot - b.r; b.vy = -Math.abs(b.vy); }
+      const s = Math.hypot(b.vx, b.vy);
+      if(s < .2){ b.vx += (Math.random()-.5)*.24; b.vy += (Math.random()-.5)*.24; }
+      if(s > 4){ b.vx *= .9; b.vy *= .9; }
+    }
+    for(let i = 0; i < this.bs.length; i++){       // 泡泡间柔性分离（不触发结果）
+      for(let j = i + 1; j < this.bs.length; j++){
+        const a = this.bs[i], b = this.bs[j];
+        let dx = b.x - a.x, dy = b.y - a.y;
+        const d = Math.hypot(dx, dy) || .01, min = a.r + b.r;
+        if(d >= min) continue;
+        const ov = (min - d) / 2, ux = dx / d, uy = dy / d;
+        if(a.i !== this.drag){ a.x -= ux*ov; a.y -= uy*ov; }
+        if(b.i !== this.drag){ b.x += ux*ov; b.y += uy*ov; }
+        const pr = (a.vx - b.vx)*ux + (a.vy - b.vy)*uy;
+        if(pr < 0){
+          if(a.i !== this.drag){ a.vx -= pr*ux; a.vy -= pr*uy; }
+          if(b.i !== this.drag){ b.vx += pr*ux; b.vy += pr*uy; }
+        }
+      }
+    }
+    for(const f of this.fx){                       // 火花粒子衰减
+      if(f.t === 'r'){ f.life--; }
+      else { f.x += f.vx; f.y += f.vy; f.vx *= .93; f.vy *= .93; f.vy += .05; f.life--; }
+    }
+    this.fx = this.fx.filter(f => f.life > 0);
+  },
+  draw(){
+    const c = this.ctx;
+    c.clearRect(0, 0, this.W, this.H);
+    for(const f of this.fx){                       // 先画火花
+      const k = f.life / f.max;
+      c.globalAlpha = Math.min(1, k * 1.7);
+      if(f.t === 'r'){
+        const e = 1 - k;
+        c.strokeStyle = f.c; c.lineWidth = f.lw * (1 - e*.6);
+        c.beginPath(); c.arc(f.x, f.y, f.r0 + (f.r1 - f.r0) * e, 0, 7); c.stroke();
+      }else{
+        c.fillStyle = f.c;
+        c.beginPath(); c.arc(f.x, f.y, f.s * (.4 + k*.6), 0, 7); c.fill();
+      }
+    }
+    c.globalAlpha = 1;
+    const rot = (Date.now() / 40) % (Math.PI * 2);   // 选中圈的旋转相位
+    for(const b of this.bs){
+      const m = MAJORS[b.i], col = this.COL[m.c], act = (this.drag === b.i || this.sel === b.i);
+      c.save();
+      c.shadowColor = col; c.shadowBlur = act ? 26 : 13;
+      const g = c.createRadialGradient(b.x - b.r*.3, b.y - b.r*.35, b.r*.15, b.x, b.y, b.r);
+      g.addColorStop(0, this.rgba(col, .55)); g.addColorStop(1, this.rgba(col, .13));
+      c.fillStyle = g; c.beginPath(); c.arc(b.x, b.y, b.r, 0, 7); c.fill();
+      c.shadowBlur = 0;
+      c.strokeStyle = this.rgba(col, .9); c.lineWidth = 1.4;
+      c.beginPath(); c.arc(b.x, b.y, b.r, 0, 7); c.stroke();
+      if(this.cnt && this.cnt[b.i]){               // 已碰撞过的泡泡带金环
+        c.strokeStyle = 'rgba(255,212,121,' + Math.min(.8, .3 + this.cnt[b.i]*.1) + ')';
+        c.lineWidth = 2;
+        c.beginPath(); c.arc(b.x, b.y, b.r + 3.5, 0, 7); c.stroke();
+      }
+      if(this.drag >= 0 && this.hover === b.i && this.hover !== this.drag){  // 拖到目标上
+        c.setLineDash([6, 5]); c.strokeStyle = '#ffd479'; c.lineWidth = 2.4;
+        c.beginPath(); c.arc(b.x, b.y, b.r + 7, rot, rot + Math.PI*2); c.stroke();
+        c.setLineDash([]);
+      }else if(this.sel === b.i){
+        c.setLineDash([6, 5]); c.strokeStyle = '#ffd479'; c.lineWidth = 2.4;
+        c.beginPath(); c.arc(b.x, b.y, b.r + 7, rot, rot + Math.PI*2); c.stroke();
+        c.setLineDash([]);
+      }
+      const n = m.n, s = this.radius(m) / (20 + n.length * 2.2);   // 字号随缩放
+      c.fillStyle = '#fff'; c.textAlign = 'center'; c.textBaseline = 'middle';
+      c.shadowColor = 'rgba(0,0,0,.65)'; c.shadowBlur = 4;
+      if(n.length <= 4){
+        c.font = '600 ' + (Math.max(9, 13 * s)) + 'px ' + this.FONT;
+        c.fillText(n, b.x, b.y);
+      }else{
+        const cut = Math.ceil(n.length / 2), fs = Math.max(8.5, 12 * s);
+        c.font = '600 ' + fs + 'px ' + this.FONT;
+        c.fillText(n.slice(0, cut), b.x, b.y - fs*.62);
+        c.fillText(n.slice(cut), b.x, b.y + fs*.62);
+      }
+      c.restore();
+    }
+  },
+  loop(){
+    this.raf = requestAnimationFrame(()=>this.loop());
+    if(!this.vis) return;
+    this.tick(); this.draw();
+  },
+
+  init(){
+    this.cvs = document.getElementById('bubbles');
+    this.ctx = this.cvs.getContext('2d');
+    this.resize();
+    this.bs = MAJORS.map((m, i) => {               // 随机落点，尽量不重叠
+      const r = this.radius(m);
+      let x = r, y = 44 + r, ok = false, tries = 0;
+      while(!ok && tries++ < 80){
+        x = r + Math.random() * Math.max(1, this.W - 2*r);
+        y = 44 + r + Math.random() * Math.max(1, this.H - 100 - 2*r);
+        ok = this.bs.every(b => Math.hypot(b.x - x, b.y - y) > b.r + r + 4);
+      }
+      const a = Math.random() * Math.PI * 2, sp = .3 + Math.random() * .4;
+      return { i, x, y, r, vx:Math.cos(a)*sp, vy:Math.sin(a)*sp };
+    });
+    this.refresh();
+
+    const P = e => { const rc = this.cvs.getBoundingClientRect();
+                     return { x:e.clientX - rc.left, y:e.clientY - rc.top }; };
+    this.cvs.addEventListener('pointerdown', e => {
+      const p = P(e), h = this.hit(p);
+      if(h < 0){ this.sel = -1; return; }
+      this.drag = h; this.down = p; this.pp = p; this.moved = false;
+      this.cvs.classList.add('grabbing');
+      try{ this.cvs.setPointerCapture(e.pointerId); }catch(err){}
+    });
+    this.cvs.addEventListener('pointermove', e => {
+      const p = P(e);
+      if(this.drag < 0){ this.hover = this.hit(p); return; }
+      const b = this.bs[this.drag];
+      if(Math.hypot(p.x - this.down.x, p.y - this.down.y) > 6) this.moved = true;
+      b.vx = Math.max(-9, Math.min(9, p.x - this.pp.x));
+      b.vy = Math.max(-9, Math.min(9, p.y - this.pp.y));
+      b.x = Math.min(Math.max(p.x, b.r), Math.max(b.r, this.W - b.r));
+      b.y = Math.min(Math.max(p.y, 44 + b.r), Math.max(44 + b.r, this.H - 56 - b.r));
+      this.pp = p;
+      this.hover = this.hit(p, this.drag);
+    });
+    const release = e => {
+      if(this.drag < 0) return;
+      const i = this.drag, p = P(e);
+      this.drag = -1; this.hover = -1;
+      this.cvs.classList.remove('grabbing');
+      if(this.moved){                              // 拖到另一个泡泡上 → 碰撞
+        const t = this.hit(p, i);
+        if(t >= 0){ this.sel = -1; this.collide(i, t); return; }
+      }else{                                       // 点击选择 / 连点两下碰撞
+        if(this.sel < 0) this.sel = i;
+        else if(this.sel === i) this.sel = -1;
+        else { const s = this.sel; this.sel = -1; this.collide(s, i); }
+      }
+    };
+    this.cvs.addEventListener('pointerup', release);
+    this.cvs.addEventListener('pointercancel', release);
+    this.cvs.addEventListener('pointerleave', e => { if(this.drag >= 0) release(e); });
+
+    if(window.IntersectionObserver){               // 离开视口时暂停动画
+      new IntersectionObserver(es => { this.vis = es[0].isIntersecting; },
+        { threshold:0 }).observe(this.cvs);
+    }
+    window.addEventListener('resize', () => this.resize());
+
+    document.getElementById('btnForgeRand').onclick = () => {
+      const un = [];
+      for(let i = 0; i < MAJORS.length; i++)
+        for(let j = i + 1; j < MAJORS.length; j++)
+          if(!Forge.visited[Forge.key(i, j)]) un.push([i, j]);
+      let i, j;
+      if(un.length){ const pick = un[Math.floor(Math.random() * un.length)]; i = pick[0]; j = pick[1]; }
+      else { i = Math.floor(Math.random() * MAJORS.length);
+             j = Math.floor(Math.random() * MAJORS.length); while(j === i) j = (j + 1) % MAJORS.length; }
+      const a = this.bs[i], b = this.bs[j];
+      this.spark(a.x, a.y, this.COL[MAJORS[i].c], this.COL[MAJORS[j].c]);
+      this.spark(b.x, b.y, this.COL[MAJORS[j].c], this.COL[MAJORS[i].c]);
+      Forge.pick(i, j);
+      if(!this.firstHit){ this.firstHit = true; document.getElementById('stageTip').classList.add('hide'); }
+      setTimeout(() => Forge.open(i, j), 480);
+    };
+    document.getElementById('btnForgeClear').onclick = () => {
+      if(!Object.keys(Forge.visited).length){ toast('还没有碰撞记录'); return; }
+      if(confirm('清空全部碰撞探索记录？')){
+        Forge.visited = {};
+        try{ localStorage.removeItem(FORGE_STORE); }catch(e){}
+        Forge.prog();
+        toast('已清空探索记录');
+      }
+    };
+
+    this.loop();
   }
 };
 
@@ -1212,6 +1508,33 @@ function initUI(){
     document.getElementById('grad').classList.remove('show');
   };
   document.getElementById('btnGradRestart').onclick = restartAll;
+
+  // 区块入场动画
+  if(window.IntersectionObserver){
+    const io = new IntersectionObserver(es => es.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    }), { threshold:.06 });
+    document.querySelectorAll('section.rv').forEach(s => io.observe(s));
+  }else{
+    document.querySelectorAll('section.rv').forEach(s => s.classList.add('in'));
+  }
+
+  // 侧边圆点导航：平滑跳转 + 当前区块高亮
+  const dots = [].map.call(document.querySelectorAll('#dots a'), a => ({
+    a, el: document.getElementById(a.dataset.sec)
+  })).filter(d => d.el);
+  dots.forEach(d => d.a.onclick = e => {
+    e.preventDefault();
+    d.el.scrollIntoView({ behavior:'smooth' });
+  });
+  const syncDots = () => {
+    const y = scrollY + innerHeight * .35;
+    let cur = dots[0];
+    dots.forEach(d => { if(d.el.offsetTop <= y) cur = d; });
+    dots.forEach(d => d.a.classList.toggle('on', d === cur));
+  };
+  addEventListener('scroll', syncDots, { passive:true });
+  syncDots();
 }
 
 Cipher.init();
@@ -1221,6 +1544,7 @@ Freq.init();
 Recap.init();
 DNA.init();
 Forge.init();
+Field.init();
 initUI();
 const restored = loadProgress();
 if(restored === 6){
