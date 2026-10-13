@@ -4,533 +4,451 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Midnight Academy · 午夜学园</title>
+
 <style>
-  :root{
-    --bg:#0a0d24; --bg2:#141a45; --panel:#171d4d; --panel2:#1e2660;
-    --ink:#e8e9ff; --dim:#9aa2d8; --gold:#ffd479;
-    --crypto:#a78bfa; --stats:#67e8f9; --eco:#86efac;
-    --border:#2c3472;
+:root{
+    --bg:#0b0f1e; --bg2:#141a33; --panel:#151b38; --panel2:#1c2450;
+    --ink:#eaf0ff; --dim:#8b97c9; --gold:#ffd94a;
+    --cry:#a98bff; --stat:#4fd6f5; --eco:#5ef08a; --life:#ff7ea8;
+    --border:#39427a; --shadow:#05070f; --danger:#ff6b6b;
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{margin:0;background:linear-gradient(180deg,var(--bg),var(--bg2) 60%,var(--bg));
-    color:var(--ink);font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;line-height:1.65}
-  h1,h2,h3{font-family:Georgia,"Songti SC",serif;font-weight:600;line-height:1.3}
-  a{color:var(--gold)}
-  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.7;
+    font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,"PingFang SC","Microsoft YaHei",monospace;
+    background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.016) 0 1px,transparent 1px 4px),
+      repeating-linear-gradient(90deg,rgba(255,255,255,.016) 0 1px,transparent 1px 4px)}
+  body::after{content:"";position:fixed;inset:0;z-index:300;pointer-events:none;
+    background:repeating-linear-gradient(180deg,rgba(0,0,0,.16) 0 2px,transparent 2px 4px);opacity:.5}
+  h1,h2,h3{font-family:ui-monospace,"Courier New",monospace;font-weight:700;line-height:1.35;
+    letter-spacing:.06em;margin:0}
+  a{color:var(--gold);text-decoration:none}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 18px}
+  ::selection{background:var(--gold);color:#101322}
 
-  /* ---------- hero ---------- */
-  .hero{padding:64px 0 30px;text-align:center;position:relative;overflow:hidden}
-  .hero .moon{width:74px;height:74px;border-radius:50%;margin:0 auto 14px;
-    background:radial-gradient(circle at 35% 35%,#fff7d6,#ffd479 55%,#c99a2e);
-    box-shadow:0 0 46px 8px rgba(255,212,121,.45)}
-  .hero h1{font-size:44px;margin:6px 0;color:#fff;letter-spacing:1px}
-  .hero .zh{font-size:20px;color:var(--gold);letter-spacing:8px;margin-bottom:10px}
-  .hero p{max-width:640px;margin:8px auto 0;color:var(--dim)}
-  .tag{display:inline-block;border:1px solid var(--border);border-radius:999px;
-    padding:3px 14px;font-size:13px;color:var(--dim);margin:14px 4px 0;background:rgba(255,255,255,.03)}
+  /* ---------- 顶栏 ---------- */
+  .topbar{position:sticky;top:0;z-index:90;background:#0d1226;
+    border-bottom:3px solid var(--border);box-shadow:0 3px 0 var(--shadow)}
+  .topbar .in{max-width:1000px;margin:0 auto;padding:8px 18px;display:flex;align-items:center;gap:14px}
+  .logo{display:flex;align-items:center;gap:9px;color:var(--ink)}
+  .logo b{font-size:15px;letter-spacing:.14em}
+  .logo i{width:14px;height:14px;background:var(--gold);display:inline-block;
+    box-shadow:4px 0 0 #c9a52f,0 4px 0 #8f7521}
+  .xp{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--dim)}
+  .xp .bars{display:flex;gap:3px}
+  .xp .bars i{width:16px;height:12px;background:#0d1230;border:2px solid var(--border)}
+  .xp .bars i.on{background:var(--gold);border-color:var(--gold)}
+  .topbar button{margin-left:6px}
 
-  /* ---------- 顶部站点导航 ---------- */
-  .topnav{position:sticky;top:0;z-index:95;display:flex;align-items:center;gap:20px;
-    height:56px;padding:0 18px;background:rgba(10,13,36,.94);
-    backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
-  .topnav .brand{display:flex;align-items:baseline;gap:9px;text-decoration:none}
-  .topnav .brand b{font-family:Georgia,"Songti SC",serif;color:#fff;font-size:19px;font-weight:600}
-  .topnav .brand i{font-style:normal;color:var(--dim);font-size:11px;letter-spacing:1px}
-  .topnav nav{display:flex;gap:2px;margin-left:auto;flex-wrap:wrap}
-  .topnav nav a{padding:7px 15px;border-radius:999px;color:var(--dim);
-    text-decoration:none;font-size:14px;transition:.2s}
-  .topnav nav a:hover{color:#fff;background:rgba(255,255,255,.05)}
-  .topnav nav a.on{color:var(--gold);background:rgba(255,212,121,.12);font-weight:600}
-
-  /* ---------- progress ---------- */
-  .progress{position:sticky;top:56px;z-index:94;background:rgba(10,13,36,.92);
-    backdrop-filter:blur(6px);border-bottom:1px solid var(--border);padding:9px 0}
-  .progress .inner{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center}
-  .chip{font-size:13px;border:1px solid var(--border);border-radius:999px;
-    padding:4px 13px;color:var(--dim);text-decoration:none;transition:.2s}
-  .chip.done{color:#0a0d24;background:var(--gold);border-color:var(--gold);font-weight:600}
-  #doneCount{color:var(--gold);font-size:13px;margin-left:6px}
-
-  /* ---------- sections ---------- */
-  section{padding:44px 0 8px;scroll-margin-top:64px}
-  .sec-head{display:flex;align-items:baseline;gap:14px;border-bottom:1px solid var(--border);
-    padding-bottom:10px;margin-bottom:24px}
-  .sec-head h2{font-size:26px;margin:0;color:#fff}
-  .sec-head .sub{color:var(--dim);font-size:14px}
-
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:20px}
-  .card{background:var(--panel);border:1px solid var(--border);border-radius:14px;
-    padding:20px;display:flex;flex-direction:column;gap:12px}
-  .card h3{margin:0;font-size:19px}
-  .card .kicker{font-size:12px;letter-spacing:3px;color:var(--dim)}
-  .rule{font-size:13.5px;background:rgba(255,255,255,.04);border-left:3px solid var(--gold);
-    padding:8px 12px;border-radius:0 8px 8px 0;color:#cfd3ff}
-  .limit{font-size:13px;color:var(--dim)}
-  .limit b{color:#ffb4b4;font-weight:600}
-  .note{font-size:13px;color:var(--dim)}
-
-  /* ---------- controls ---------- */
-  button{font:inherit;cursor:pointer;border-radius:9px;border:1px solid var(--border);
-    background:var(--panel2);color:var(--ink);padding:7px 15px;transition:.15s}
+  /* ---------- 控件 ---------- */
+  button{font:inherit;font-size:13.5px;cursor:pointer;color:var(--ink);background:var(--panel2);
+    border:3px solid var(--border);padding:6px 14px;box-shadow:4px 4px 0 var(--shadow);
+    transition:none}
   button:hover{border-color:var(--gold);color:var(--gold)}
-  button.primary{background:var(--gold);color:#141005;border-color:var(--gold);font-weight:600}
-  button.primary:hover{filter:brightness(1.1);color:#141005}
-  button:disabled{opacity:.45;cursor:not-allowed}
-  input[type=text]{font:inherit;width:100%;padding:8px 10px;border-radius:9px;
-    border:1px solid var(--border);background:#0d1132;color:var(--ink)}
-  input[type=range]{accent-color:var(--gold);width:100%}
-  textarea{font:inherit;width:100%;min-height:64px;padding:8px 10px;border-radius:9px;
-    border:1px solid var(--border);background:#0d1132;color:var(--ink);resize:vertical}
+  button:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--shadow)}
+  button.primary{background:var(--gold);color:#101322;border-color:#c9a52f;font-weight:700}
+  button.primary:hover{background:#ffe17a;color:#101322}
+  button.sm{padding:4px 10px;font-size:12.5px;box-shadow:3px 3px 0 var(--shadow)}
+  button:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
+  input[type=text],textarea{font:inherit;font-size:13.5px;width:100%;padding:8px 10px;
+    background:#0b1024;color:var(--ink);border:3px solid var(--border)}
+  input[type=range]{width:100%;accent-color:var(--gold)}
+  textarea{min-height:58px;resize:vertical}
   .row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
-  .lbl{font-size:13px;color:var(--dim)}
-  .out{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px;background:#0d1132;
-    border:1px dashed var(--border);border-radius:9px;padding:10px 12px;
-    word-break:break-all;min-height:42px;white-space:pre-wrap}
-  .stat{font-size:14px;background:#0d1132;border-radius:9px;padding:9px 12px;border:1px solid var(--border)}
+  .lbl{font-size:12.5px;color:var(--dim)}
+  .note{font-size:13px;color:var(--dim);margin:0}
+  .out{font-size:13.5px;background:#0b1024;border:3px dashed var(--border);padding:9px 11px;
+    word-break:break-all;white-space:pre-wrap;min-height:40px}
+  .stat{font-size:13.5px;background:#0b1024;border:3px solid var(--border);padding:8px 11px}
   .stat b{color:var(--gold)}
-  canvas{background:#0d1132;border:1px solid var(--border);border-radius:9px;width:100%;display:block}
-  .badge{font-size:12px;border-radius:6px;padding:2px 8px;background:rgba(255,212,121,.15);
-    color:var(--gold);border:1px solid rgba(255,212,121,.4)}
-
-  /* school accent borders */
-  .card.crypto{border-top:3px solid var(--crypto)}
-  .card.stats{border-top:3px solid var(--stats)}
-  .card.eco{border-top:3px solid var(--eco)}
-
-  /* ---------- altar ---------- */
-  .tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
-  .tab{padding:9px 18px;border-radius:10px}
-  .tab.active{background:var(--gold);color:#141005;border-color:var(--gold);font-weight:600}
-  .panel{display:none}
-  .panel.active{display:block}
-  .combo-title{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
-  .combo-title h3{margin:0;font-size:21px}
-  .plus{color:var(--gold);font-weight:700}
-
-  /* cipher chips */
-  .chips{display:flex;flex-wrap:wrap;gap:4px}
-  .lchip{font-family:ui-monospace,monospace;font-size:13px;width:27px;height:27px;
-    display:flex;align-items:center;justify-content:center;border-radius:6px;
-    border:1px solid var(--border);background:#0d1132;cursor:pointer;user-select:none}
-  .lchip.sel{background:var(--gold);color:#141005;border-color:var(--gold)}
-  .lchip.ok{border-color:var(--eco);color:var(--eco)}
-  .lchip.bad{border-color:#f87171;color:#f87171}
+  canvas{display:block;width:100%;background:#080c1c;border:3px solid var(--border);
+    image-rendering:pixelated}
   .mini{font-size:12px;color:var(--dim);margin:4px 0 2px}
 
-  /* dna */
-  .dna-seq{font-family:ui-monospace,monospace;font-size:13.5px;letter-spacing:1px;
-    background:#0d1132;border:1px solid var(--border);border-radius:8px;padding:8px 10px;
-    word-break:break-all;color:var(--stats)}
-  .dna-seq .hit{color:var(--gold)}
-  .species-card{border:1px solid var(--eco);background:rgba(134,239,172,.07);
-    border-radius:10px;padding:12px 14px;font-size:14px}
-
-  table.codex{width:100%;border-collapse:collapse;font-size:14px}
-  table.codex th,table.codex td{border:1px solid var(--border);padding:9px 11px;text-align:left;vertical-align:top}
-  table.codex th{background:var(--panel2);color:var(--gold);font-weight:600}
-  table.codex td{background:rgba(255,255,255,.03)}
-
-  footer{margin-top:50px;padding:26px 0 40px;border-top:1px solid var(--border);
-    color:var(--dim);font-size:13px;text-align:center}
-
-  #toast{position:fixed;left:50%;bottom:34px;transform:translateX(-50%) translateY(80px);
-    background:var(--gold);color:#141005;font-weight:600;padding:10px 22px;border-radius:999px;
-    opacity:0;transition:.3s;z-index:99;pointer-events:none}
-  #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-  /* ---------- 碰撞熔炉（泡泡舞台） ---------- */
-  .stage{position:relative;border:1px solid var(--border);border-radius:16px;overflow:hidden;
-    background:radial-gradient(900px 320px at 50% 0%,rgba(103,232,249,.07),transparent 70%),
-               radial-gradient(700px 300px at 80% 100%,rgba(255,212,121,.05),transparent 70%),rgba(255,255,255,.02)}
-  #bubbles{display:block;width:100%;height:480px;touch-action:none;cursor:grab}
-  #bubbles.grabbing{cursor:grabbing}
-  .stage-tip{position:absolute;top:12px;left:50%;transform:translateX(-50%);max-width:92%;
-    font-size:12.5px;color:var(--dim);background:rgba(10,13,36,.75);border:1px solid var(--border);
-    border-radius:999px;padding:5px 16px;pointer-events:none;transition:.5s;text-align:center}
-  .stage-tip.hide{opacity:0}
-  .stage-bar{position:absolute;left:0;right:0;bottom:0;display:flex;gap:12px;align-items:center;flex-wrap:wrap;
-    padding:26px 14px 9px;font-size:12.5px;color:var(--dim);
-    background:linear-gradient(180deg,transparent,rgba(10,13,36,.9) 45%);pointer-events:none}
-  .stage-bar b{color:var(--gold);font-size:15px}
-  .stage-bar .spacer{flex:1}
-  .stage-bar button{padding:4px 13px;font-size:12.5px;pointer-events:auto}
-  .legend{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:12px;font-size:12.5px;color:var(--dim)}
-  .legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle}
-  /* 结果弹窗 */
-  #fmodal{position:fixed;inset:0;background:rgba(7,9,26,.82);backdrop-filter:blur(5px);z-index:98;
-    display:none;align-items:center;justify-content:center;padding:20px}
-  #fmodal.show{display:flex}
-  .fmodal-card{position:relative;max-width:840px;width:100%;max-height:86vh;overflow:auto;
-    background:var(--panel);border:1px solid var(--gold);border-radius:16px;padding:24px 24px 20px;
-    box-shadow:0 0 70px rgba(255,212,121,.2);animation:cardIn .45s cubic-bezier(.2,.9,.3,1.25)}
-  @keyframes cardIn{from{opacity:0;transform:translateY(26px) scale(.93)}to{opacity:1;transform:none}}
-  #btnFclose{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;
-    padding:0;font-size:19px;line-height:1;background:var(--panel2)}
-  /* 结果卡（弹窗内） */
-  .fpair{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:stretch}
-  .fside{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:12px;padding:13px 15px}
-  .fside .fname{font-size:16.5px;color:var(--gold);font-weight:600}
-  .fside .fwhere{font-size:12px;color:var(--dim);margin-top:2px}
-  .fside p{font-size:13px;color:#cfd3ff;margin:8px 0 6px;line-height:1.65}
-  .fside a{font-size:12px;text-decoration:none;border-bottom:1px dashed rgba(255,212,121,.5)}
-  .fmid{align-self:center;font-size:24px;color:var(--gold);font-weight:700}
-  .fburst{margin-top:14px;border:1px solid var(--border);border-radius:12px;padding:13px 16px;background:rgba(255,255,255,.02)}
-  .fburst .fb{font-size:14.5px;line-height:1.8;margin:4px 0}
-  .fburst .fb b{color:var(--gold)}
-  .fburst .fbridge{margin-top:9px;padding-top:9px;border-top:1px dashed var(--border);
-    font-size:13.5px;color:var(--eco);line-height:1.7}
-  .fplace{margin-top:12px;font-size:13.5px;line-height:1.7;border-left:3px solid var(--stats);
-    background:rgba(103,232,249,.06);padding:9px 13px;border-radius:0 8px 8px 0}
-  .fplace a.btn-jump{display:inline-block;margin-left:6px;font-size:12.5px;padding:3px 13px;
-    border-radius:999px;background:var(--gold);color:#141005;text-decoration:none;font-weight:600}
-  @media(max-width:640px){.fpair{grid-template-columns:1fr}.fmid{display:none}#bubbles{height:400px}}
-
-  /* ---------- 分页视图与嵌套子页 ---------- */
+  /* ---------- 版面 ---------- */
+  main{padding:24px 0 60px}
   .view{display:none}
-  .view.on{display:block;animation:viewIn .38s ease}
-  @keyframes viewIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-  .crumb{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--dim);margin:0 0 18px}
-  .crumb a{color:var(--dim);text-decoration:none;border-bottom:1px dashed rgba(154,162,216,.5)}
-  .crumb a:hover{color:var(--gold);border-color:var(--gold)}
-  .crumb b{color:#fff;font-weight:600}
-  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px}
-  .tile{display:block;background:var(--panel);border:1px solid var(--border);border-radius:16px;
-    padding:22px 22px 18px;text-decoration:none;color:var(--ink);transition:.25s}
-  .tile:hover{transform:translateY(-3px);border-color:var(--gold);
-    box-shadow:0 12px 36px rgba(0,0,0,.4)}
-  .tile h3{margin:4px 0 6px;font-size:19px;color:#fff}
-  .tile p{margin:0;font-size:13.5px;color:var(--dim);line-height:1.7}
-  .tile .go{display:inline-block;margin-top:14px;font-size:12.5px;color:var(--gold)}
-  .view.sub .card,.view.sub .panel{max-width:830px}
+  .view.on{display:block}
+  .card,.panel{background:var(--panel);border:3px solid var(--border);
+    box-shadow:7px 7px 0 var(--shadow);padding:18px;margin-bottom:22px}
+  .card{border-top:6px solid var(--border)}
+  .card.cry{border-top-color:var(--cry)}
+  .card.stat{border-top-color:var(--stat)}
+  .card.eco{border-top-color:var(--eco)}
+  .card.life{border-top-color:var(--life)}
+  .sec{display:flex;align-items:center;gap:12px;margin:0 0 16px;padding-bottom:10px;
+    border-bottom:3px solid var(--border)}
+  .sec h2{font-size:19px;color:#fff}
+  .sec .sub{font-size:12.5px;color:var(--dim)}
+  .sec .no{margin-left:auto;font-size:12px;color:var(--gold);border:2px solid var(--border);padding:1px 8px}
+  h3{font-size:16px;color:#fff}
+  .kick{font-size:11.5px;letter-spacing:.18em;color:var(--dim)}
+  .rule{font-size:12.5px;border-left:4px solid var(--gold);padding:2px 0 2px 9px;color:#c8d0f5}
+  details.lim{margin-top:4px}
+  details.lim summary{font-size:12.5px;color:var(--danger);cursor:pointer;list-style:none}
+  details.lim summary::-webkit-details-marker{display:none}
+  details.lim summary::before{content:"▸ "}
+  details.lim[open] summary::before{content:"▾ "}
+  details.lim p{margin:4px 0 0;font-size:12.5px;color:var(--dim)}
+  .stack{display:flex;flex-direction:column;gap:11px}
 
-  /* ---------- 结业闭环（6/6 毕业覆盖层） ---------- */
-  #grad{position:fixed;inset:0;background:rgba(7,9,26,.9);backdrop-filter:blur(6px);
-    display:none;align-items:center;justify-content:center;z-index:97;padding:20px}
+  /* ---------- 序章 / 大门 ---------- */
+  .prologue{text-align:center;padding:28px 0 10px}
+  .prologue h1{font-size:34px;color:#fff;letter-spacing:.12em}
+  .prologue .zh{font-size:14px;color:var(--gold);letter-spacing:.5em;margin-bottom:12px}
+  .prologue p{max-width:560px;margin:12px auto;color:var(--dim);font-size:13.5px}
+  .moonwrap{width:150px;height:150px;margin:10px auto 4px;position:relative;cursor:pointer}
+  .moonwrap canvas{width:150px;height:150px;border:0;background:transparent}
+  .tag{display:inline-block;border:2px solid var(--border);padding:2px 10px;font-size:12px;
+    color:var(--dim);margin:12px 3px 0}
+  .gate{margin:16px auto 6px;width:150px;height:8px;background:#0d1230;border:3px solid var(--border);
+    position:relative}
+  .gate i{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:12px;color:var(--gold);
+    white-space:nowrap;background:var(--bg);padding:0 8px}
+
+  /* ---------- 星图关卡 ---------- */
+  .map{position:relative;margin-top:8px;padding:12px 0;
+    background-image:radial-gradient(circle,rgba(255,255,255,.09) 1px,transparent 1px);
+    background-size:12px 12px}
+  .map .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .node{position:relative;display:block;text-align:center;padding:14px 8px;cursor:pointer;
+    background:#111735;border:3px solid var(--border);box-shadow:5px 5px 0 var(--shadow);color:var(--dim)}
+  .node .ic{font-size:22px;line-height:1.2}
+  .node .nm{font-size:13px;margin-top:4px;color:var(--ink)}
+  .node .st{font-size:11px;color:var(--dim)}
+  .node.cur{border-color:var(--gold);animation:blink 1.1s steps(2,end) infinite}
+  .node.cur .st{color:var(--gold)}
+  .node.done{border-color:var(--eco)}
+  .node.done .st{color:var(--eco)}
+  .node.lock{opacity:.45;cursor:not-allowed}
+  .node:hover:not(.lock){border-color:var(--gold)}
+  @keyframes blink{50%{background:#1b2450}}
+
+  /* ---------- 旁白打字机 ---------- */
+  .narr{font-size:13px;color:var(--gold);min-height:22px;margin:0 0 14px;letter-spacing:.04em}
+  .narr::after{content:"█";animation:blink 1s steps(2,end) infinite}
+
+  /* ---------- 碰撞熔炉 ---------- */
+  .stage{position:relative;border:3px solid var(--border);background:#080c1c;box-shadow:7px 7px 0 var(--shadow)}
+  #bubbles{height:470px;border:0;background:transparent;width:100%;cursor:grab}
+  #bubbles.grab{cursor:grabbing}
+  .tip{position:absolute;left:50%;top:12px;transform:translateX(-50%);font-size:12px;color:var(--gold);
+    background:rgba(8,12,28,.9);border:2px solid var(--border);padding:3px 12px;pointer-events:none;transition:.4s}
+  .tip.hide{opacity:0}
+  .stagebar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:12px}
+  .stagebar .p{color:var(--gold);font-size:13px}
+  .stagebar .k{font-size:12px;color:var(--dim)}
+  .legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px;font-size:12px;color:var(--dim)}
+  .legend i{display:inline-block;width:10px;height:10px;margin-right:5px;vertical-align:-1px}
+
+  /* ---------- 36 张法术卡 ---------- */
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:12px}
+  .sc{background:#111735;border:3px solid var(--border);box-shadow:5px 5px 0 var(--shadow);
+    padding:11px;cursor:pointer;transition:none}
+  .sc:hover{border-color:var(--gold);transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--shadow)}
+  .sc .nm{font-size:14px;color:#fff}
+  .sc .pair{font-size:11.5px;color:var(--dim);margin-top:3px}
+  .sc .dep{font-size:11px;margin-top:6px;color:var(--gold)}
+  .sc.done{border-color:var(--eco)}
+  .sc.done::after{content:"✓";float:right;color:var(--eco)}
+  .sc .mk{font-size:11px;color:var(--stat)}
+  .filter{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+
+  /* ---------- 手账表 ---------- */
+  table.codex{width:100%;border-collapse:collapse;font-size:13px}
+  table.codex th,table.codex td{border:2px solid var(--border);padding:8px 10px;text-align:left;vertical-align:top}
+  table.codex th{background:var(--panel2);color:var(--gold)}
+  table.codex td{background:#111735}
+
+  /* ---------- 弹窗 ---------- */
+  .modal{position:fixed;inset:0;z-index:120;background:rgba(5,7,15,.88);display:none;
+    align-items:flex-start;justify-content:center;padding:22px;overflow:auto}
+  .modal.show{display:flex}
+  #amin{z-index:125;padding-top:92px}   /* 小实验叠在配对弹窗之上，错开避免关闭键重叠 */
+  .mbox{background:var(--panel);border:3px solid var(--gold);box-shadow:8px 8px 0 var(--shadow);
+    max-width:760px;width:100%;padding:20px;position:relative}
+  .mbox .x{position:absolute;right:8px;top:8px}
+  .mrow{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center}
+  .mrow .side{border:2px solid var(--border);background:#111735;padding:10px}
+  .mrow .side .t{font-size:14px;color:#fff}
+  .mrow .side .w{font-size:11.5px;color:var(--dim);margin:2px 0 6px}
+  .mrow .side p{margin:0 0 6px;font-size:12.5px;color:#cfd6f7}
+  .mrow .side a{font-size:11.5px}
+  .mrow .mid{font-size:22px;color:var(--gold)}
+  .burn{margin-top:14px;border:2px solid var(--border);background:#111735;padding:12px}
+  .burn .h{font-size:15px;color:var(--gold)}
+  .burn .ln{font-size:12.5px;color:#cfd6f7;margin-top:6px}
+  .burn .kb{font-size:12.5px;color:var(--dim);margin-top:8px;border-top:2px dashed var(--border);padding-top:8px}
+  .mini-host{margin-top:14px}
+  .mini-host .rh{font-size:14px;color:#fff;margin-bottom:4px}
+  .mini-host .rb{font-size:12.5px;color:var(--dim);margin-bottom:10px}
+
+  /* ---------- 结业 ---------- */
+  #grad{position:fixed;inset:0;z-index:130;background:rgba(5,7,15,.94);display:none;
+    align-items:center;justify-content:center;padding:20px}
   #grad.show{display:flex}
-  .grad-card{max-width:540px;width:100%;background:var(--panel);border:1px solid var(--gold);
-    border-radius:16px;padding:30px 28px;text-align:center;box-shadow:0 0 70px rgba(255,212,121,.18);
-    animation:gradIn .5s ease}
-  @keyframes gradIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
-  .grad-card .seal{font-size:50px;line-height:1}
-  .grad-card h2{margin:10px 0 2px;color:var(--gold);font-size:26px}
-  .grad-card .gsub{color:var(--dim);font-size:12.5px;letter-spacing:2px;margin-bottom:6px}
-  .grad-list{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:12px 0 16px}
-  .grad-list span{font-size:12.5px;border:1px solid var(--border);border-radius:999px;
-    padding:4px 11px;color:#cfd3ff;background:rgba(255,255,255,.03)}
-  .grad-card .say{font-size:13.5px;line-height:1.75;color:var(--ink);text-align:left;
-    background:rgba(255,255,255,.03);border-left:3px solid var(--gold);
-    padding:10px 14px;border-radius:0 8px 8px 0;margin:0 0 18px}
-  .grad-card .row{justify-content:center;display:flex;gap:10px;flex-wrap:wrap}
-  #btnRestart{font-size:12.5px;padding:4px 13px;border-radius:999px;background:none;color:var(--dim)}
-  #btnRestart:hover{color:var(--gold)}
-  @media(max-width:640px){.hero h1{font-size:32px}}
+  #grad .c{background:var(--panel);border:3px solid var(--gold);box-shadow:9px 9px 0 var(--shadow);
+    padding:26px;max-width:560px;text-align:center}
+  #gradList{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin:14px 0}
+  #gradList span{font-size:12px;border:2px solid var(--eco);color:var(--eco);padding:2px 9px}
+
+  #toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,80px);z-index:200;
+    background:var(--gold);color:#101322;font-size:13px;font-weight:700;padding:8px 18px;
+    border:3px solid #c9a52f;box-shadow:5px 5px 0 var(--shadow);opacity:0;transition:.25s;pointer-events:none}
+  #toast.show{opacity:1;transform:translate(-50%,0)}
+  footer{border-top:3px solid var(--border);padding:18px 0 30px;font-size:12px;color:var(--dim);text-align:center}
+
+  .chips{display:flex;flex-wrap:wrap;gap:4px}
+  .lchip{font-size:12.5px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;
+    border:2px solid var(--border);background:#0b1024;cursor:pointer;user-select:none}
+  .lchip.sel{background:var(--gold);color:#101322;border-color:var(--gold)}
+  .lchip.ok{border-color:var(--eco);color:var(--eco)}
+  .lchip.bad{border-color:var(--danger);color:var(--danger)}
+  .dna-seq{font-size:12.5px;letter-spacing:1px;background:#0b1024;border:2px solid var(--border);
+    padding:6px 8px;word-break:break-all;color:var(--stat)}
+  .species-card{border:2px solid var(--eco);background:rgba(94,240,138,.08);padding:10px 12px;font-size:13px}
+
+  @media(max-width:820px){
+    .mrow{grid-template-columns:1fr}
+    .mrow .mid{text-align:center}
+    .map .grid{grid-template-columns:repeat(2,1fr)}
+    #bubbles{height:400px}
+    .prologue h1{font-size:26px}
+  }
+.xp .bars i.done{background:var(--gold);border-color:var(--gold)}
 </style>
 </head>
 <body>
-
-<header class="topnav">
-  <a class="brand" href="#/home"><b>午夜学园</b><i>THE MIDNIGHT ACADEMY</i></a>
-  <nav>
-    <a href="#/schools" data-nav="schools">学派大厅</a>
-    <a href="#/altar" data-nav="altar">交汇圣坛</a>
-    <a href="#/forge" data-nav="forge">碰撞熔炉</a>
-    <a href="#/codex" data-nav="codex">学派手账</a>
-  </nav>
-</header>
-
-<div class="progress">
-  <div class="wrap inner">
-    <span class="lbl">掌握度</span>
-    <a class="chip" href="#/schools/cipher" data-trial="cipher">密码试炼</a>
-    <a class="chip" href="#/schools/sampling" data-trial="sampling">统计试炼</a>
-    <a class="chip" href="#/schools/web" data-trial="web">生态试炼</a>
-    <a class="chip" href="#/altar/freq" data-trial="freq">频率分析</a>
-    <a class="chip" href="#/altar/recapture" data-trial="recapture">标志重捕</a>
-    <a class="chip" href="#/altar/dna" data-trial="dna">基因封印</a>
-    <span id="doneCount">0 / 6</span>
-    <button id="btnRestart" title="清空进度，从头体验全部试炼">↻ 重新开始</button>
+<header class="topbar">
+  <div class="in">
+    <a class="logo" href="#/"><i></i><b>午夜学园</b></a>
+    <div class="xp">
+      <span>学识</span>
+      <span class="bars">
+        <i class="chip" data-trial="cipher"></i><i class="chip" data-trial="sampling"></i>
+        <i class="chip" data-trial="web"></i><i class="chip" data-trial="freq"></i>
+        <i class="chip" data-trial="recapture"></i><i class="chip" data-trial="dna"></i>
+      </span>
+      <span id="doneCount">0 / 6</span>
+      <button class="sm" id="btnRestart">↻ 重来</button>
+    </div>
   </div>
-</div>
+</header>
 
 <main class="wrap">
 
-  <!-- ================= 首页 ================= -->
-  <section class="view" id="v-home">
-    <div class="hero">
-      <div class="moon"></div>
+  <!-- ============ 序章 ============ -->
+  <section class="view" id="v-prologue">
+    <div class="prologue">
+      <div class="moonwrap" id="moonWrap"><canvas id="moonCv" width="150" height="150"></canvas></div>
       <div class="zh">午 夜 学 园</div>
-      <h1>The Midnight Academy</h1>
-      <p>每个学科是一个古老学派，每一种魔法都来自可以触摸的真实规则——<br>而最惊人的魔法，出现在学派相遇的地方。</p>
-      <span class="tag">全站零依赖 · 离线可玩</span>
-      <span class="tag">3 学派试炼 × 3 交汇实验 × 561 种专业碰撞</span>
+      <h1>THE MIDNIGHT ACADEMY</h1>
+      <p>夜里，理工科技学院的四座塔楼亮起：数学、统计、计算机、生命。<br>
+         走进去做完试炼，或把两个专业拖在一起，看它们撞出什么。</p>
+      <span class="tag">9 个专业 · 36 种碰撞</span>
+      <span class="tag">零依赖 · 离线可玩</span>
+      <div class="row" style="justify-content:center;margin-top:16px">
+        <button class="primary" id="btnStart">▶ 入夜，开始旅程</button>
+      </div>
+    </div>
+    <div class="sec" style="margin-top:24px"><h2>旅程星图</h2><span class="sub">完成一站，点亮下一站</span></div>
+    <div class="map"><div class="grid" id="mapGrid"></div></div>
+  </section>
+
+  <!-- ============ 第一站 · 封印之语 ============ -->
+  <section class="view" id="v-cipher">
+    <p class="narr" id="n-cipher"></p>
+    <div class="sec"><h2>第一站 · 封印之语</h2><span class="sub">密码学派</span><span class="no">01</span></div>
+    <div class="card cry">
+      <h3>关键词单表替换</h3>
+      <p class="note">用一把关键词重排字母表，明文即变密文；钥匙在手就能解封。</p>
+      <input type="text" id="cipherKey" value="MIDNIGHT" maxlength="20" placeholder="关键词钥匙">
+      <textarea id="cipherPlain">KNOWLEDGE BECOMES MAGIC ONLY WHEN ITS RULES CAN BE TOUCHED</textarea>
+      <div class="row"><button class="primary" id="btnSeal">施放封印</button><button id="btnUnseal">用钥匙解封</button></div>
+      <div class="lbl">密文 / 解封结果</div>
+      <div class="out" id="cipherOut">—</div>
+      <div class="lbl">明 → 密 字母表</div>
+      <div class="out" id="cipherMap">—</div>
+      <div class="rule">规则：每个明文字母永远对应同一个密文字母。</div>
+      <details class="lim"><summary>魔法的边界</summary><p>字母表被重排，但字母的使用频率原封不动泄露进密文——这就是下一站的武器。</p></details>
     </div>
   </section>
 
-  <!-- ================= 学派大厅（列表页） ================= -->
-  <section class="view" id="v-schools">
-    <div class="sec-head"><h2>学派大厅</h2><span class="sub">三个学派，三种真实知识的魔法化</span></div>
-    <div class="tiles">
-      <a class="tile" href="#/schools/cipher">
-        <span class="kicker">SCHOOL OF CIPHERS</span>
-        <h3>🔤 密码学派 · 封印之语</h3>
-        <p>用一把「关键词钥匙」重排字母表——明文如何变成密文，映射一目了然。</p>
-        <span class="go">进入学派 →</span>
-      </a>
-      <a class="tile" href="#/schools/sampling">
-        <span class="kicker">SCHOOL OF STATISTICS</span>
-        <h3>🎲 统计学派 · 命运抽样</h3>
-        <p>一只一只抽样，看均值与 95% 置信区间如何随样本量收敛。</p>
-        <span class="go">进入学派 →</span>
-      </a>
-      <a class="tile" href="#/schools/web">
-        <span class="kicker">SCHOOL OF ECOLOGY</span>
-        <h3>🌿 生态学派 · 万物之网</h3>
-        <p>草 → 兔 → 狐 的食物链推演，移出任一物种观察营养级联。</p>
-        <span class="go">进入学派 →</span>
-      </a>
-    </div>
-  </section>
-
-  <!-- ================= 子页：密码学派 ================= -->
-  <section class="view sub" id="v-school-cipher">
-    <div class="crumb"><a href="#/schools">学派大厅</a><span>›</span><b>密码学派 · 封印之语</b></div>
-
-      <!-- 密码学派 -->
-      <div class="card crypto">
-        <span class="kicker">SCHOOL OF CIPHERS</span>
-        <h3>🔤 密码学派 · 封印之语</h3>
-        <p class="note">用一把「关键词钥匙」把明文变成密文：关键词字母表在前，其余字母按序补在后面。</p>
-        <input type="text" id="cipherKey" value="MIDNIGHT" maxlength="20" placeholder="关键词钥匙">
-        <textarea id="cipherPlain">KNOWLEDGE BECOMES MAGIC ONLY WHEN ITS RULES CAN BE TOUCHED</textarea>
-        <div class="row">
-          <button class="primary" id="btnSeal">施放封印</button>
-          <button id="btnUnseal">用钥匙解封</button>
-        </div>
-        <div class="lbl">密文 / 解封结果</div>
-        <div class="out" id="cipherOut">—</div>
-        <div class="lbl">字母表映射（明 → 密）</div>
-        <div class="out" id="cipherMap" style="font-size:12px">—</div>
-        <div class="rule">知识规则：单表替换只重排字母表，每个明文字母永远对应同一个密文字母。</div>
-        <div class="limit"><b>魔法的边界：</b>字母表被重排了 26 次，但字母的<b>使用频率</b>原封不动地泄露进密文——这正是下一个实验要利用的弱点。</div>
-      </div>
-  </section>
-
-  <!-- ================= 子页：统计学派 ================= -->
-  <section class="view sub" id="v-school-sampling">
-    <div class="crumb"><a href="#/schools">学派大厅</a><span>›</span><b>统计学派 · 命运抽样</b></div>
-
-      <!-- 统计学派 -->
-      <div class="card stats">
-        <span class="kicker">SCHOOL OF STATISTICS</span>
-        <h3>🎲 统计学派 · 命运抽样</h3>
-        <p class="note">袋中是「梦兽身高」的总体分布（均值 160，标准差 15），你只能一只一只抽。看均值与置信区间如何随样本收敛。</p>
-        <div class="row">
-          <button class="primary" id="btnDraw1">抽 1 只</button>
-          <button id="btnDraw20">抽 20 只</button>
-          <button id="btnDrawReset">重置</button>
-        </div>
-        <div class="stat" id="sampleStat">尚未抽样</div>
-        <canvas id="sampleCanvas" height="200"></canvas>
-        <div class="rule">知识规则：大数定律——样本均值随 n 增大收敛到总体均值；95% 置信区间 ≈ x̄ ± 1.96·s/√n。</div>
-        <div class="limit"><b>魔法的边界：</b>样本太少时区间宽得像雾。抽满 30 只再看，真实均值（160）几乎总落在区间内——但也并非绝对。</div>
-      </div>
-  </section>
-
-  <!-- ================= 子页：生态学派 ================= -->
-  <section class="view sub" id="v-school-web">
-    <div class="crumb"><a href="#/schools">学派大厅</a><span>›</span><b>生态学派 · 万物之网</b></div>
-
-      <!-- 生态学派 -->
-      <div class="card eco">
-        <span class="kicker">SCHOOL OF ECOLOGY</span>
-        <h3>🌿 生态学派 · 万物之网</h3>
-        <p class="note">草 → 兔 → 狐 的一条食物链。点击任一物种将其<b>移出梦境</b>，再推演 150 代，观察连锁反应。</p>
-        <div class="row">
-          <button id="btnRmGrass">移出：草</button>
-          <button id="btnRmRabbit">移出：兔</button>
-          <button id="btnRmFox">移出：狐</button>
-        </div>
-        <div class="row">
-          <button class="primary" id="btnWebRun">▶ 运行推演</button>
-          <button id="btnWebReset">恢复全部并重置</button>
-        </div>
-        <div class="stat" id="webStat">点击运行开始推演</div>
-        <canvas id="webCanvas" height="220"></canvas>
-        <div class="rule">知识规则：营养级联——捕食者减少会让猎物激增，进而压垮植被；种群按离散时间的逻辑斯蒂方程振荡。</div>
-        <div class="limit"><b>魔法的边界：</b>模型只有三个物种和两参数，真实生态系统有几十条反馈环。它演示的是<b>方向</b>，不是精确预言。</div>
-      </div>
-  </section>
-
-  <!-- ================= 交汇圣坛（列表页） ================= -->
-  <section class="view" id="v-altar">
-    <div class="sec-head"><h2>交汇圣坛</h2><span class="sub">当两个学派相遇——单一学科无法实现的力量</span></div>
-    <div class="tiles">
-      <a class="tile" href="#/altar/freq">
-        <span class="kicker">密码 × 统计</span>
-        <h3>🔮 频率之眼</h3>
-        <p>密文里藏着英语字母的频率指纹——两派联手，两步破译。</p>
-        <span class="go">进入实验 →</span>
-      </a>
-      <a class="tile" href="#/altar/recapture">
-        <span class="kicker">统计 × 生态</span>
-        <h3>🐟 月光池塘 · 标志重捕</h3>
-        <p>给鱼做上标记再重捕，用样本估计整个池塘的种群数量。</p>
-        <span class="go">进入实验 →</span>
-      </a>
-      <a class="tile" href="#/altar/dna">
-        <span class="kicker">密码 × 生态</span>
-        <h3>🧬 基因封印 · eDNA 条形码</h3>
-        <p>水样里的未知 DNA，用「短序列指纹」比对认主。</p>
-        <span class="go">进入实验 →</span>
-      </a>
-    </div>
-  </section>
-
-  <!-- ================= 子页：频率之眼 ================= -->
-  <section class="view sub" id="v-altar-freq">
-    <div class="crumb"><a href="#/altar">交汇圣坛</a><span>›</span><b>频率之眼 · 密码 × 统计</b></div>
-
-    <!-- 组合一：频率分析 -->
-    <div class="panel active" id="p-freq">
-      <div class="combo-title">
-        <h3>频率之眼</h3><span class="plus">密码封印</span><span>×</span><span class="plus">统计观测</span>
-      </div>
-      <p class="note">一段被随机单表替换加密的英文咒文。密码学派以为换掉字母表就安全了——但统计学派能看见密文里字母的<b>频率形状</b>，那正是英语的指纹。</p>
-      <div class="out" id="freqCipher">—</div>
+  <!-- ============ 第二站 · 命运抽样 ============ -->
+  <section class="view" id="v-sampling">
+    <p class="narr" id="n-sampling"></p>
+    <div class="sec"><h2>第二站 · 命运抽样</h2><span class="sub">统计与数据科学系</span><span class="no">02</span></div>
+    <div class="card stat">
+      <h3>抽样与置信区间</h3>
+      <p class="note">袋中是「梦兽身高」的总体分布（均值 160、标准差 15），你只能一只一只抽。</p>
       <div class="row">
-        <button class="primary" id="btnFreqEye">🔮 施放频率之眼</button>
+        <button class="primary" id="btnDraw1">抽 1 只</button>
+        <button id="btnDraw20">抽 20 只</button>
+        <button id="btnDrawReset">重置</button>
+      </div>
+      <div class="stat" id="sampleStat">尚未抽样</div>
+      <canvas id="sampleCanvas" height="200"></canvas>
+      <div class="rule">规则：样本均值随 n 增大收敛到总体均值；95% 区间 ≈ x̄ ± 1.96·s/√n。</div>
+      <details class="lim"><summary>魔法的边界</summary><p>样本太少时区间宽得像雾；真实均值几乎总落在区间内，但并不绝对。</p></details>
+    </div>
+  </section>
+
+  <!-- ============ 第三站 · 万物之网 ============ -->
+  <section class="view" id="v-web">
+    <p class="narr" id="n-web"></p>
+    <div class="sec"><h2>第三站 · 万物之网</h2><span class="sub">生命科学系</span><span class="no">03</span></div>
+    <div class="card eco">
+      <h3>食物链推演</h3>
+      <p class="note">草 → 兔 → 狐。移出任一物种，再推演 150 代，看连锁反应。</p>
+      <div class="row">
+        <button id="btnRmGrass">移出：草</button>
+        <button id="btnRmRabbit">移出：兔</button>
+        <button id="btnRmFox">移出：狐</button>
+      </div>
+      <div class="row">
+        <button class="primary" id="btnWebRun">▶ 运行推演</button>
+        <button id="btnWebReset">恢复全部并重置</button>
+      </div>
+      <div class="stat" id="webStat">点击运行开始推演</div>
+      <canvas id="webCanvas" height="220"></canvas>
+      <div class="rule">规则：营养级联——捕食者减少会让猎物激增，进而压垮植被。</div>
+      <details class="lim"><summary>魔法的边界</summary><p>只有三个物种与两个参数，真实生态系统有几十条反馈环；它演示方向，不是精确预言。</p></details>
+    </div>
+  </section>
+
+  <!-- ============ 第四站 · 碰撞熔炉 ============ -->
+  <section class="view" id="v-forge">
+    <p class="narr" id="n-forge"></p>
+    <div class="sec"><h2>第四站 · 碰撞熔炉</h2><span class="sub">9 个专业两两碰撞</span><span class="no">04</span></div>
+    <div class="stage">
+      <canvas id="bubbles"></canvas>
+      <div class="tip" id="stageTip">按住一个泡泡拖到另一个上松手，或「点一下 A、再点一下 B」</div>
+    </div>
+    <div class="stagebar">
+      <span class="p" id="forgeProg">已碰撞 0 / 36</span>
+      <span class="k" id="forgeKind"></span>
+      <span style="margin-left:auto" class="row">
+        <button class="sm" id="btnForgeRand">🎲 随机碰撞</button>
+        <button class="sm" id="btnForgeClear">清空记录</button>
+      </span>
+    </div>
+    <div class="legend" id="legend"></div>
+    <div class="sec" style="margin-top:22px"><h2>已合成的法术卡</h2><span class="sub">碰撞过的组合会收进卡册</span></div>
+    <div class="filter" id="cardFilter"></div>
+    <div class="cards" id="cardGrid"></div>
+  </section>
+
+  <!-- ============ 第五站 · 频率之眼 ============ -->
+  <section class="view" id="v-freq">
+    <p class="narr" id="n-freq"></p>
+    <div class="sec"><h2>第五站 · 频率之眼</h2><span class="sub">密码 × 统计</span><span class="no">05</span></div>
+    <div class="panel">
+      <h3>频率之眼</h3>
+      <p class="note">一段被随机单表替换加密的英文。字母换了座位，但频率形状泄露了英语的指纹。</p>
+      <div class="out" id="freqCipher">—</div>
+      <div class="row" style="margin-top:10px">
+        <button class="primary" id="btnFreqEye">🔮 频率之眼</button>
         <button id="btnFreqAuto">⚡ 第一步：频率初值</button>
-        <button id="btnFreqDict">📖 第二步：词典回溯精修</button>
+        <button id="btnFreqDict">📖 第二步：词典回溯</button>
         <button id="btnFreqNew">↻ 换一段密文</button>
       </div>
       <canvas id="freqCanvas" height="190"></canvas>
       <div id="freqMapWrap" style="display:none">
-        <p class="mini">点击上方<b>密文字母</b>，再点击下方<b>明文字母</b>即可手动修正映射（会自动交换占用）：</p>
+        <p class="mini">点上方<b>密文字母</b>，再点下方<b>明文字母</b>手动修正（自动交换占用）：</p>
         <div class="chips" id="freqCipherChips"></div>
-        <div class="mini">明文字母池 →</div>
+        <p class="mini">明文字母池 →</p>
         <div class="chips" id="freqPlainChips"></div>
       </div>
       <div class="lbl" style="margin-top:8px">破译预览</div>
       <div class="out" id="freqPlainOut">尚未破译…</div>
       <div class="stat" id="freqStat">还原度未知</div>
-      <div class="rule">知识规则：第一步用英语字母频率序（E&gt;T&gt;A&gt;O&gt;I&gt;N…）给密文字母排座位；第二步用「单词模式 + 词典回溯」——每个密文单词的重复结构（如 LEVEL 是 01230 型）只允许词典里的词进入，逐词约束、冲突回退，把四成的猜测收敛成完整答案。</div>
-      <div class="limit"><b>魔法的边界：</b>纯频率在短文本上只能还原约四成（统计样本不足）；词典里没有的生词会被跳过留白。两步缺一不可——这正是密码学离不开统计学的原因。</div>
+      <div class="rule">规则：频率序给字母排座位，单词模式 + 词典回溯把猜测收敛成完整答案。</div>
+      <details class="lim"><summary>魔法的边界</summary><p>纯频率在短文本上只能还原约四成；词典里没有的生词会被跳过留白。</p></details>
     </div>
   </section>
 
-  <!-- ================= 子页：标志重捕 ================= -->
-  <section class="view sub" id="v-altar-recapture">
-    <div class="crumb"><a href="#/altar">交汇圣坛</a><span>›</span><b>标志重捕 · 统计 × 生态</b></div>
-
-    <!-- 组合二：标志重捕 -->
-    <div class="panel active" id="p-recap">
-      <div class="combo-title">
-        <h3>月光池塘 · 标志重捕</h3><span class="plus">统计估计</span><span>×</span><span class="plus">生态调查</span>
-      </div>
-      <p class="note">池塘里梦鱼的数量是<b>隐藏的</b>。你无法数清它们——但可以：捕一网标记放回，再捕一网数标记。用林肯-彼得森指数估计总数。</p>
-      <div class="row">
-        <span class="lbl">第一网（标记）k = <b id="kVal">20</b></span>
-        <input type="range" id="kSlider" min="5" max="60" value="20" style="max-width:170px">
-      </div>
-      <div class="row">
-        <span class="lbl">第二网（重捕）m = <b id="mVal">20</b></span>
-        <input type="range" id="mSlider" min="5" max="60" value="20" style="max-width:170px">
-      </div>
+  <!-- ============ 第六站 · 标志重捕 ============ -->
+  <section class="view" id="v-recapture">
+    <p class="narr" id="n-recapture"></p>
+    <div class="sec"><h2>第六站 · 标志重捕</h2><span class="sub">统计 × 生命</span><span class="no">06</span></div>
+    <div class="panel">
+      <h3>月光池塘 · 种群估计</h3>
+      <p class="note">池里梦鱼的数量是隐藏的。捕一网标记放回，再捕一网数标记，就能估算总数。</p>
+      <div class="row"><span class="lbl">第一网 k=<b id="kVal">20</b></span>
+        <input type="range" id="kSlider" min="5" max="40" value="20"></div>
+      <div class="row"><span class="lbl">第二网 m=<b id="mVal">20</b></span>
+        <input type="range" id="mSlider" min="5" max="40" value="20"></div>
       <div class="row">
         <button class="primary" id="btnTrap">🎣 捕捞并估计</button>
         <button id="btnReveal">揭晓真实数量</button>
-        <button id="btnRecapReset">新一轮调查</button>
+        <button id="btnRecapReset">换一个池塘</button>
       </div>
-      <div class="stat" id="recapStat">调整网具大小，开始第一次捕捞。</div>
+      <div class="stat" id="recapStat">—</div>
       <div class="lbl">调查台账（最近 6 次）</div>
-      <div class="out" id="recapLedger" style="font-size:12.5px">—</div>
-      <div class="rule">知识规则：N̂ = k·m / x（x 为重捕中带标记的条数）；区间宽度 ∝ 1/√x，标记越多越准。</div>
-      <div class="limit"><b>魔法的边界：</b>公式假设标记鱼<b>完全混合、无死亡、二次捕捞等概率</b>——真实调查里鱼会学乖、会搬家，估计因此有偏。</div>
+      <div class="out" id="recapLedger">—</div>
+      <div class="rule">规则：N̂ = k·m / x；区间宽度 ∝ 1/√x，标记越多越准。</div>
+      <details class="lim"><summary>魔法的边界</summary><p>公式假设标记鱼完全混合、无死亡、二次捕捞等概率——真实调查里鱼会学乖、会搬家。</p></details>
     </div>
   </section>
 
-  <!-- ================= 子页：基因封印 ================= -->
-  <section class="view sub" id="v-altar-dna">
-    <div class="crumb"><a href="#/altar">交汇圣坛</a><span>›</span><b>基因封印 · 密码 × 生态</b></div>
-
-    <!-- 组合三：DNA 条形码 -->
-    <div class="panel active" id="p-dna">
-      <div class="combo-title">
-        <h3>基因封印 · eDNA 条形码</h3><span class="plus">密码指纹</span><span>×</span><span class="plus">生态监测</span>
-      </div>
-      <p class="note">从池塘水样里提取了三段未知 DNA（模拟 COI 条形码）。密码学派教你「短序列也能当指纹」，生态学派告诉你它们在食物网中的位置。点击「比对」找出每段水样的主人。</p>
+  <!-- ============ 第七站 · 基因封印 ============ -->
+  <section class="view" id="v-dna">
+    <p class="narr" id="n-dna"></p>
+    <div class="sec"><h2>第七站 · 基因封印</h2><span class="sub">密码 × 生命</span><span class="no">07</span></div>
+    <div class="panel">
+      <h3>eDNA 条形码鉴定</h3>
+      <p class="note">水样里有三段未知 DNA。用短序列相似度比对参考库，找出每段水样的主人。</p>
       <div id="dnaSamples"></div>
-      <div class="lbl" style="margin-top:10px">学派参考库（真实物种角色，序列为演示模拟）</div>
+      <div class="lbl">参考序列库</div>
       <div id="dnaRefs"></div>
-      <div class="rule">知识规则：条形码用一段 ~36 位短序列区分物种，相似度 ≥ 97% 判为同种——短指纹 + 可比对的距离，和密码学的哈希思想同构。</div>
-      <div class="limit"><b>魔法的边界：</b>近缘种相似度可能高于阈值造成误判；本页序列是<b>模拟数据</b>，真实条形码来自基因库比对。</div>
+      <div class="rule">规则：汉明相似度 ≥ 97% 判定为同一物种。</div>
+      <details class="lim"><summary>魔法的边界</summary><p>近缘种相似度可能高于阈值造成误判；本页序列为模拟数据。</p></details>
     </div>
   </section>
 
-  <!-- ================= 碰撞熔炉（拖拽泡泡碰撞） ================= -->
-  <section class="view" id="v-forge">
-    <div class="sec-head"><h2>碰撞熔炉</h2><span class="sub">34 个专业泡泡 · 561 种碰撞</span></div>
-    <div class="stage">
-      <canvas id="bubbles"></canvas>
-      <div class="stage-tip" id="stageTip">按住一个泡泡拖到另一个泡泡上松手，或「点一下 A、再点一下 B」</div>
-      <div class="stage-bar">
-        <b id="forgeProg">已碰撞 0 / 561</b>
-        <span id="forgeKind">拖动泡泡开始碰撞</span>
-        <span class="spacer"></span>
-        <button id="btnForgeRand">🎲 随机碰撞</button>
-        <button id="btnForgeClear">清空探索</button>
-      </div>
-    </div>
-    <div class="legend" id="legend"></div>
-  </section>
-
-  <!-- ================= 知识手账 ================= -->
+  <!-- ============ 终章 · 手账 ============ -->
   <section class="view" id="v-codex">
-    <div class="sec-head"><h2>学派手账</h2><span class="sub">每一条魔法背后的真实知识与它的边界</span></div>
-    <table class="codex">
-      <tr><th style="width:19%">魔法</th><th style="width:15%">学派组合</th><th style="width:33%">真实知识（规则从何而来）</th><th>局限（为什么它不是万能的）</th></tr>
-      <tr><td>封印之语</td><td>密码</td><td>单表替换密码、关键词字母表</td><td>频率特征泄露，短钥可穷举</td></tr>
-      <tr><td>命运抽样</td><td>统计</td><td>大数定律、95% 置信区间</td><td>小样本区间过宽，区间不含真值仍有 5% 概率</td></tr>
-      <tr><td>万物之网</td><td>生态</td><td>营养级联、逻辑斯蒂种群模型</td><td>三物种简化模型，只示方向不作精确预言</td></tr>
-      <tr><td>频率之眼</td><td>密码 × 统计</td><td>字母频率分析（Al-Kindi，9 世纪）+ 单词模式词典回溯</td><td>依赖样本量与词表覆盖；生词无法破译</td></tr>
-      <tr><td>标志重捕</td><td>统计 × 生态</td><td>林肯-彼得森指数 N̂=km/x</td><td>假设完全混合、无死亡；违反时估计有偏</td></tr>
-      <tr><td>基因封印</td><td>密码 × 生态</td><td>DNA 条形码、汉明距离比对</td><td>近缘种相似度过阈值会误判；本页序列为模拟</td></tr>
-    </table>
-    <p class="note" style="margin-top:14px">· 真实信息：6 个实验锚定真实院系与省级重点实验室 / 博士后科研流动站；34 个专业的院系与介绍取自各学院官网「院系与专业」页，全站共 561 种专业组合可碰撞。<br>
-    · 世界、学派与设定为本作品原创；词典回溯使用开源词表 google-10000-english，仅在本地查询，页面离线可玩。</p>
+    <p class="narr" id="n-codex"></p>
+    <div class="sec"><h2>终章 · 学派手账</h2><span class="sub">每条魔法背后的真实知识</span><span class="no">END</span></div>
+    <div class="panel">
+      <table class="codex">
+        <tr><th style="width:20%">魔法</th><th style="width:16%">学科</th><th style="width:34%">真实知识（规则从何而来）</th><th>局限</th></tr>
+        <tr><td>封印之语</td><td>密码</td><td>关键词单表替换、字母表映射</td><td>频率特征泄露，短钥可穷举</td></tr>
+        <tr><td>命运抽样</td><td>统计</td><td>大数定律、95% 置信区间</td><td>小样本区间过宽；区间不含真值仍有 5% 概率</td></tr>
+        <tr><td>万物之网</td><td>生命</td><td>营养级联、逻辑斯蒂种群模型</td><td>三物种简化模型，只示方向</td></tr>
+        <tr><td>频率之眼</td><td>密码 × 统计</td><td>字母频率分析（Al-Kindi，9 世纪）+ 单词模式词典回溯</td><td>依赖样本量与词表覆盖</td></tr>
+        <tr><td>标志重捕</td><td>统计 × 生命</td><td>林肯-彼得森指数 N̂=km/x</td><td>假设完全混合、无死亡</td></tr>
+        <tr><td>基因封印</td><td>密码 × 生命</td><td>DNA 条形码、汉明距离比对</td><td>近缘种相似度过阈值会误判</td></tr>
+      </table>
+      <div class="sec" style="margin-top:20px"><h2>碰撞卡册</h2><span class="sub" id="codexProg">已合成 0 / 36</span></div>
+      <div class="cards" id="codexCards"></div>
+      <p class="note" style="margin-top:14px">· 专业、院系与介绍取自理工科技学院各系官网「院系与专业」页。<br>
+      · 实验数据为页面内模拟生成；世界与设定为本作品原创。</p>
+    </div>
   </section>
 </main>
 
-<footer>
-  The Midnight Academy · AI Track 参赛作品 · <span id="footYear"></span><br>
-  单文件静态页面 · 无外部依赖 · 实验数据均为页面内模拟生成，专业信息取自各学院官网
-</footer>
+<footer class="wrap">The Midnight Academy · <span id="footYear"></span> · 单文件静态页面 · 无外部依赖</footer>
 
-<div id="grad">
-  <div class="grad-card">
-    <div class="seal">🌕</div>
-    <h2>结业 · 全学派通行</h2>
-    <div class="gsub">THE MIDNIGHT ACADEMY · DIPLOMA</div>
-    <div class="grad-list" id="gradList"></div>
-    <p class="say">你已掌握三个学派的规则，也三次见证了它们交汇时才有的力量——频率之眼（密码×统计）、月光池塘（统计×生态）、基因封印（密码×生态）。<br>
-    真正的魔法从来不是换一个奇幻的名字，而是亲手操作规则、并看见它的边界。</p>
-    <div class="row">
-      <button class="primary" id="btnGradClose">继续探索</button>
-      <button id="btnGradRestart">重新开始整座学院</button>
-    </div>
-  </div>
-</div>
+<div class="modal" id="fmodal"><div class="mbox">
+  <button class="x sm" id="btnFclose">×</button><div id="forgeOut"></div>
+</div></div>
 
-<div id="fmodal">
-  <div class="fmodal-card">
-    <button id="btnFclose" title="关闭">×</button>
-    <div id="forgeOut"></div>
+<div class="modal" id="amin"><div class="mbox">
+  <button class="x sm" id="btnAclose">×</button><div class="mini-host" id="miniHost"></div>
+</div></div>
+
+<div id="grad"><div class="c">
+  <h2 style="color:var(--gold)">🎓 结业</h2>
+  <p class="note">七个试炼全部完成，午夜学园的门为你敞开。</p>
+  <div id="gradList"></div>
+  <div class="row" style="justify-content:center">
+    <button id="btnGradClose">继续探索</button>
+    <button class="primary" id="btnGradRestart">重新开始</button>
   </div>
-</div>
+</div></div>
 
 <div id="toast"></div>
-
 <script>
 /* =========================================================================
    The Midnight Academy — 单文件实现
@@ -1143,355 +1061,779 @@ const DNA = {
 };
 
 /* =========================================================================
-   碰撞熔炉：34 个专业两两组合 C(34,2)=561
-   7 个类别 → 28 条桥接规则 → 每一对都产出：火花名 / 双向融合咒文 /
-   桥接洞见 / 学派落点，并持久化探索进度。
-   专业名称、院系与介绍取自学校各学院官网「院系与专业 / 本科课程」页。
+   理工科技学院 · 4 系 9 专业 → C(9,2)=36 对碰撞
+   每一对的交叉方式 / 案例 / 局限均为手写真实内容（取自各系官网专业介绍）
    ========================================================================= */
-const FORGE_STORE = 'midnight-forge-v1';
-const CATS = {
-  ai  :{n:'智能与计算', aff:'cipher'},
-  art :{n:'创意与艺术', aff:null},
-  biz :{n:'商业与管理', aff:null},
-  comm:{n:'传播与语言', aff:null},
-  life:{n:'生命与环境', aff:'eco'},
-  math:{n:'数理与数据', aff:'sampling'},
-  psy :{n:'心理与行为', aff:null}
-};
-const AFFL = { cipher:'密码学派', sampling:'统计学派', eco:'生态学派' };
-const CROSS = { 'cipher|sampling':'频率之眼', 'cipher|eco':'基因封印', 'eco|sampling':'标志重捕' };
-const SCHOOL_ROUTE = { cipher:'#/schools/cipher', sampling:'#/schools/sampling', eco:'#/schools/web' };
-const CROSS_ROUTE  = { 'cipher|sampling':'#/altar/freq', 'cipher|eco':'#/altar/dna', 'eco|sampling':'#/altar/recapture' };
-const BRIDGES = {
-  'ai|ai'    :{n:'同源奇点', d:'同一套算法在两个方向上互相校验：数据、算力与超参数摆在同一张桌上，同门碰撞最先暴露的，是各自看不见的盲区。'},
-  'ai|art'   :{n:'生成式创作', d:'模型学会了风格，人负责给出意图：提示词是新的画笔，采样参数是新的笔触，而审美判断仍然只属于人。'},
-  'ai|biz'   :{n:'智能决策', d:'当决策流程被写成可优化的目标函数，管理就从经验艺术变成可回测、可复盘的实验。'},
-  'ai|comm'  :{n:'生成式传播', d:'生产被加速，分发被算法接管——传播的问题从「说什么」变成「被谁看见、被如何推荐」。'},
-  'ai|life'  :{n:'基因封印', d:'序列数据的智能比对与模式识别：短指纹加可比对的距离，正是密码学哈希思想在生命数据上的重演。'},
-  'ai|math'  :{n:'频率之眼', d:'算法的每一步都能被写成概率与统计：置信度、误差分布、显著性检验——统计是算法的自我认知。'},
-  'ai|psy'   :{n:'模型读心', d:'行为被记录成特征，心理被拟合成参数：预测得越准，越要回答「这是相关还是因果」这个心理学老问题。'},
-  'art|art'  :{n:'意象叠加', d:'两种媒介在同一叙事里互相翻译，风格的边界开始溶解——同门碰撞最常见的产物，是全新的混合体裁。'},
-  'art|biz'  :{n:'体验经济', d:'创意一旦接上成本、渠道与商业模式，作品就变成产品：审美价值必须折算成能维持创作的现金流。'},
-  'art|comm' :{n:'意义的工艺', d:'传播给出渠道与受众，创意给出形式与情感：同一条信息，换一种媒介就换一种说服力。'},
-  'art|life' :{n:'仿生设计', d:'自然演化四十亿年的结构与配色，是设计最古老的样本库：形态、材料与生态位都是可借用的图纸。'},
-  'art|math' :{n:'算法之美', d:'对称、分形、比例与生成式构图——美感的直觉一旦被写成公式，就能被计算、被变异、被重新发现。'},
-  'art|psy'  :{n:'感知的调色', d:'色彩、节奏与空间如何被感知系统加工，是创意真正生效的物理基础：形式不只装饰，它直接作用于注意与情绪。'},
-  'biz|biz'  :{n:'商业同频', d:'两套商业逻辑在同一个市场相遇，比的是谁先把隐性成本算清楚——同门碰撞最现实，也最先见生死。'},
-  'biz|comm' :{n:'品牌的语法', d:'品牌是一套被反复编码的意义系统：定位、口号与叙事，决定一门生意在公众记忆里的位置。'},
-  'biz|life' :{n:'可持续的账本', d:'资源、排放与物种一旦写进财务报表，环境成本就不再是外部性，而是资产负债表上的数字。'},
-  'biz|math' :{n:'决策的证据', d:'商业问题一旦被写成可估计的量，决策就从经验变成证据：抽样、回归与优化把「我觉得」变成「数据显示」。'},
-  'biz|psy'  :{n:'行为的定价', d:'人不是完全理性的变量：偏好、损失厌恶与从众效应，决定真实世界里价格与政策的最终效果。'},
-  'comm|comm':{n:'语义共振', d:'两套话语体系互相借用词汇与框架，意义在翻译中增殖——同门碰撞最擅长生产新的说法与新的共识。'},
-  'comm|life':{n:'自然的代言', d:'科学只有被讲述才会被关心：数据、物种与危机，都要经过叙事才能进入公共讨论。'},
-  'comm|math':{n:'可计算的叙事', d:'文本可以被分词、计数与建模：词频、情感与传播路径，让「说了什么、传了多远」第一次变成可检验的数字。'},
-  'comm|psy' :{n:'说服的回路', d:'注意、记忆与态度是传播的地下河道：一条信息能否被接受，先取决于它如何被心智加工。'},
-  'life|life':{n:'生态自愈', d:'把两个生命系统并置，养分循环、种群波动与抵抗力会连成一张网——同门碰撞最容易看见系统的韧性与脆弱。'},
-  'life|math':{n:'标志重捕', d:'抽样推断正是种群调查的数学底座：捕一批、标记、放回、再捕一批，就能估计看不见的总体。'},
-  'life|psy' :{n:'亲生命性', d:'自然环境如何恢复注意力与情绪，是心理学与生命科学共同的实验场——人本身就是生态系统的一部分。'},
-  'math|math':{n:'同源共振', d:'两条推导落在同一个公理体系里互相验证：定义越严格，交叉时越容易诞生新的定理与新的工具。'},
-  'math|psy' :{n:'实证的双翼', d:'实验设计与统计推断是心理学的两条腿：效应量、显著性与可重复性，决定一个发现能不能站住。'},
-  'psy|psy'  :{n:'行为回声', d:'两组关于人的研究互为对照，量表、样本与情境的差异会在碰撞中显形——同门碰撞最需要警惕共同的偏差。'}
+const DEPTS = {
+  math:{n:'数学科学系', col:'#a98bff'},
+  stat:{n:'统计与数据科学系', col:'#4fd6f5'},
+  cs  :{n:'计算机科学系', col:'#ffd94a'},
+  life:{n:'生命科学系', col:'#5ef08a'}
 };
 const MAJORS = [
-  {n:'会计学', col:'工商管理学院', dep:'会计系', c:'biz', m:'按准则记账与审计追溯', o:'企业的真实财务记录', s:'以国际专业准则为主导，面向 HKICPA 与 CPA Australia 认证的会计人才；已列为珠海市优势学科。', u:'http://fbm.bnbu.edu.cn/acct'},
-  {n:'财务学', col:'工商管理学院', dep:'金融经济系', c:'biz', m:'投资组合构建与风险定价', o:'企业的资金与资本结构', s:'培养金融投资与财务管理领域的工商管理人才，课程覆盖期权期货、金融风险管理与应用计量经济学。', u:'http://fbm.bnbu.edu.cn/fin'},
-  {n:'应用经济学', col:'工商管理学院', dep:'金融经济系', c:'biz', m:'数理建模与统计推断', o:'稀缺资源配置与公共政策', s:'用严谨的数理逻辑与统计方法研究资源配置、成本收益与宏观调控，构建博弈、预测与仿真方法。', u:'http://fbm.bnbu.edu.cn/ae'},
-  {n:'商业分析', col:'工商管理学院', dep:'金融经济系', c:'biz', m:'统计决策与运筹优化', o:'商业决策与供应链', s:'融合工商管理与现代商业分析：商业研究方法、统计决策、数据库、运筹优化与金融科技。', u:'http://fbm.bnbu.edu.cn/busa'},
-  {n:'人力资源管理', col:'工商管理学院', dep:'管理系', c:'biz', m:'实习实践与组织行为评估', o:'组织中的人与绩效', s:'以实习课程为核心，把课堂知识应用到现实世界，培养与未来职业高度适配的管理人才。', u:'http://fbm.bnbu.edu.cn/mhr'},
-  {n:'市场营销管理', col:'工商管理学院', dep:'管理系', c:'biz', m:'数字营销与品牌管理', o:'消费者与市场需求', s:'全国首个获数字营销协会（DMI）国际权威认证的市场营销管理专业，毕业即获三证书。', u:'http://fbm.bnbu.edu.cn/mkt'},
-  {n:'电子商务与资讯系统管理', col:'工商管理学院', dep:'管理系', c:'biz', m:'信息系统与大数据运营', o:'数字商业平台与交易', s:'培养既懂商业管理又懂信息技术的复合型人才，强调大数据环境下的信息科技能力。', u:'http://fbm.bnbu.edu.cn/ebis'},
-  {n:'创业与创新管理', col:'工商管理学院', dep:'管理系', c:'biz', m:'商业模式设计与创新管理', o:'初创企业与组织成长', s:'面向企业从初创到成熟各阶段，培养以创新推动高质量增长的管理人才。', u:'http://fbm.bnbu.edu.cn/epin'},
-  {n:'数字媒体管理', col:'工商管理学院', dep:'管理系', c:'biz', m:'数据驱动的媒体运营', o:'数字媒体商业生态', s:'课程含数据驱动媒体管理、人工智能与数据科学管理、社交媒体管理与数字商业模式。', u:'http://fbm.bnbu.edu.cn/dmm'},
-  {n:'中华文化与国际传播', col:'人文社科学院', dep:'传播系', c:'comm', m:'跨文化阐释与国际叙事', o:'中华文化的当代表达', s:'厚植本土、汇通全球，培养既深植中华文化又能面向世界传播的新型人才。', u:'http://fhss.bnbu.edu.cn/ccgc'},
-  {n:'媒体与传播学', col:'人文社科学院', dep:'传播系', c:'comm', m:'报道、编辑与纪录片制作', o:'公共信息与媒介事件', s:'培养未来传播及文化界领袖，强调过硬的写作思辨与全面的媒介素养训练。', u:'http://fhss.bnbu.edu.cn/mcom'},
-  {n:'公共关系与广告学', col:'人文社科学院', dep:'传播系', c:'comm', m:'传播策略与广告创意', o:'组织形象与公众关系', s:'系统学习传播学、广告学与公共关系学，掌握传统媒体与新媒体的传播规律。', u:'http://fhss.bnbu.edu.cn/pra'},
-  {n:'应用翻译学', col:'人文社科学院', dep:'语言文化系', c:'comm', m:'双语转换与口译实践', o:'跨语言流动的意义', s:'以培养具备双语和跨文化素质的翻译与口译工作者为目标，强调批判性思维与跨学科学习。', u:'http://fhss.bnbu.edu.cn/ats'},
-  {n:'数字跨文化研究', col:'人文社科学院', dep:'语言文化系', c:'comm', m:'数字内容创作与跨文化分析', o:'多元文化语境中的数字沟通', s:'融合中英双语沟通、跨文化理解与人工智能数字技术，面向全球受众进行传播。', u:'http://fhss.bnbu.edu.cn/dis'},
-  {n:'英语语言文学', col:'人文社科学院', dep:'语言文化系', c:'comm', m:'文本细读与文学批评', o:'英语文学与语言', s:'英语语言与文学研究（ELLS）荣誉文学学士，为跨国界工作与复杂国际关系做准备。', u:'http://fhss.bnbu.edu.cn/ells'},
-  {n:'数字人文跨学科研究', col:'人文社科学院', dep:'语言文化系', c:'comm', m:'人文语境解读与技术应用', o:'技术背后的人文议题', s:'深度融合技术与人文，培养既精通技术又深刻理解其人文语境的新型人才。', u:'http://fhss.bnbu.edu.cn/tdh'},
-  {n:'数字社会科学', col:'人文社科学院', dep:'社会科学系', c:'comm', m:'数字社会调查与文化分析', o:'社会、文化与技术的新连接', s:'研究社会、文化和技术之间新的数字联系，及其带来的经济、社会与文化挑战。', u:'http://fhss.bnbu.edu.cn/dss'},
-  {n:'全球化与发展', col:'人文社科学院', dep:'社会科学系', c:'comm', m:'全球化事务管理与数字化技能', o:'跨国公共与商业组织', s:'为未来领袖提供国际化视野与坚实的数字化技能培训，管理全球化与发展动态事务。', u:'http://fhss.bnbu.edu.cn/gad'},
-  {n:'应用数学', col:'理工科技学院', dep:'数学科学系', c:'math', m:'数学建模与算法推导', o:'结构、规律与可计算性', s:'数学既是纯科学又是建模工具：从有效算法、金融罕见事件到气候预测与基因组研究。', u:'http://fst.bnbu.edu.cn/am'},
-  {n:'金融数学', col:'理工科技学院', dep:'数学科学系', c:'math', m:'随机建模与数值计算', o:'不确定环境下的资产定价', s:'源于两次华尔街革命，研究不确定环境下的最优投资策略与资产定价问题。', u:'http://fst.bnbu.edu.cn/fm'},
-  {n:'统计学', col:'理工科技学院', dep:'统计与数据科学系', c:'math', m:'抽样、推断与高维检验', o:'随机数据中的规律', s:'统计与数据科学系本科专业，背靠学校数学、统计学两个博士后科研流动站。', u:'http://fst.bnbu.edu.cn/stat'},
-  {n:'数据科学', col:'理工科技学院', dep:'统计与数据科学系', c:'math', m:'数据建模、挖掘与可视化', o:'大规模多维数据', s:'2017 年成立的前沿交叉学科，国内第二批开设，覆盖分布式存储、数据挖掘与可视化。', u:'http://fst.bnbu.edu.cn/ds'},
-  {n:'人工智能', col:'理工科技学院', dep:'计算机科学系', c:'ai', m:'机器学习与模式识别', o:'图像、语言与智能行为', s:'强势兴起的交叉学科，已广泛应用于自然语言处理、计算机视觉与图像处理等领域。', u:'http://fst.bnbu.edu.cn/ai'},
-  {n:'计算机科学与技术', col:'理工科技学院', dep:'计算机科学系', c:'ai', m:'软件工程与系统构建', o:'计算系统与物联网', s:'2005 年成立，学校最早五个专业之一；国家级一流本科专业建设点。', u:'http://fst.bnbu.edu.cn/cst'},
-  {n:'环境科学', col:'理工科技学院', dep:'生命科学系', c:'life', m:'环境监测与生态评估', o:'人与自然环境的关系', s:'跨学科专业，研究生态破坏、气候变化、污染与物种大灭绝等人与自然的复杂关系。', u:'http://fst.bnbu.edu.cn/envs'},
-  {n:'食品科学与工程', col:'理工科技学院', dep:'生命科学系', c:'life', m:'成分分析与安全检测', o:'食品、营养与生产链', s:'培养精通食品生产、销售与管理及营养学的国际化人才，服务食品产业与监管机构。', u:'http://fst.bnbu.edu.cn/fst'},
-  {n:'应用心理学', col:'理工科技学院', dep:'生命科学系', c:'psy', m:'实验设计与行为测量', o:'人的心理与行为规律', s:'2010 年成立，课程涵盖应用型与研究型两大方向，并提供培训、研究与实习机会。', u:'http://fst.bnbu.edu.cn/apsy'},
-  {n:'文化创意与管理', col:'文化与创意学院', dep:'文化创意与设计系', c:'art', m:'文化资源的创意转化与产业运营', o:'文化创意产业', s:'文化创意产业是国际经济体系中最具活力的新兴产业，本专业兼顾创意与管理两端。', u:'http://scc.bnbu.edu.cn/ccm'},
-  {n:'媒体艺术与设计', col:'文化与创意学院', dep:'文化创意与设计系', c:'art', m:'视觉、数字影音与互动设计', o:'艺术设计表达', s:'不局限于视觉艺术、数字影音设计、互动设计与社会设计，追求跨领域的创造成果。', u:'http://scc.bnbu.edu.cn/mad'},
-  {n:'旅游、酒店与会展管理', col:'文化与创意学院', dep:'文化创意与设计系', c:'art', m:'服务设计与体验运营', o:'旅游、酒店与会展现场', s:'培养有创意的问题解决者、批判性思考者与服务领袖，管理现实世界的服务问题。', u:'http://scc.bnbu.edu.cn/them'},
-  {n:'动画与互动媒体', col:'文化与创意学院', dep:'影视与新媒体系', c:'art', m:'动画、影像与互动叙事', o:'动画、游戏与新媒体内容', s:'面向动画、电影、电视、游戏开发、互动媒体与新媒体行业培养专业人才。', u:'http://scc.bnbu.edu.cn/aim'},
-  {n:'影视学', col:'文化与创意学院', dep:'影视与新媒体系', c:'art', m:'影视制作与传媒研究', o:'电影、电视与新媒体', s:'成立于 2006 年，课程结合香港浸会大学传理学院的电影、电视及新媒体课程。', u:'http://scc.bnbu.edu.cn/ctv'},
-  {n:'游戏设计', col:'文化与创意学院', dep:'影视与新媒体系', c:'art', m:'游戏机制设计与引擎实现', o:'游戏与虚拟世界的体验', s:'涵盖游戏引擎、策划、制作与项目管理，并涉及虚拟现实、动作捕捉与生成式 AI。', u:'http://scc.bnbu.edu.cn/gd'},
-  {n:'音乐表演', col:'文化与创意学院', dep:'音乐系', c:'art', m:'演奏与舞台表达', o:'音乐作品与现场', s:'面向中国及全球文化与创意产业，培养具有国际竞争力的音乐专业人才。', u:'http://scc.bnbu.edu.cn/mus'}
+  {n:'应用数学',          dep:'数学科学系',         c:'math', m:'微分方程与最优化建模', o:'连续变化与极值问题', s:'从有效算法、金融罕见事件到气候预测，数学既是纯科学又是建模工具。', u:'http://fst.bnbu.edu.cn/am'},
+  {n:'金融数学',          dep:'数学科学系',         c:'math', m:'随机过程与蒙特卡洛',   o:'不确定性与风险定价', s:'研究不确定环境下的最优投资策略与资产定价问题。', u:'http://fst.bnbu.edu.cn/fm'},
+  {n:'统计学',            dep:'统计与数据科学系',   c:'stat', m:'抽样设计与统计推断',   o:'随机数据中的规律',   s:'背靠学校数学、统计学两个博士后科研流动站，从数据中提取可靠结论。', u:'http://fst.bnbu.edu.cn/stat'},
+  {n:'数据科学',          dep:'统计与数据科学系',   c:'stat', m:'特征工程与数据挖掘',   o:'大规模多维数据',     s:'2017 年成立的前沿交叉学科，覆盖分布式存储、数据挖掘与可视化。', u:'http://fst.bnbu.edu.cn/ds'},
+  {n:'人工智能',          dep:'计算机科学系',       c:'cs',   m:'神经网络与表示学习',   o:'感知与决策任务',     s:'已广泛应用于自然语言处理、计算机视觉与图像处理等领域。', u:'http://fst.bnbu.edu.cn/ai'},
+  {n:'计算机科学与技术',  dep:'计算机科学系',       c:'cs',   m:'算法设计与系统构建',   o:'计算资源与软件系统', s:'2005 年成立，学校最早五个专业之一；国家级一流本科专业建设点。', u:'http://fst.bnbu.edu.cn/cst'},
+  {n:'环境科学',          dep:'生命科学系',         c:'life', m:'环境监测与污染物迁移', o:'生态系统的物质循环', s:'研究生态破坏、气候变化、污染与物种灭绝等人与自然的复杂关系。', u:'http://fst.bnbu.edu.cn/envs'},
+  {n:'食品科学与工程',    dep:'生命科学系',         c:'life', m:'成分分析与工艺控制',   o:'食品的营养与安全',   s:'培养精通食品生产、销售与营养学的国际化人才，服务食品产业与监管。', u:'http://fst.bnbu.edu.cn/fst'},
+  {n:'应用心理学',        dep:'生命科学系',         c:'life', m:'实验设计与心理测量',   o:'人的行为与认知',     s:'2010 年成立，课程涵盖应用型与研究型两大方向，并提供研究与实习机会。', u:'http://fst.bnbu.edu.cn/apsy'}
 ];
 
+/* 36 对：n 火花名 / x 交叉方式 / ex 真实案例 / lim 局限 / mini 可选小实验 */
+const PAIRS = [
+  {i:0,j:1,n:'随机微分方程', x:'应用数学给出偏微分方程与数值解，金融数学提供风险中性测度——两者合起来才能给期权定价。', ex:'Black-Scholes 方程与蒙特卡洛定价，是数学系与金融数学方向的共同产物。', lim:'假设连续对冲、无摩擦市场；真实市场有跳跃与流动性缺口。'},
+  {i:0,j:2,n:'最优抽样',     x:'最优化理论决定样本怎么分层分配，统计推断给出估计与误差。', ex:'分层抽样中的 Neyman 分配：样本量按各层标准差分配，而非平均分。', lim:'需要事先知道各层方差；估错了分配就不再最优。', mini:'samp'},
+  {i:0,j:3,n:'矩阵分解',     x:'数值线性代数提供 SVD 与低秩近似，数据科学把它用于降维与推荐。', ex:'推荐系统的隐语义模型：把用户-物品矩阵分解成低维向量。', lim:'稀疏数据下分解不稳定，容易过拟合噪声。'},
+  {i:0,j:4,n:'优化器',       x:'梯度下降与凸优化理论支撑神经网络的训练过程。', ex:'Adam、动量法背后都是优化理论；收敛性分析给出学习率上界。', lim:'深度网络非凸、有鞍点，理论保证只在很强假设下成立。'},
+  {i:0,j:5,n:'数值求解器',   x:'数值方法给出离散格式，高性能计算把它跑到百万网格规模。', ex:'流体与结构仿真：把连续方程离散成线性系统再求解。', lim:'浮点误差与病态矩阵会让结果发散。'},
+  {i:0,j:6,n:'扩散方程',     x:'用对流扩散偏微分方程描述污染物在水体与大气中的迁移。', ex:'河流污染带预测、大气扩散模型。', lim:'湍流与参数不确定性难以完全建模。', mini:'diff'},
+  {i:0,j:7,n:'传热与杀菌',   x:'热传导方程优化杀菌工艺，让中心温度达标而不破坏营养。', ex:'罐头与巴氏杀菌的 F 值计算。', lim:'食品非均质，热物性随温度变化，一维模型只是近似。'},
+  {i:0,j:8,n:'心理测量模型', x:'项目反应理论用潜变量模型刻画能力与题目难度，靠参数估计求解。', ex:'能力测验与量表编制中的题目参数估计。', lim:'模型假设单维性；维度不成立时测量失真。'},
+  {i:1,j:2,n:'风险度量',     x:'随机过程建模收益，极值统计估计尾部分位数——两派合起来才谈得上风险。', ex:'VaR 与期望损失 ES 的估计与回测。', lim:'尾部数据稀少，模型外推风险大。'},
+  {i:1,j:3,n:'量化信号',     x:'随机模型给出信号假设，数据挖掘做因子挖掘与回测验证。', ex:'多因子选股：把价格、成交量等特征组合成打分。', lim:'过拟合与数据窥探偏差，回测好不等于实盘好。'},
+  {i:1,j:4,n:'深度定价',     x:'蒙特卡洛模拟路径，神经网络拟合高维定价函数，绕开维数灾难。', ex:'高维美式期权定价、深度学习求解 PDE。', lim:'缺乏可解释性与理论保证，黑箱难审计。'},
+  {i:1,j:5,n:'低延迟系统',   x:'随机模型给出报价策略，系统实现把它压进微秒级撮合。', ex:'高频交易撮合引擎与行情解码。', lim:'延迟军备竞赛推高成本，并放大了系统性风险。'},
+  {i:1,j:6,n:'气候风险定价', x:'金融数学给随机碳价与贴现，环境科学给排放路径与情景。', ex:'碳排放权定价、气候情景下的资产压力测试。', lim:'政策不确定，极端情景难以概率化。'},
+  {i:1,j:7,n:'原料套保',     x:'随机价格模型决定套保比例，食品工程给出原料需求节奏。', ex:'大宗农产品采购的期货套期保值。', lim:'基差风险与政策干预会让套保失效。', mini:'hedge'},
+  {i:1,j:8,n:'行为金融',     x:'前景理论解释非理性决策，随机模型刻画价格——人的偏差被写进定价。', ex:'处置效应：投资者过早卖出盈利、死守亏损。', lim:'行为参数不稳定，难直接用于定价。'},
+  {i:2,j:3,n:'高维变量选择', x:'统计推断给出显著性与置信区间，数据科学提供正则化与高维特征。', ex:'基因位点筛选、LASSO 回归。', lim:'多重比较会抬高假阳性，必须做 FDR 校正。'},
+  {i:2,j:4,n:'模型评估',     x:'交叉验证与假设检验共用一个内核：在有限样本上估计模型的真实表现。', ex:'A/B 测试、学习曲线的置信带。', lim:'分布漂移与多重比较会高估或低估性能。', mini:'overfit'},
+  {i:2,j:5,n:'性能测量',     x:'抽样与排队论把系统吞吐与延迟量化成可比较的数字。', ex:'压测与容量规划中的百分位延迟（P99）。', lim:'生产环境的长尾与突发流量常被实验室低估。'},
+  {i:2,j:6,n:'监测布点',     x:'分层与系统抽样决定监测点在空间上怎么摆，推断给出区域估计。', ex:'水质与空气质量监测网的布点设计。', lim:'空间自相关破坏样本独立性假设，区间会偏窄。', mini:'samp'},
+  {i:2,j:7,n:'统计过程控制', x:'用控制图与抽样检验把生产线的波动识别成可报警的信号。', ex:'生产线抽检、批次合格率控制图。', lim:'批次混合与抽样误差会造成漏检。'},
+  {i:2,j:8,n:'心理统计',     x:'方差分析与效应量把「有没有差别」变成可检验的命题。', ex:'实验组与对照组的显著性检验、信度效度分析。', lim:'p-hacking 与样本量不足是心理学复现危机的根源。', mini:'pwr'},
+  {i:3,j:4,n:'特征与表示',   x:'特征工程与表征学习互补：一个靠人懂问题，一个靠数据自己学。', ex:'表格特征 + 图像表征的多模态模型。', lim:'数据泄漏与分布外泛化是最大的暗礁。'},
+  {i:3,j:5,n:'数据管道',     x:'分布式存储与 ETL 把海量数据整成可用形态，数据科学在其上建模。', ex:'数据仓库与实时流批一体处理。', lim:'一致性、延迟与成本三者只能取其二。'},
+  {i:3,j:6,n:'遥感反演',     x:'卫星影像与地统计方法把反射率反演成环境变量。', ex:'PM2.5 浓度反演、地表覆盖分类。', lim:'云覆盖与地面验证样本稀少，反演有系统偏差。'},
+  {i:3,j:7,n:'光谱快检',     x:'高光谱数据 + 机器学习做无损检测，不破坏样品就能判读。', ex:'果蔬农残与果品糖度的近红外快检。', lim:'模型迁移到新批次需重新标定。', mini:'thresh'},
+  {i:3,j:8,n:'行为大数据',   x:'日志与问卷融合，用行为痕迹预测心理与行为倾向。', ex:'用户留存预测、心理画像。', lim:'隐私风险与选择性偏差，样本不代表全体。'},
+  {i:4,j:5,n:'模型落地',     x:'算法研究给出模型，系统研究给出推理引擎、量化与并行。', ex:'模型蒸馏与量化部署到边缘设备。', lim:'训练与推理环境差异会导致精度漂移。'},
+  {i:4,j:6,n:'遥感识别',     x:'卷积网络从卫星影像里识别地表覆盖与生态变化。', ex:'非法砍伐与湿地退化监测。', lim:'标注数据稀缺、类别极不平衡。'},
+  {i:4,j:7,n:'视觉分拣',     x:'机器视觉在产线上做分级与缺陷检测，替代人眼。', ex:'水果分级、包装缺陷检测。', lim:'光照与品种差异会让模型失准。'},
+  {i:4,j:8,n:'认知建模',     x:'神经网络充当认知模型，心理学实验反过来检验它是否像人。', ex:'fMRI 解码、反应时与信号检测论实验。', lim:'模型可解释性差，难做因果推断。', mini:'sdt'},
+  {i:5,j:6,n:'环境物联网',   x:'传感器网络与边缘计算把环境监测做成实时系统。', ex:'水质在线监测站与预警网络。', lim:'传感器漂移与供电续航是长期难题。'},
+  {i:5,j:7,n:'冷链溯源',     x:'物联网采集温控数据，系统层保证记录不可篡改可追溯。', ex:'生鲜冷链温度追溯与召回定位。', lim:'上链前的数据可信性无法由技术解决。'},
+  {i:5,j:8,n:'人机交互',     x:'交互设计与认知负荷测量互相校准，界面好坏被量化。', ex:'可用性测试与眼动、任务完成时间。', lim:'实验室结论与真实使用场景常有落差。'},
+  {i:6,j:7,n:'污染物溯源',   x:'环境监测给出暴露来源，食品检测给出残留与限量标准。', ex:'重金属与农残从水土到餐桌的传递链。', lim:'迁移路径复杂，单一指标难以归因。'},
+  {i:6,j:8,n:'环境心理',     x:'客观暴露数据与主观感知、行为响应放在一起分析。', ex:'噪声与空气质量对居民行为与满意度的影响。', lim:'暴露-反应关系存在个体差异与自报偏差。'},
+  {i:7,j:8,n:'感官评价',     x:'成分与工艺决定样品，心理测量给出阈限与偏好标度。', ex:'减糖产品的接受度与阈限测定。', lim:'期望效应与情境因素会污染评价结果。', mini:'jnd'}
+];
+
+/* 8 个可操作小实验（真实模型 + 可拖动交互） */
+const MINIS = {
+  samp  :{t:'分层抽样：样本怎么分',   b:'三层标准差不同。拖动分配旋钮，看合并估计的方差如何变化，并找出最优（Neyman）分配。'},
+  pwr   :{t:'功效与样本量',           b:'拖动样本量与效应量，实时看检验功效曲线——为什么 80% 是常用门槛。'},
+  sdt   :{t:'信号检测论',             b:'噪声与信号两个分布重叠。拖动判定标准，看命中率、虚报率与 d′ 如何此消彼长。'},
+  jnd   :{t:'感官阈限（阶梯法）',     b:'逐轮判断哪一杯不同。3 下 1 上的阶梯法会自动收敛到 70.7% 正确率的阈限。'},
+  diff  :{t:'一维扩散',               b:'拖动扩散系数与时间，看污染物浓度剖面按解析解如何展宽。'},
+  hedge :{t:'最小方差套保',           b:'拖动套保比率，看现货+期货组合的方差如何下降，并找到最优比率。'},
+  thresh:{t:'分类阈值与混淆矩阵',     b:'滑动阈值看漏检与误报如何互换，F1 在哪里最大。'},
+  overfit:{t:'过拟合演示',            b:'提高多项式阶数，训练误差一直降，验证误差却先降后升。'}
+};
+/* =========================================================================
+   通用小工具
+   ========================================================================= */
+function PHI(z){                     // 标准正态 CDF
+  const t = 1/(1+0.2316419*Math.abs(z));
+  const d = 0.3989423*Math.exp(-z*z/2);
+  const p = d*t*(0.3193815+t*(-0.3565638+t*(1.781478+t*(-1.821256+t*1.330274))));
+  return z > 0 ? 1-p : p;
+}
+function gaussPdf(z){ return Math.exp(-z*z/2)/Math.sqrt(2*Math.PI); }
+function mkCanvas(host, h){          // 在 host 内建一块像素画布并返回绘图上下文
+  const c = document.createElement('canvas');
+  c.height = h; host.appendChild(c);
+  const dpr = window.devicePixelRatio || 1, w = c.clientWidth || 400;
+  c.width = w*dpr; c.height = h*dpr;
+  const x = c.getContext('2d'); x.scale(dpr, dpr);
+  x.imageSmoothingEnabled = false;
+  return { c, x, w, h, font:(s,sz,al)=>{ x.font = sz+'px ui-monospace,monospace'; x.fillStyle = s; x.textAlign = al||'left'; } };
+}
+function mkWrap(host, y0, y1, X){    // 坐标映射
+  return v => y1 - (v - y0)/(y1-y0 === 0 ? 1 : 1) * 0;
+}
+
+/* =========================================================================
+   8 个可操作小实验（真实模型 + 拖动交互）
+   ========================================================================= */
+const Minis = {
+  host:null,
+  open(key){
+    const m = MINIS[key]; if(!m) return;
+    const h = document.getElementById('miniHost');
+    h.innerHTML = '<div class="rh">'+m.t+'</div><div class="rb">'+m.b+'</div><div id="miniBody"></div>';
+    document.getElementById('amin').classList.add('show');
+    this.host = document.getElementById('miniBody');
+    this[key] && this[key]();
+  },
+  close(){ document.getElementById('amin').classList.remove('show'); if(this.host) this.host.innerHTML=''; },
+  slider(host, min, max, val, step, label, fmt, oninput){
+    const row = document.createElement('div'); row.className = 'row';
+    row.innerHTML = '<span class="lbl">'+label+'</span>';
+    const s = document.createElement('input');
+    s.type = 'range'; s.min = min; s.max = max; s.value = val; s.step = step;
+    const out = document.createElement('b'); out.style.color = 'var(--gold)'; out.style.fontSize = '13px';
+    out.textContent = fmt(+val);
+    row.appendChild(s); row.appendChild(out); host.appendChild(row);
+    s.oninput = ()=>{ out.textContent = fmt(+s.value); oninput(+s.value); };
+    return s;
+  },
+
+  /* ① 分层抽样：样本怎么分 */
+  samp(){
+    const host = this.host, sg = [1,3,6], N = 60;
+    const stat = document.createElement('div'); stat.className = 'stat';
+    host.appendChild(stat);
+    let alpha = 0;
+    const run = ()=>{
+      const w = sg.map(s=>Math.pow(s, alpha)), sw = w.reduce((a,b)=>a+b,0);
+      const n = w.map(v=>Math.max(1, Math.round(N*v/sw)));
+      const varr = n.reduce((a,v,k)=>a+Math.pow(1/3,2)*sg[k]*sg[k]/v, 0);
+      stat.innerHTML = '分配 <b>'+n.join(' : ')+'</b>（各层标准差 1 : 3 : 6）　合并估计标准误 <b>'
+        + Math.sqrt(varr).toFixed(3) + '</b>　'
+        + (alpha>0.95 ? '← 这就是 Neyman 最优分配' : '');
+      draw();
+    };
+    const cv = ()=>{};
+    let g = null;
+    const draw = ()=>{
+      if(!g) return;
+      const {c,x,w,h} = g;
+      x.clearRect(0,0,w,h);
+      const w2 = w/2;
+      const w0 = sg.map(s=>Math.pow(s,alpha)), sw = w0.reduce((a,b)=>a+b,0);
+      const n = w0.map(v=>Math.max(1, Math.round(N*v/sw)));
+      const bw = (w2-40)/3;
+      n.forEach((v,k)=>{
+        const bh = (v/40)*(h-46);
+        x.fillStyle = ['#a98bff','#4fd6f5','#5ef08a'][k];
+        x.fillRect(20+k*bw, h-24-bh, bw-12, bh);
+        x.fillStyle = '#eaf0ff'; g.font('#eaf0ff',12,'center');
+        x.fillText(v, 20+k*bw+(bw-12)/2, h-30-bh);
+        g.font('#8b97c9',11,'center');
+        x.fillText('σ='+sg[k], 20+k*bw+(bw-12)/2, h-10);
+      });
+      // 右：方差-分配曲线
+      const X0 = w2+20, X1 = w-16, Y0 = h-26, Y1 = 16;
+      let mn = 1e9, mx = -1e9;
+      const vals = [];
+      for(let a=0;a<=1.0001;a+=0.02){
+        const ww = sg.map(s=>Math.pow(s,a)), ss = ww.reduce((p,q)=>p+q,0);
+        const nn = ww.map(v=>Math.max(1, Math.round(N*v/ss)));
+        const vr = nn.reduce((p,v,k)=>p+Math.pow(1/3,2)*sg[k]*sg[k]/v, 0);
+        vals.push([a, vr]); mn = Math.min(mn, vr); mx = Math.max(mx, vr);
+      }
+      x.strokeStyle = '#39427a'; x.strokeRect(X0, Y1, X1-X0, Y0-Y1);
+      x.beginPath();
+      vals.forEach(([a,v],k)=>{
+        const px = X0 + a*(X1-X0), py = Y0 - (v-mn)/(mx-mn||1)*(Y0-Y1-10) - 5;
+        k ? x.lineTo(px,py) : x.moveTo(px,py);
+      });
+      x.strokeStyle = '#ffd94a'; x.lineWidth = 2; x.stroke();
+      const cur = vals[Math.min(vals.length-1, Math.round(alpha/0.02))];
+      const px = X0 + cur[0]*(X1-X0), py = Y0 - (cur[1]-mn)/(mx-mn||1)*(Y0-Y1-10) - 5;
+      x.fillStyle = '#fff'; x.fillRect(px-4, py-4, 8, 8);
+      g.font('#8b97c9',11,'center');
+      x.fillText('分配的 α（0=按比例，1=最优）', (X0+X1)/2, h-8);
+      g.font('#8b97c9',10,'left'); x.fillText('估计方差', X0+4, Y1+12);
+    };
+    g = mkCanvas(host, 210);
+    // 重新取尺寸（canvas 已在 DOM 内）
+    this.slider(host, 0, 100, 0, 1, '分配旋钮 α', v=>(v/100).toFixed(2), v=>{ alpha = v/100; run(); });
+    const note = document.createElement('p'); note.className = 'mini';
+    note.textContent = '按比例分配（α=0）省事但浪费；按标准差加权（α=1）才是方差最小的 Neyman 分配。';
+    host.appendChild(note);
+    g = null; // 用 host 内已有 canvas 重绘
+    const cans = host.querySelector('canvas');
+    const dpr = window.devicePixelRatio || 1;
+    cans.width = cans.clientWidth*dpr; cans.height = 210*dpr;
+    const xx = cans.getContext('2d'); xx.scale(dpr,dpr); xx.imageSmoothingEnabled = false;
+    g = { c:cans, x:xx, w:cans.clientWidth, h:210 };
+    run();
+  },
+
+  /* ② 功效与样本量 */
+  pwr(){
+    const host = this.host;
+    const stat = document.createElement('div'); stat.className = 'stat'; host.appendChild(stat);
+    let n = 30, d = 0.5;
+    const g0 = mkCanvas(host, 200);
+    const power = (nn,dd)=>{
+      const z = 1.959964, s = dd*Math.sqrt(nn);
+      return 1 - PHI(z - s) + PHI(-z - s);
+    };
+    const draw = ()=>{
+      const {x,w,h} = g0;
+      x.clearRect(0,0,w,h);
+      const X0=40,X1=w-16,Y0=h-26,Y1=14;
+      let mx=1;
+      for(let nn=2;nn<=300;nn+=2) mx=Math.max(mx,power(nn,d));
+      x.strokeStyle='#39427a'; x.strokeRect(X0,Y1,X1-X0,Y0-Y1);
+      x.beginPath();
+      for(let nn=2;nn<=300;nn+=2){
+        const v=power(nn,d), px=X0+(nn-2)/298*(X1-X0), py=Y0-v*(Y0-Y1);
+        nn===2?x.moveTo(px,py):x.lineTo(px,py);
+      }
+      x.strokeStyle='#5ef08a'; x.lineWidth=2; x.stroke();
+      // 80% 参考线
+      const y80 = Y0-0.8*(Y0-Y1);
+      x.setLineDash([4,4]); x.strokeStyle='#ffd94a'; x.beginPath();
+      x.moveTo(X0,y80); x.lineTo(X1,y80); x.stroke(); x.setLineDash([]);
+      g0.font('#ffd94a',11,'left'); x.fillText('80%', X1-30, y80-4);
+      const px=X0+(n-2)/298*(X1-X0), py=Y0-power(n,d)*(Y0-Y1);
+      x.fillStyle='#fff'; x.fillRect(px-4,py-4,8,8);
+      g0.font('#8b97c9',11,'center'); x.fillText('样本量 n', (X0+X1)/2, h-8);
+      const p = power(n,d);
+      stat.innerHTML = '当前 n=<b>'+n+'</b> 效应量 d=<b>'+d.toFixed(2)+'</b> → 功效 <b>'
+        + (p*100).toFixed(1)+'%</b>' + (p>=0.8?'（达到 80% 门槛）':'（还差一点）');
+    };
+    this.slider(host, 5, 300, 30, 1, '样本量 n', v=>v+'', v=>{ n=v; draw(); });
+    this.slider(host, 10, 150, 50, 1, '效应量 d', v=>(v/100).toFixed(2), v=>{ d=v/100; draw(); });
+    draw();
+  },
+
+  /* ③ 信号检测论 */
+  sdt(){
+    const host = this.host;
+    const stat = document.createElement('div'); stat.className = 'stat'; host.appendChild(stat);
+    let dp = 1.5, c = 0.5;
+    const g0 = mkCanvas(host, 190);
+    const draw = ()=>{
+      const {x,w,h} = g0; x.clearRect(0,0,w,h);
+      const lo=-4, hi=6, X = v=>30+(v-lo)/(hi-lo)*(w-46), Y = v=>h-28-v*(h-52);
+      x.strokeStyle='#39427a'; x.beginPath(); x.moveTo(30,h-28); x.lineTo(w-16,h-28); x.stroke();
+      const fill = (mu,color)=>{
+        x.beginPath(); x.moveTo(X(lo),h-28);
+        for(let v=lo;v<=hi;v+=0.08) x.lineTo(X(v), Y(gaussPdf(v-mu)*1.2));
+        x.lineTo(X(hi),h-28); x.closePath();
+        x.fillStyle = color; x.fill();
+      };
+      fill(0,'rgba(79,214,245,.35)');
+      fill(dp,'rgba(255,217,74,.35)');
+      x.strokeStyle='#ff6b6b'; x.beginPath(); x.moveTo(X(c),18); x.lineTo(X(c),h-28); x.stroke();
+      g0.font('#ff6b6b',11,'left'); x.fillText('判定标准', X(c)+4, 26);
+      g0.font('#8b97c9',11,'center');
+      x.fillText('噪声', X(0), h-10); x.fillText('信号', X(dp), h-10);
+      const hit = 1-PHI(c-dp), fa = 1-PHI(c);
+      const beta = gaussPdf(c-dp)/gaussPdf(c);
+      stat.innerHTML = 'd′=<b>'+dp.toFixed(2)+'</b> 标准 c=<b>'+c.toFixed(2)+'</b>　命中率 <b>'
+        +(hit*100).toFixed(0)+'%</b> · 虚报率 <b>'+(fa*100).toFixed(0)+'%</b> · β=<b>'+beta.toFixed(2)+'</b>';
+    };
+    this.slider(host, 50, 400, 150, 1, '辨别力 d′', v=>(v/100).toFixed(2), v=>{ dp=v/100; draw(); });
+    this.slider(host, -200, 300, 50, 1, '判定标准 c', v=>(v/100).toFixed(2), v=>{ c=v/100; draw(); });
+    const note = document.createElement('p'); note.className='mini';
+    note.textContent = '标准调高 → 少报「有信号」：虚报率下降，命中率也下降；d′ 不变时这是一场此消彼长。';
+    host.appendChild(note); draw();
+  },
+
+  /* ④ 感官阈限：3 下 1 上阶梯法 */
+  jnd(){
+    const host = this.host;
+    const stat = document.createElement('div'); stat.className='stat'; host.appendChild(stat);
+    const row = document.createElement('div'); row.className='row'; host.appendChild(row);
+    const trace = document.createElement('div'); trace.className='out'; host.appendChild(trace);
+    const g0 = mkCanvas(host, 150);
+    let d = 0.6, trials = [], odd = Math.floor(Math.random()*3), streak = 0, revs = [];
+    const cups = [];
+    ['A','B','C'].forEach((k,idx)=>{
+      const b = document.createElement('button'); b.textContent = '杯子 '+k;
+      b.onclick = ()=>answer(idx); row.appendChild(b); cups.push(b);
+    });
+    const draw = ()=>{
+      const {x,w,h} = g0; x.clearRect(0,0,w,h);
+      const X0=34,X1=w-14,Y0=h-24,Y1=12;
+      const mx = Math.max(1, ...trials.map(t=>t.d)), mn = 0;
+      x.strokeStyle='#39427a'; x.strokeRect(X0,Y1,X1-X0,Y0-Y1);
+      x.beginPath();
+      trials.forEach((t,k)=>{
+        const px = X0 + (trials.length<2?0:k/(trials.length-1))*(X1-X0);
+        const py = Y0 - (t.d-mn)/(mx-mn||1)*(Y0-Y1);
+        k?x.lineTo(px,py):x.moveTo(px,py);
+      });
+      x.strokeStyle='#a98bff'; x.lineWidth=2; x.stroke();
+      trials.forEach((t,k)=>{
+        const px = X0 + (trials.length<2?0:k/(trials.length-1))*(X1-X0);
+        const py = Y0 - (t.d-mn)/(mx-mn||1)*(Y0-Y1);
+        x.fillStyle = t.ok ? '#5ef08a' : '#ff6b6b';
+        x.fillRect(px-3,py-3,6,6);
+      });
+      g0.font('#8b97c9',11,'center'); x.fillText('试验次数 →', (X0+X1)/2, h-6);
+      g0.font('#8b97c9',10,'left'); x.fillText('浓度差', 2, Y1+10);
+    };
+    const answer = idx=>{
+      const ok = idx === odd;
+      trials.push({d, ok});
+      if(ok){ streak++; if(streak>=3){ d = Math.max(0.05, d*0.8); revs.push(d); streak=0; } }
+      else { streak = 0; d = Math.min(2, d*1.3); revs.push(d); odd = Math.floor(Math.random()*3); return final(); }
+      odd = Math.floor(Math.random()*3);
+      final();
+    };
+    const final = ()=>{
+      const est = revs.length ? revs.slice(-6).reduce((a,b)=>a+b,0)/Math.min(6,revs.length) : d;
+      stat.innerHTML = '已做 <b>'+trials.length+'</b> 轮　当前浓度差 <b>'+d.toFixed(3)
+        +'</b>　阈限估计 <b>'+est.toFixed(3)+'</b>'
+        + (revs.length>=3 ? '（阶梯已收敛到 70.7% 正确率处）' : '（继续判断，阶梯会自动收敛）');
+      trace.textContent = trials.slice(-14).map(t=>(t.ok?'✔':'✘')+' '+t.d.toFixed(3)).join('   ');
+      draw();
+    };
+    final();
+  },
+
+  /* ⑤ 一维扩散解析解 */
+  diff(){
+    const host = this.host;
+    const stat = document.createElement('div'); stat.className='stat'; host.appendChild(stat);
+    let D = 0.2, t = 1;
+    const g0 = mkCanvas(host, 190);
+    const draw = ()=>{
+      const {x,w,h} = g0; x.clearRect(0,0,w,h);
+      const xm = 12, X = v=>26+(v+xm)/(2*xm)*(w-40), Y = v=>h-26-v*(h-46);
+      x.strokeStyle='#39427a'; x.beginPath(); x.moveTo(26,h-26); x.lineTo(w-14,h-26); x.stroke();
+      x.beginPath();
+      for(let v=-xm; v<=xm; v+=0.05){
+        const c = Math.exp(-v*v/(4*D*t))/Math.sqrt(4*Math.PI*D*t);
+        v===-xm?x.moveTo(X(v),Y(c)):x.lineTo(X(v),Y(c));
+      }
+      x.strokeStyle='#4fd6f5'; x.lineWidth=2; x.stroke();
+      const peak = 1/Math.sqrt(4*Math.PI*D*t);
+      x.strokeStyle='rgba(255,217,74,.5)'; x.setLineDash([4,4]);
+      x.beginPath(); x.moveTo(X(0),h-26); x.lineTo(X(0),Y(peak)); x.stroke(); x.setLineDash([]);
+      g0.font('#8b97c9',11,'center'); x.fillText('距投放点 x', (w-40)/2+26, h-8);
+      stat.innerHTML = '扩散系数 D=<b>'+D.toFixed(2)+'</b> · 时间 t=<b>'+t.toFixed(2)
+        +'</b>　峰值浓度 <b>'+peak.toFixed(3)+'</b>　分布宽度 ∝ √(Dt)';
+    };
+    this.slider(host, 2, 200, 20, 1, '扩散系数 D', v=>(v/100).toFixed(2), v=>{ D=v/100; draw(); });
+    this.slider(host, 10, 500, 100, 1, '时间 t', v=>(v/100).toFixed(2), v=>{ t=v/100; draw(); });
+    const note=document.createElement('p'); note.className='mini';
+    note.textContent='解析解 c(x,t)=e^(−x²/4Dt)/√(4πDt)：质量守恒，峰值随时间下降、分布变宽。';
+    host.appendChild(note); draw();
+  },
+
+  /* ⑥ 最小方差套保 */
+  hedge(){
+    const host = this.host;
+    const stat = document.createElement('div'); stat.className='stat'; host.appendChild(stat);
+    // 模拟 200 天现货/期货价格差（相关系数 0.8）
+    const n = 200, rho = 0.8, dS = [], dF = [];
+    let s1=0,s2=0,f1=0,f2=0;
+    for(let i=0;i<n;i++){
+      const a = (Math.random()-0.5)*2, b = (Math.random()-0.5)*2;
+      const e1 = a, e2 = rho*a + Math.sqrt(1-rho*rho)*b;
+      dS.push(e1); dF.push(e2);
+    }
+    const mS = dS.reduce((a,b)=>a+b,0)/n, mF = dF.reduce((a,b)=>a+b,0)/n;
+    let cov=0, varF=0; const varS = dS.reduce((a,b)=>a+(b-mS)*(b-mS),0)/n;
+    for(let i=0;i<n;i++){ cov += (dS[i]-mS)*(dF[i]-mF); varF += (dF[i]-mF)*(dF[i]-mF); }
+    cov/=n; varF/=n;
+    const hStar = cov/varF;
+    const vh = h => varS - 2*h*cov + h*h*varF;
+    let h = 0.5;
+    const g0 = mkCanvas(host, 190);
+    const draw = ()=>{
+      const {x,w,h:hh} = g0; x.clearRect(0,0,w,hh);
+      const X0=40,X1=w-16,Y0=hh-26,Y1=14;
+      const mx = Math.max(vh(0), vh(2));
+      x.strokeStyle='#39427a'; x.strokeRect(X0,Y1,X1-X0,Y0-Y1);
+      x.beginPath();
+      for(let k=0;k<=200;k++){
+        const hh2 = k/200*2, v = vh(hh2);
+        const px=X0+k/200*(X1-X0), py=Y0-v/mx*(Y0-Y1);
+        k?x.lineTo(px,py):x.moveTo(px,py);
+      }
+      x.strokeStyle='#5ef08a'; x.lineWidth=2; x.stroke();
+      // 最优比
+      const pxS = X0 + hStar/2*(X1-X0);
+      x.strokeStyle='#ffd94a'; x.setLineDash([4,4]); x.beginPath();
+      x.moveTo(pxS,Y1); x.lineTo(pxS,Y0); x.stroke(); x.setLineDash([]);
+      g0.font('#ffd94a',11,'center'); x.fillText('最优 h*='+hStar.toFixed(2), pxS, Y1+12);
+      const px = X0 + h/2*(X1-X0), py = Y0 - vh(h)/mx*(Y0-Y1);
+      x.fillStyle='#fff'; x.fillRect(px-4,py-4,8,8);
+      g0.font('#8b97c9',11,'center'); x.fillText('套保比率 h', (X0+X1)/2, hh-6);
+      const cut = (1 - vh(h)/varS)*100;
+      stat.innerHTML = '套保比 h=<b>'+h.toFixed(2)+'</b> → 组合方差 <b>'+vh(h).toFixed(3)
+        +'</b>（不套保 '+varS.toFixed(3)+'，下降 <b>'+cut.toFixed(1)+'%</b>）';
+    };
+    this.slider(host, 0, 200, 50, 1, '套保比率 h', v=>(v/100).toFixed(2), v=>{ h=v/100; draw(); });
+    draw();
+  },
+
+  /* ⑦ 分类阈值与混淆矩阵 */
+  thresh(){
+    const host = this.host;
+    const stat = document.createElement('div'); stat.className='stat'; host.appendChild(stat);
+    const mat = document.createElement('div'); mat.className='out'; host.appendChild(mat);
+    let t = 0.8; const d = 1.6, N = 100;
+    const g0 = mkCanvas(host, 180);
+    const draw = ()=>{
+      const {x,w,h} = g0; x.clearRect(0,0,w,h);
+      const lo=-4, hi=6, X = v=>30+(v-lo)/(hi-lo)*(w-46), Y = v=>h-28-v*(h-50);
+      x.strokeStyle='#39427a'; x.beginPath(); x.moveTo(30,h-28); x.lineTo(w-14,h-28); x.stroke();
+      const fill=(mu,col)=>{ x.beginPath(); x.moveTo(X(lo),h-28);
+        for(let v=lo;v<=hi;v+=0.08) x.lineTo(X(v), Y(gaussPdf(v-mu)*1.2));
+        x.lineTo(X(hi),h-28); x.closePath(); x.fillStyle=col; x.fill(); };
+      fill(0,'rgba(79,214,245,.35)'); fill(d,'rgba(255,217,74,.35)');
+      x.strokeStyle='#ff6b6b'; x.beginPath(); x.moveTo(X(t),16); x.lineTo(X(t),h-28); x.stroke();
+      g0.font('#ff6b6b',11,'left'); x.fillText('阈值', X(t)+4, 24);
+      g0.font('#8b97c9',11,'center');
+      x.fillText('阴性', X(0), h-10); x.fillText('阳性', X(d), h-10);
+      const TP = Math.round(N*(1-PHI(t-d))), FP = Math.round(N*(1-PHI(t)));
+      const FN = N-TP, TN = N-FP;
+      const prec = TP+FP ? TP/(TP+FP) : 0, rec = TP/(TP+FN), f1 = prec+rec ? 2*prec*rec/(prec+rec) : 0;
+      stat.innerHTML = '阈值 <b>'+t.toFixed(2)+'</b>　查准率 <b>'+(prec*100).toFixed(0)
+        +'%</b> · 查全率 <b>'+(rec*100).toFixed(0)+'%</b> · F1 <b>'+f1.toFixed(3)+'</b>';
+      mat.textContent = '              预测阳性   预测阴性\n真阳性样本      TP='+TP+'        FN='+FN
+        +'\n真阴性样本      FP='+FP+'        TN='+TN;
+    };
+    this.slider(host, -100, 400, 80, 1, '阈值', v=>(v/100).toFixed(2), v=>{ t=v/100; draw(); });
+    draw();
+  },
+
+  /* ⑧ 过拟合演示 */
+  overfit(){
+    const host = this.host;
+    const stat = document.createElement('div'); stat.className='stat'; host.appendChild(stat);
+    const truth = x => Math.sin(1.6*x) + 0.35*x;
+    const tr = Array.from({length:15}, (_,i)=>{ const x=-2+4*i/14; return [x, truth(x)+(Math.random()-0.5)*0.8]; });
+    const va = Array.from({length:60}, (_,i)=>{ const x=-2+4*i/59; return [x, truth(x)+(Math.random()-0.5)*0.8]; });
+    let k = 1;
+    const solve = (A,b)=>{
+      const n=b.length;
+      for(let i=0;i<n;i++){ let p=i;
+        for(let q=i+1;q<n;q++) if(Math.abs(A[q][i])>Math.abs(A[p][i])) p=q;
+        [A[i],A[p]]=[A[p],A[i]]; [b[i],b[p]]=[b[p],b[i]];
+        for(let q=i+1;q<n;q++){ const f=A[q][i]/(A[i][i]||1e-12);
+          for(let m=i;m<n;m++) A[q][m]-=f*A[i][m]; b[q]-=f*b[i]; } }
+      const x=new Array(n).fill(0);
+      for(let i=n-1;i>=0;i--){ let s=b[i]; for(let q=i+1;q<n;q++) s-=A[i][q]*x[q]; x[i]=s/(A[i][i]||1e-12); }
+      return x;
+    };
+    const fit = (deg, data)=>{
+      const m = deg+1, A = [], b = [], lam = 1e-6;
+      for(let r=0;r<m;r++){ A.push(new Array(m).fill(0)); b.push(0); }
+      data.forEach(([xv,yv])=>{ const p=[]; for(let d=0;d<m;d++) p.push(Math.pow(xv,d));
+        for(let r=0;r<m;r++){ for(let c2=0;c2<m;c2++) A[r][c2]+=p[r]*p[c2]; b[r]+=p[r]*yv; } });
+      for(let r=0;r<m;r++) A[r][r]+=lam;
+      return {co:solve(A,b), m};
+    };
+    const rmse=(co,m0,data)=>Math.sqrt(data.reduce((a,[xv,yv])=>{
+      let p=0; for(let d=0;d<m0;d++) p+=co[d]*Math.pow(xv,d);
+      return a+(p-yv)*(p-yv);
+    },0)/data.length);
+    const g0 = mkCanvas(host, 190);
+    const draw = ()=>{
+      const {x,w,h} = g0; x.clearRect(0,0,w,h);
+      const X = v=>26+(v+2)/4*(w-40), Y = v=>h/2-v*(h/2-18);
+      x.strokeStyle='#39427a'; x.beginPath(); x.moveTo(26,h-24); x.lineTo(w-14,h-24); x.stroke();
+      x.fillStyle='#4fd6f5';
+      tr.forEach(([xv,yv])=>{ x.fillRect(X(xv)-3, Y(yv)-3, 6, 6); });
+      x.fillStyle='rgba(94,240,138,.5)';
+      va.forEach(([xv,yv])=>{ x.fillRect(X(xv)-2, Y(yv)-2, 4, 4); });
+      const f = fit(k, tr);
+      x.beginPath();
+      for(let i=0;i<=200;i++){ const xv=-2+4*i/200;
+        let p=0; for(let d2=0;d2<f.m;d2++) p+=f.co[d2]*Math.pow(xv,d2);
+        const px=X(xv), py=Y(p); i?x.lineTo(px,py):x.moveTo(px,py); }
+      x.strokeStyle='#ffd94a'; x.lineWidth=2; x.stroke();
+      const e1=rmse(f.co,f.m,tr), e2=rmse(f.co,f.m,va);
+      stat.innerHTML = '阶数 <b>'+k+'</b>　训练误差 <b>'+e1.toFixed(3)
+        +'</b> · 验证误差 <b>'+e2.toFixed(3)+'</b>' + (e2>e1*2 ? '　← 过拟合了' : '');
+    };
+    this.slider(host, 1, 12, 1, 1, '多项式阶数', v=>v+'', v=>{ k=v; draw(); });
+    const note=document.createElement('p'); note.className='mini';
+    note.textContent='蓝点=训练数据，绿点=验证数据。阶数越高训练误差越低，但验证误差先降后升——这就是过拟合。';
+    host.appendChild(note); draw();
+  }
+};
+
+/* =========================================================================
+   碰撞熔炉：36 对法术卡
+   ========================================================================= */
+const FORGE_STORE = 'midnight-fst-forge-v1';
 const Forge = {
-  visited:{},
-  total(){ return MAJORS.length * (MAJORS.length - 1) / 2; },   // C(34,2) = 561
-  key(i,j){ return i < j ? i+'-'+j : j+'-'+i; },
-  place(a,b){
-    const A = CATS[a.c].aff, B = CATS[b.c].aff;
-    if(A && A === B) return {k:'同门', n:AFFL[A]+' · 同门词条',
-      d:'这对专业共享「'+AFFL[A]+'」的亲和领域，碰撞结果可直接编入该学派手账的正统词条。', jump:SCHOOL_ROUTE[A]};
-    if(A && B) return {k:'交汇', n:'交汇圣坛 · '+CROSS[[A,B].sort().join('|')],
-      d:'两个真学派两两相遇——这正是交汇圣坛上才有的组合，需要联手完成对应实验才能验证它。', jump:CROSS_ROUTE[[A,B].sort().join('|')]};
-    if(A || B){ const p = A || B;
-      return {k:'客座', n:AFFL[p]+' · 外门客座',
-        d:'「'+AFFL[p]+'」愿意收留这条碰撞，但手账里还没有对应词条——熔炉先把它记为待编目。', jump:SCHOOL_ROUTE[p]}; }
-    return {k:'空白', n:'圣坛之外 · 空白之地',
-      d:'三个学派都尚未认领这对组合：火花真实存在，只是还没有人替它命名——词条草稿已由熔炉保留。', jump:null};
+  visited:{}, filter:'all',
+  total(){ return PAIRS.length; },
+  find(i,j){
+    for(let k=0;k<PAIRS.length;k++)
+      if((PAIRS[k].i===i&&PAIRS[k].j===j)||(PAIRS[k].i===j&&PAIRS[k].j===i)) return k;
+    return -1;
   },
-  side(m){
-    return '<div class="fside"><div class="fname">'+m.n+'</div>'+
-      '<div class="fwhere">'+m.col+' · '+m.dep+'｜类别：'+CATS[m.c].n+'</div>'+
-      '<p>'+m.s+'</p>'+
-      '<p style="color:#9aa3c7;font-size:12.5px">方法「'+m.m+'」· 对象「'+m.o+'」</p>'+
-      '<a href="'+m.u+'" target="_blank" rel="noopener">'+m.u+'</a></div>';
+  legend(){
+    document.getElementById('legend').innerHTML = Object.keys(DEPTS).map(k =>
+      '<span><i style="background:'+DEPTS[k].col+'"></i>'+DEPTS[k].n+'</span>').join('');
   },
-  render(i,j){
-    const a = MAJORS[i], b = MAJORS[j];
-    const br = BRIDGES[[a.c, b.c].sort().join('|')];
-    const pl = this.place(a,b);
-    document.getElementById('forgeOut').innerHTML =
-      '<div class="fpair">'+this.side(a)+'<div class="fmid">⊗</div>'+this.side(b)+'</div>'+
-      '<div class="fburst">'+
-        '<div class="fb"><b>火花「'+br.n+'」</b>　'+a.n+' ⊗ '+b.n+'</div>'+
-        '<div class="fb">正向：<b>'+a.n+'</b> 以「'+a.m+'」作用于 <b>'+b.n+'</b> 的「'+b.o+'」。</div>'+
-        '<div class="fb">反向：<b>'+b.n+'</b> 以「'+b.m+'」作用于 <b>'+a.n+'</b> 的「'+a.o+'」——同一条规则换向再生。</div>'+
-        '<div class="fbridge">桥接洞见（'+CATS[a.c].n+' × '+CATS[b.c].n+'）：'+br.d+'</div>'+
-      '</div>'+
-      '<div class="fplace"><b>学派落点 · '+pl.n+'</b><br>'+pl.d+
-        (pl.jump ? '<a class="btn-jump" href="'+pl.jump+'">前往查看</a>' : '')+'</div>';
+  filters(){
+    const f = document.getElementById('cardFilter');
+    const opts = [['all','全部 36'],['done','已合成'],['todo','未合成']]
+      .concat(Object.keys(DEPTS).map(k=>[k, DEPTS[k].n]));
+    f.innerHTML = '';
+    opts.forEach(([k,label])=>{
+      const b = document.createElement('button'); b.className = 'sm'; b.textContent = label;
+      if(this.filter===k) b.classList.add('primary');
+      b.onclick = ()=>{ this.filter = k; this.cards(); };
+      f.appendChild(b);
+    });
+  },
+  card(k){
+    const p = PAIRS[k], a = MAJORS[p.i], b = MAJORS[p.j], done = !!this.visited[k];
+    const el = document.createElement('div');
+    el.className = 'sc' + (done?' done':'');
+    el.innerHTML = '<div class="nm">'+p.n+'</div>'
+      + '<div class="pair">'+a.n+' ⊗ '+b.n+'</div>'
+      + '<div class="dep">'+DEPTS[a.c].n+' × '+DEPTS[b.c].n+'</div>'
+      + (p.mini?'<div class="mk">▶ 带可玩小实验</div>':'');
+    el.onclick = ()=>this.open(k);
+    return el;
+  },
+  cards(){
+    this.filters();
+    const g = document.getElementById('cardGrid'); g.innerHTML = '';
+    let shown = 0;
+    PAIRS.forEach((p,k)=>{
+      const a = MAJORS[p.i];
+      if(this.filter==='done' && !this.visited[k]) return;
+      if(this.filter==='todo' && this.visited[k]) return;
+      if(DEPTS[this.filter] && a.c!==this.filter && MAJORS[p.j].c!==this.filter) return;
+      g.appendChild(this.card(k)); shown++;
+    });
+    if(!shown) g.innerHTML = '<p class="note">这个筛选下还没有卡。</p>';
+    const cc = document.getElementById('codexCards');
+    if(cc){
+      cc.innerHTML = '';
+      const doneK = Object.keys(this.visited).map(Number).sort((x,y)=>x-y);
+      if(!doneK.length) cc.innerHTML = '<p class="note">还没有合成任何法术卡——去碰撞熔炉把两个专业拖到一起。</p>';
+      doneK.forEach(k=>cc.appendChild(this.card(k)));
+    }
   },
   prog(){
     const ks = Object.keys(this.visited);
-    const by = {'交汇':0,'同门':0,'客座':0,'空白':0};
-    ks.forEach(k=>{
-      const p = k.split('-');
-      by[this.place(MAJORS[+p[0]], MAJORS[+p[1]]).k]++;
-    });
     document.getElementById('forgeProg').textContent = '已碰撞 ' + ks.length + ' / ' + this.total();
-    document.getElementById('forgeKind').textContent = ks.length ?
-      ('落点 · 交汇 ' + by['交汇'] + ' · 同门 ' + by['同门'] +
-       ' · 客座 ' + by['客座'] + ' · 空白 ' + by['空白']) : '';
+    const miniN = ks.filter(k=>PAIRS[k].mini).length;
+    document.getElementById('forgeKind').textContent = ks.length
+      ? ('其中 ' + miniN + ' 张带小实验') : '';
+    const cp = document.getElementById('codexProg');
+    if(cp) cp.textContent = '已合成 ' + ks.length + ' / ' + this.total();
+    this.cards();
     Field.refresh();
   },
   pick(i,j){
-    if(i === j) return;
-    const k = this.key(i,j);
+    const k = this.find(i,j); if(k < 0) return;
     let fresh = false;
     if(!this.visited[k]){
       this.visited[k] = 1; fresh = true;
       try{ localStorage.setItem(FORGE_STORE, JSON.stringify(Object.keys(this.visited))); }catch(e){}
     }
     this.prog();
-    if(fresh) toast('💥 已探索 ' + Object.keys(this.visited).length + ' / ' + this.total() + ' 种专业组合');
+    if(fresh) toast('💥 合成「' + PAIRS[k].n + '」 ' + Object.keys(this.visited).length + ' / ' + this.total());
   },
-  open(i,j){
-    this.render(i,j);
+  side(m){
+    return '<div class="side"><div class="t">'+m.n+'</div>'
+      + '<div class="w">'+m.dep+'</div>'
+      + '<p><b style="color:'+DEPTS[m.c].col+'">'+m.m+'</b><br>作用于「'+m.o+'」</p>'
+      + '<p style="color:var(--dim)">'+m.s+'</p>'
+      + '<a href="'+m.u+'" target="_blank" rel="noopener">系官网 →</a></div>';
+  },
+  render(k){
+    const p = PAIRS[k], a = MAJORS[p.i], b = MAJORS[p.j];
+    document.getElementById('forgeOut').innerHTML =
+      '<div class="mrow">'+this.side(a)+'<div class="mid">⊗</div>'+this.side(b)+'</div>'
+      + '<div class="burn"><div class="h">火花 · '+p.n+'</div>'
+      + '<div class="ln"><b>交叉方式：</b>'+p.x+'</div>'
+      + '<div class="ln"><b>真实案例：</b>'+p.ex+'</div>'
+      + '<div class="kb"><b>边界：</b>'+p.lim+'</div>'
+      + (p.mini?'<div style="margin-top:10px"><button class="primary sm" id="btnMini">▶ 进入小实验：'
+          +MINIS[p.mini].t+'</button></div>':'')
+      + '</div>';
+    if(p.mini) document.getElementById('btnMini').onclick = ()=>Minis.open(p.mini);
+  },
+  open(k){
+    this.render(k);
     document.getElementById('fmodal').classList.add('show');
+    if(!this.visited[k]){ /* 点开即视为已探索 */ }
   },
   init(){
-    try{ (JSON.parse(localStorage.getItem(FORGE_STORE) || '[]')).forEach(k=>{ this.visited[k] = 1; }); }catch(e){}
+    try{ (JSON.parse(localStorage.getItem(FORGE_STORE)||'[]')).forEach(k=>{ this.visited[k]=1; }); }catch(e){}
+    this.legend();
+    const m = document.getElementById('fmodal');
+    document.getElementById('btnFclose').onclick = ()=> m.classList.remove('show');
+    m.addEventListener('click', e=>{ if(e.target===m) m.classList.remove('show'); });
+    document.getElementById('btnForgeClear').onclick = ()=>{
+      if(!Object.keys(this.visited).length){ toast('还没有碰撞记录'); return; }
+      if(confirm('清空全部 36 张法术卡？')){
+        this.visited = {};
+        try{ localStorage.removeItem(FORGE_STORE); }catch(e){}
+        this.prog(); toast('已清空卡册');
+      }
+    };
+    document.getElementById('btnForgeRand').onclick = ()=>Field.rand();
     this.prog();
-    const modal = document.getElementById('fmodal');
-    document.getElementById('btnFclose').onclick = ()=> modal.classList.remove('show');
-    modal.addEventListener('click', e=>{
-      if(e.target === modal || (e.target.closest && e.target.closest('a[href^="#"]')))
-        modal.classList.remove('show');            // 点遮罩或「前往查看」都先关弹窗
-    });
-    document.addEventListener('keydown', e=>{ if(e.key === 'Escape') modal.classList.remove('show'); });
-    document.getElementById('legend').innerHTML = Object.keys(CATS).map(k=>
-      '<span><i style="background:' + Field.COL[k] + '"></i>' + CATS[k].n + '</span>').join('');
   }
 };
 
 /* =========================================================================
-   Field — 泡泡舞台：34 个专业泡泡漂浮，拖拽 / 连点两下碰撞出火花
+   像素泡泡舞台：9 个专业方块漂浮，拖拽合并 → 像素火花 → 法术卡
    ========================================================================= */
 const Field = {
-  COL:{ ai:'#a78bfa', math:'#67e8f9', life:'#86efac', biz:'#ffd479',
-        comm:'#7dd3fc', art:'#f472b6', psy:'#fca5a5' },
-  FONT:'"PingFang SC","Microsoft YaHei",system-ui,sans-serif',
-  cvs:null, ctx:null, W:0, H:0, dpr:1, vis:true,
-  bs:[], fx:[], cnt:null, sel:-1, drag:-1, hover:-1,
-  down:null, pp:null, moved:false, firstHit:false, raf:0, laid:false,
-
-  rgba(hex,a){
-    const n = parseInt(hex.slice(1),16);
-    return 'rgba(' + (n>>16) + ',' + ((n>>8)&255) + ',' + (n&255) + ',' + a + ')';
-  },
-  radius(m){                                    // 泡泡半径（小屏自适应缩小）
-    const s = Math.max(.6, Math.min(1, this.W / 860));
-    return (20 + m.n.length * 2.2) * s;
-  },
+  cvs:null, ctx:null, W:0, H:0, dpr:1, vis:true, laid:false,
+  bs:[], fx:[], sel:-1, drag:-1, hover:-1, down:null, pp:null, moved:false, raf:0,
+  radius(m){ return Math.max(30, Math.min(56, 30 + m.n.length*3)); },
   resize(){
     const w = this.cvs.clientWidth, h = this.cvs.clientHeight;
-    if(w < 40 || h < 40) return;                  // 视图隐藏时跳过（clientWidth 为 0）
+    if(w < 40 || h < 40) return;
     const dpr = this.dpr = window.devicePixelRatio || 1;
     this.W = w; this.H = h;
-    this.cvs.width = this.W * dpr; this.cvs.height = this.H * dpr;
+    this.cvs.width = w*dpr; this.cvs.height = h*dpr;
     this.ctx.setTransform(dpr,0,0,dpr,0,0);
     if(!this.laid){ this.lay(); this.laid = true; return; }
-    this.bs.forEach(b=>{
-      b.x = Math.min(Math.max(b.x, b.r), Math.max(b.r, this.W - b.r));
-      b.y = Math.min(Math.max(b.y, 44 + b.r), Math.max(44 + b.r, this.H - 56 - b.r));
-    });
+    this.bs.forEach(b=>{ b.x = Math.max(b.r, Math.min(this.W-b.r, b.x));
+                         b.y = Math.max(24+b.r, Math.min(this.H-24-b.r, b.y)); });
   },
-  lay(){                                           // 首次可见时布置泡泡
-    this.bs = MAJORS.map((m, i) => {
+  lay(){
+    this.bs = MAJORS.map((m,i)=>{
       const r = this.radius(m);
-      let x = r, y = 44 + r, ok = false, tries = 0;
-      while(!ok && tries++ < 80){
-        x = r + Math.random() * Math.max(1, this.W - 2*r);
-        y = 44 + r + Math.random() * Math.max(1, this.H - 100 - 2*r);
-        ok = this.bs.every(b => Math.hypot(b.x - x, b.y - y) > b.r + r + 4);
+      let x=r, y=r+24, ok=false, t=0;
+      while(!ok && t++<120){
+        x = r + Math.random()*Math.max(1, this.W-2*r);
+        y = 24 + r + Math.random()*Math.max(1, this.H-48-2*r);
+        ok = this.bs.every(b=>Math.abs(b.x-x) > b.r+r-6 || Math.abs(b.y-y) > b.r+r-6);
       }
-      const a = Math.random() * Math.PI * 2, sp = .3 + Math.random() * .4;
+      const a = Math.random()*Math.PI*2, sp = .25+Math.random()*.35;
       return { i, x, y, r, vx:Math.cos(a)*sp, vy:Math.sin(a)*sp };
     });
-    this.refresh();
   },
-  refresh(){                                     // 每个泡泡参与过的碰撞次数
-    this.cnt = MAJORS.map(()=>0);
-    Object.keys(Forge.visited).forEach(k=>{
-      const p = k.split('-');
-      this.cnt[+p[0]]++; this.cnt[+p[1]]++;
-    });
-  },
-  hit(p, ex){                                    // 命中检测（可排除某个泡泡）
-    let best = -1, bd = 1e9;
+  refresh(){},
+  hit(p, ex){
+    let best=-1, bd=1e9;
     for(const b of this.bs){
-      if(b.i === ex) continue;
-      const d = Math.hypot(b.x - p.x, b.y - p.y);
-      if(d <= b.r + 4 && d < bd){ bd = d; best = b.i; }
+      if(b.i===ex) continue;
+      const d = Math.hypot(b.x-p.x, b.y-p.y);
+      if(d <= b.r+6 && d < bd){ bd=d; best=b.i; }
     }
     return best;
   },
-
-  /* ---------- 火花特效 ---------- */
   spark(x, y, ca, cb){
-    ca = ca || '#ffd479'; cb = cb || ca;
-    for(let i = 0; i < 46; i++){
-      const a = Math.random() * Math.PI * 2, sp = 1.5 + Math.random() * 5.5;
+    for(let i=0;i<40;i++){
+      const a = Math.random()*Math.PI*2, sp = 1.2+Math.random()*4.5;
       this.fx.push({ t:'p', x, y, vx:Math.cos(a)*sp, vy:Math.sin(a)*sp,
-        s:1.4 + Math.random()*2.4, life:34 + Math.random()*30, max:64,
-        c:[ '#ffd479', '#fff3cf', ca, cb ][i % 4] });
+        s:2+Math.floor(Math.random()*3)*2, life:26+Math.random()*22, max:48,
+        c:['#ffd94a','#ffffff',ca,cb][i%4] });
     }
-    this.fx.push({ t:'r', x, y, r0:6, r1:74, life:30, max:30, c:'#ffffff', lw:3, a:.9 });
-    this.fx.push({ t:'r', x, y, r0:10, r1:110, life:44, max:44, c:'#ffd479', lw:2.4, a:.75 });
+    this.fx.push({ t:'r', x, y, r0:8, r1:86, life:26, max:26, c:'#ffffff', lw:3 });
+    this.fx.push({ t:'r', x, y, r0:14, r1:124, life:38, max:38, c:'#ffd94a', lw:3 });
     if(navigator.vibrate) try{ navigator.vibrate(18); }catch(e){}
   },
   collide(i, j){
-    if(i === j) return;
+    if(i===j) return;
     const a = this.bs[i], b = this.bs[j];
-    this.spark((a.x + b.x) / 2, (a.y + b.y) / 2,
-               this.COL[MAJORS[i].c], this.COL[MAJORS[j].c]);
-    const dx = b.x - a.x || .01, dy = b.y - a.y || .01, d = Math.hypot(dx, dy) || 1;
-    a.vx = -dx/d*3.2; a.vy = -dy/d*3.2;           // 反冲弹开
-    b.vx =  dx/d*3.2; b.vy =  dy/d*3.2;
-    Forge.pick(i, j);
-    if(!this.firstHit){
-      this.firstHit = true;
-      document.getElementById('stageTip').classList.add('hide');
-    }
-    setTimeout(()=>Forge.open(i, j), 480);        // 火花后弹出碰撞结果
+    this.spark(Math.round((a.x+b.x)/2/4)*4, Math.round((a.y+b.y)/2/4)*4,
+      DEPTS[MAJORS[i].c].col, DEPTS[MAJORS[j].c].col);
+    const dx = b.x-a.x||.01, dy = b.y-a.y||.01, d = Math.hypot(dx,dy)||1;
+    a.vx = -dx/d*3; a.vy = -dy/d*3; b.vx = dx/d*3; b.vy = dy/d*3;
+    document.getElementById('stageTip').classList.add('hide');
+    Forge.pick(i,j);
+    setTimeout(()=>Forge.open(Forge.find(i,j)), 420);
   },
-
-  /* ---------- 物理与绘制 ---------- */
+  rand(){
+    const un = [];
+    for(let i=0;i<MAJORS.length;i++) for(let j=i+1;j<MAJORS.length;j++){
+      const k = Forge.find(i,j);
+      if(k>=0 && !Forge.visited[k]) un.push([i,j]);
+    }
+    let i, j;
+    if(un.length){ const p = un[Math.floor(Math.random()*un.length)]; i=p[0]; j=p[1]; }
+    else { i = Math.floor(Math.random()*MAJORS.length);
+           j = Math.floor(Math.random()*MAJORS.length); while(j===i) j=(j+1)%MAJORS.length; }
+    const a = this.bs[i], b = this.bs[j];
+    this.spark(a.x, a.y, DEPTS[MAJORS[i].c].col, DEPTS[MAJORS[j].c].col);
+    this.spark(b.x, b.y, DEPTS[MAJORS[j].c].col, DEPTS[MAJORS[i].c].col);
+    Forge.pick(i,j);
+    setTimeout(()=>Forge.open(Forge.find(i,j)), 420);
+  },
   tick(){
-    const top = 44, bot = this.H - 56;
+    const top = 24, bot = this.H - 24;
     for(const b of this.bs){
       if(b.i === this.drag) continue;
       b.x += b.vx; b.y += b.vy;
       if(b.x < b.r){ b.x = b.r; b.vx = Math.abs(b.vx); }
-      if(b.x > this.W - b.r){ b.x = this.W - b.r; b.vx = -Math.abs(b.vx); }
-      if(b.y < top + b.r){ b.y = top + b.r; b.vy = Math.abs(b.vy); }
-      if(b.y > bot - b.r){ b.y = bot - b.r; b.vy = -Math.abs(b.vy); }
-      const s = Math.hypot(b.vx, b.vy);
-      if(s < .2){ b.vx += (Math.random()-.5)*.24; b.vy += (Math.random()-.5)*.24; }
+      if(b.x > this.W-b.r){ b.x = this.W-b.r; b.vx = -Math.abs(b.vx); }
+      if(b.y < top+b.r){ b.y = top+b.r; b.vy = Math.abs(b.vy); }
+      if(b.y > bot-b.r){ b.y = bot-b.r; b.vy = -Math.abs(b.vy); }
+      const s = Math.hypot(b.vx,b.vy);
+      if(s < .18){ b.vx += (Math.random()-.5)*.22; b.vy += (Math.random()-.5)*.22; }
       if(s > 4){ b.vx *= .9; b.vy *= .9; }
     }
-    for(let i = 0; i < this.bs.length; i++){       // 泡泡间柔性分离（不触发结果）
-      for(let j = i + 1; j < this.bs.length; j++){
-        const a = this.bs[i], b = this.bs[j];
-        let dx = b.x - a.x, dy = b.y - a.y;
-        const d = Math.hypot(dx, dy) || .01, min = a.r + b.r;
-        if(d >= min) continue;
-        const ov = (min - d) / 2, ux = dx / d, uy = dy / d;
-        if(a.i !== this.drag){ a.x -= ux*ov; a.y -= uy*ov; }
-        if(b.i !== this.drag){ b.x += ux*ov; b.y += uy*ov; }
-        const pr = (a.vx - b.vx)*ux + (a.vy - b.vy)*uy;
-        if(pr < 0){
-          if(a.i !== this.drag){ a.vx -= pr*ux; a.vy -= pr*uy; }
-          if(b.i !== this.drag){ b.vx += pr*ux; b.vy += pr*uy; }
-        }
+    for(let i=0;i<this.bs.length;i++) for(let j=i+1;j<this.bs.length;j++){
+      const a = this.bs[i], b = this.bs[j];
+      const dx = b.x-a.x, dy = b.y-a.y, d = Math.hypot(dx,dy)||.01, min = a.r+b.r;
+      if(d >= min) continue;
+      const ov = (min-d)/2, ux = dx/d, uy = dy/d;
+      if(a.i!==this.drag){ a.x -= ux*ov; a.y -= uy*ov; }
+      if(b.i!==this.drag){ b.x += ux*ov; b.y += uy*ov; }
+      const pr = (a.vx-b.vx)*ux + (a.vy-b.vy)*uy;
+      if(pr < 0){
+        if(a.i!==this.drag){ a.vx -= pr*ux; a.vy -= pr*uy; }
+        if(b.i!==this.drag){ b.vx += pr*ux; b.vy += pr*uy; }
       }
     }
-    for(const f of this.fx){                       // 火花粒子衰减
-      if(f.t === 'r'){ f.life--; }
-      else { f.x += f.vx; f.y += f.vy; f.vx *= .93; f.vy *= .93; f.vy += .05; f.life--; }
+    for(const f of this.fx){
+      if(f.t==='r') f.life--;
+      else { f.x += f.vx; f.y += f.vy; f.vx*=.92; f.vy*=.92; f.life--; }
     }
-    this.fx = this.fx.filter(f => f.life > 0);
+    this.fx = this.fx.filter(f=>f.life>0);
   },
   draw(){
     const c = this.ctx;
-    c.clearRect(0, 0, this.W, this.H);
-    for(const f of this.fx){                       // 先画火花
-      const k = f.life / f.max;
-      c.globalAlpha = Math.min(1, k * 1.7);
-      if(f.t === 'r'){
-        const e = 1 - k;
-        c.strokeStyle = f.c; c.lineWidth = f.lw * (1 - e*.6);
-        c.beginPath(); c.arc(f.x, f.y, f.r0 + (f.r1 - f.r0) * e, 0, 7); c.stroke();
+    c.clearRect(0,0,this.W,this.H);
+    // 像素网格底纹
+    c.fillStyle = 'rgba(255,255,255,.035)';
+    for(let x=0;x<this.W;x+=24) for(let y=0;y<this.H;y+=24) c.fillRect(x,y,2,2);
+    // 火花
+    for(const f of this.fx){
+      const k = f.life/f.max;
+      c.globalAlpha = Math.min(1, k*1.8);
+      if(f.t==='r'){
+        const e = 1-k, s = 4;
+        const r0 = Math.round((f.r0+(f.r1-f.r0)*e)/s)*s;
+        c.strokeStyle = f.c; c.lineWidth = f.lw;
+        c.strokeRect(f.x-r0, f.y-r0, r0*2, r0*2);
       }else{
         c.fillStyle = f.c;
-        c.beginPath(); c.arc(f.x, f.y, f.s * (.4 + k*.6), 0, 7); c.fill();
+        c.fillRect(Math.round(f.x/2)*2, Math.round(f.y/2)*2, f.s, f.s);
       }
     }
     c.globalAlpha = 1;
-    const rot = (Date.now() / 40) % (Math.PI * 2);   // 选中圈的旋转相位
+    const rot = Math.floor(Date.now()/140)%2;
     for(const b of this.bs){
-      const m = MAJORS[b.i], col = this.COL[m.c], act = (this.drag === b.i || this.sel === b.i);
-      c.save();
-      c.shadowColor = col; c.shadowBlur = act ? 26 : 13;
-      const g = c.createRadialGradient(b.x - b.r*.3, b.y - b.r*.35, b.r*.15, b.x, b.y, b.r);
-      g.addColorStop(0, this.rgba(col, .55)); g.addColorStop(1, this.rgba(col, .13));
-      c.fillStyle = g; c.beginPath(); c.arc(b.x, b.y, b.r, 0, 7); c.fill();
-      c.shadowBlur = 0;
-      c.strokeStyle = this.rgba(col, .9); c.lineWidth = 1.4;
-      c.beginPath(); c.arc(b.x, b.y, b.r, 0, 7); c.stroke();
-      if(this.cnt && this.cnt[b.i]){               // 已碰撞过的泡泡带金环
-        c.strokeStyle = 'rgba(255,212,121,' + Math.min(.8, .3 + this.cnt[b.i]*.1) + ')';
-        c.lineWidth = 2;
-        c.beginPath(); c.arc(b.x, b.y, b.r + 3.5, 0, 7); c.stroke();
+      const m = MAJORS[b.i], col = DEPTS[m.c].col;
+      const x = Math.round(b.x/4)*4, y = Math.round(b.y/4)*4, r = Math.round(b.r/4)*4;
+      // 抖动（dither）填充
+      c.fillStyle = 'rgba(255,255,255,.05)';
+      c.fillRect(x-r, y-r, r*2, r*2);
+      c.fillStyle = col;
+      for(let i=-r;i<r;i+=4) for(let j=-r;j<r;j+=4){
+        const edge = Math.min(r-Math.abs(i), r-Math.abs(j));
+        if(edge <= 0) continue;
+        if((i/4+j/4)%2===0 || edge > 8) c.fillRect(x+i, y+j, 4, 4);
       }
-      if(this.drag >= 0 && this.hover === b.i && this.hover !== this.drag){  // 拖到目标上
-        c.setLineDash([6, 5]); c.strokeStyle = '#ffd479'; c.lineWidth = 2.4;
-        c.beginPath(); c.arc(b.x, b.y, b.r + 7, rot, rot + Math.PI*2); c.stroke();
-        c.setLineDash([]);
-      }else if(this.sel === b.i){
-        c.setLineDash([6, 5]); c.strokeStyle = '#ffd479'; c.lineWidth = 2.4;
-        c.beginPath(); c.arc(b.x, b.y, b.r + 7, rot, rot + Math.PI*2); c.stroke();
-        c.setLineDash([]);
+      c.strokeStyle = '#05070f'; c.lineWidth = 3;
+      c.strokeRect(x-r, y-r, r*2, r*2);
+      const act = (this.drag===b.i || this.sel===b.i);
+      if(act || (this.drag>=0 && this.hover===b.i)){
+        c.strokeStyle = '#ffd94a'; c.lineWidth = 3;
+        const o = r+6, dash = rot? o : o-8;
+        c.beginPath();
+        c.moveTo(x-dash,y-o); c.lineTo(x+o,y-o); c.lineTo(x+o,y+o); c.lineTo(x-dash,y+o); c.closePath();
+        c.stroke();
       }
-      const n = m.n, s = this.radius(m) / (20 + n.length * 2.2);   // 字号随缩放
+      const nm = m.n, per = Math.ceil(nm.length/2), l1 = nm.slice(0,per), l2 = nm.slice(per);
       c.fillStyle = '#fff'; c.textAlign = 'center'; c.textBaseline = 'middle';
-      c.shadowColor = 'rgba(0,0,0,.65)'; c.shadowBlur = 4;
-      if(n.length <= 4){
-        c.font = '600 ' + (Math.max(9, 13 * s)) + 'px ' + this.FONT;
-        c.fillText(n, b.x, b.y);
-      }else{
-        const cut = Math.ceil(n.length / 2), fs = Math.max(8.5, 12 * s);
-        c.font = '600 ' + fs + 'px ' + this.FONT;
-        c.fillText(n.slice(0, cut), b.x, b.y - fs*.62);
-        c.fillText(n.slice(cut), b.x, b.y + fs*.62);
-      }
-      c.restore();
+      c.font = '700 13px ui-monospace,monospace';
+      if(l2){ c.fillText(l1, x, y-8); c.fillText(l2, x, y+8); }
+      else c.fillText(l1, x, y);
+      c.font = '10px ui-monospace,monospace'; c.fillStyle = 'rgba(255,255,255,.75)';
+      c.fillText(DEPTS[m.c].n.slice(0,4), x, y + (l2?24:20));
     }
   },
   loop(){
@@ -1499,130 +1841,229 @@ const Field = {
     if(!this.vis) return;
     this.tick(); this.draw();
   },
-
   init(){
     this.cvs = document.getElementById('bubbles');
     this.ctx = this.cvs.getContext('2d');
-    this.resize();                                 // 泡泡布置延迟到首次可见时
-
+    this.resize();
     const P = e => { const rc = this.cvs.getBoundingClientRect();
-                     return { x:e.clientX - rc.left, y:e.clientY - rc.top }; };
-    this.cvs.addEventListener('pointerdown', e => {
+                     return { x:e.clientX-rc.left, y:e.clientY-rc.top }; };
+    this.cvs.addEventListener('pointerdown', e=>{
       const p = P(e), h = this.hit(p);
       if(h < 0){ this.sel = -1; return; }
       this.drag = h; this.down = p; this.pp = p; this.moved = false;
-      this.cvs.classList.add('grabbing');
+      this.cvs.classList.add('grab');
       try{ this.cvs.setPointerCapture(e.pointerId); }catch(err){}
     });
-    this.cvs.addEventListener('pointermove', e => {
+    this.cvs.addEventListener('pointermove', e=>{
       const p = P(e);
       if(this.drag < 0){ this.hover = this.hit(p); return; }
       const b = this.bs[this.drag];
-      if(Math.hypot(p.x - this.down.x, p.y - this.down.y) > 6) this.moved = true;
-      b.vx = Math.max(-9, Math.min(9, p.x - this.pp.x));
-      b.vy = Math.max(-9, Math.min(9, p.y - this.pp.y));
-      b.x = Math.min(Math.max(p.x, b.r), Math.max(b.r, this.W - b.r));
-      b.y = Math.min(Math.max(p.y, 44 + b.r), Math.max(44 + b.r, this.H - 56 - b.r));
+      if(Math.hypot(p.x-this.down.x, p.y-this.down.y) > 6) this.moved = true;
+      b.vx = Math.max(-9, Math.min(9, p.x-this.pp.x));
+      b.vy = Math.max(-9, Math.min(9, p.y-this.pp.y));
+      b.x = Math.max(b.r, Math.min(this.W-b.r, p.x));
+      b.y = Math.max(24+b.r, Math.min(this.H-24-b.r, p.y));
       this.pp = p;
       this.hover = this.hit(p, this.drag);
     });
-    const release = e => {
+    const rel = e => {
       if(this.drag < 0) return;
       const i = this.drag, p = P(e);
       this.drag = -1; this.hover = -1;
-      this.cvs.classList.remove('grabbing');
-      if(this.moved){                              // 拖到另一个泡泡上 → 碰撞
+      this.cvs.classList.remove('grab');
+      if(this.moved){
         const t = this.hit(p, i);
         if(t >= 0){ this.sel = -1; this.collide(i, t); return; }
-      }else{                                       // 点击选择 / 连点两下碰撞
+      }else{
         if(this.sel < 0) this.sel = i;
         else if(this.sel === i) this.sel = -1;
         else { const s = this.sel; this.sel = -1; this.collide(s, i); }
       }
     };
-    this.cvs.addEventListener('pointerup', release);
-    this.cvs.addEventListener('pointercancel', release);
-    this.cvs.addEventListener('pointerleave', e => { if(this.drag >= 0) release(e); });
-
-    if(window.IntersectionObserver){               // 离开视口时暂停动画
-      new IntersectionObserver(es => { this.vis = es[0].isIntersecting; },
-        { threshold:0 }).observe(this.cvs);
+    this.cvs.addEventListener('pointerup', rel);
+    this.cvs.addEventListener('pointercancel', rel);
+    this.cvs.addEventListener('pointerleave', e=>{ if(this.drag>=0) rel(e); });
+    if(window.IntersectionObserver){
+      new IntersectionObserver(es=>{ this.vis = es[0].isIntersecting; }, {threshold:0}).observe(this.cvs);
     }
-    window.addEventListener('resize', () => this.resize());
-
-    document.getElementById('btnForgeRand').onclick = () => {
-      const un = [];
-      for(let i = 0; i < MAJORS.length; i++)
-        for(let j = i + 1; j < MAJORS.length; j++)
-          if(!Forge.visited[Forge.key(i, j)]) un.push([i, j]);
-      let i, j;
-      if(un.length){ const pick = un[Math.floor(Math.random() * un.length)]; i = pick[0]; j = pick[1]; }
-      else { i = Math.floor(Math.random() * MAJORS.length);
-             j = Math.floor(Math.random() * MAJORS.length); while(j === i) j = (j + 1) % MAJORS.length; }
-      const a = this.bs[i], b = this.bs[j];
-      this.spark(a.x, a.y, this.COL[MAJORS[i].c], this.COL[MAJORS[j].c]);
-      this.spark(b.x, b.y, this.COL[MAJORS[j].c], this.COL[MAJORS[i].c]);
-      Forge.pick(i, j);
-      if(!this.firstHit){ this.firstHit = true; document.getElementById('stageTip').classList.add('hide'); }
-      setTimeout(() => Forge.open(i, j), 480);
-    };
-    document.getElementById('btnForgeClear').onclick = () => {
-      if(!Object.keys(Forge.visited).length){ toast('还没有碰撞记录'); return; }
-      if(confirm('清空全部碰撞探索记录？')){
-        Forge.visited = {};
-        try{ localStorage.removeItem(FORGE_STORE); }catch(e){}
-        Forge.prog();
-        toast('已清空探索记录');
-      }
-    };
-
+    window.addEventListener('resize', ()=>this.resize());
     this.loop();
   }
 };
 
 /* =========================================================================
-   路由与页面切换：hash 驱动的分页视图（列表页 → 嵌套子页）
+   旅程：线性解锁的星图
    ========================================================================= */
-const ROUTES = {
-  '/home':'v-home',
-  '/schools':'v-schools',
-  '/schools/cipher':'v-school-cipher',
-  '/schools/sampling':'v-school-sampling',
-  '/schools/web':'v-school-web',
-  '/altar':'v-altar',
-  '/altar/freq':'v-altar-freq',
-  '/altar/recapture':'v-altar-recapture',
-  '/altar/dna':'v-altar-dna',
-  '/forge':'v-forge',
-  '/codex':'v-codex'
+const NARR = {
+  cipher:'门在身后合上。第一课：把知识锁起来，再亲手打开它。',
+  sampling:'看不清全体，只能一只一只地抓——这就是统计学诞生的理由。',
+  web:'网里每根线都连着别处；抽走一根，整张网都会晃。',
+  forge:'现在把两个专业拖到一起。它们撞出来的东西，没人替你想过。',
+  freq:'字母换了座位，可频率形状没换——统计学能看见密码学藏起来的东西。',
+  recapture:'数不清的，就用抽样去估。',
+  dna:'水里的秘密，只有序列说得清。',
+  codex:'把走过的路记下来——这是你的学派手账。'
 };
+const LEVELS = [
+  {id:'cipher',    trial:'cipher',   ic:'🔤', nm:'封印之语',  sub:'密码学派',    view:'v-cipher'},
+  {id:'sampling',  trial:'sampling', ic:'🎲', nm:'命运抽样',  sub:'统计学派',    view:'v-sampling'},
+  {id:'web',       trial:'web',      ic:'🌿', nm:'万物之网',  sub:'生命学派',    view:'v-web'},
+  {id:'forge',     trial:null,       ic:'⚗️', nm:'碰撞熔炉',  sub:'9 专业碰撞',  view:'v-forge'},
+  {id:'freq',      trial:'freq',     ic:'🔮', nm:'频率之眼',  sub:'密码 × 统计', view:'v-freq'},
+  {id:'recapture', trial:'recapture',ic:'🎣', nm:'标志重捕',  sub:'统计 × 生命', view:'v-recapture'},
+  {id:'dna',       trial:'dna',      ic:'🧬', nm:'基因封印',  sub:'密码 × 生命', view:'v-dna'},
+  {id:'codex',     trial:null,       ic:'📖', nm:'学派手账',  sub:'终章',        view:'v-codex'}
+];
+const Journey = {
+  done(id){
+    const lv = LEVELS.find(l=>l.id===id); if(!lv) return false;
+    if(lv.trial) return !!State.done[lv.trial];
+    if(id==='forge') return Object.keys(Forge.visited).length > 0;
+    if(id==='codex') return Object.keys(State.done).length >= 6;
+    return false;
+  },
+  unlocked(k){
+    if(k === 0) return true;
+    return this.done(LEVELS[k-1].id);
+  },
+  deepest(){
+    let k = 0;
+    for(let i=1;i<LEVELS.length;i++) if(this.unlocked(i)) k = i;
+    return k;
+  },
+  refresh(){
+    const g = document.getElementById('mapGrid'); if(!g) return;
+    g.innerHTML = '';
+    const cur = this.current();   // 下一站（第一个已解锁且未完成）
+    LEVELS.forEach((lv,k)=>{
+      const un = this.unlocked(k), dn = this.done(lv.id);
+      const a = document.createElement('a');
+      a.className = 'node' + (dn?' done':'') + (un?'':' lock') + (lv.id===cur?' cur':'');
+      a.href = un ? ('#/'+lv.id) : 'javascript:void 0';
+      a.innerHTML = '<div class="ic">'+(un?lv.ic:'🔒')+'</div>'
+        + '<div class="nm">'+lv.nm+'</div>'
+        + '<div class="st">'+(dn?'已完成':(un?(lv.id===cur?'下一站':'可进入'):'未解锁'))+'</div>'
+        + '<div class="st">'+lv.sub+'</div>';
+      if(!un) a.onclick = e=>{ e.preventDefault(); toast('先完成上一站才能解锁'); };
+      g.appendChild(a);
+    });
+  },
+  current(){
+    for(let i=0;i<LEVELS.length;i++)
+      if(this.unlocked(i) && !this.done(LEVELS[i].id)) return LEVELS[i].id;
+    return null;   // 全部完成
+  },
+  onDone(key, had){
+    if(had) return;
+    this.refresh();
+    const k = LEVELS.findIndex(l=>l.trial===key);
+    if(k >= 0 && k+1 < LEVELS.length)
+      setTimeout(()=>toast('🔓 解锁：' + LEVELS[k+1].nm), 1900);
+  }
+};
+
+/* =========================================================================
+   旁白打字机
+   ========================================================================= */
+const Story = {
+  timers:{},
+  play(id){
+    const el = document.getElementById('n-'+id); if(!el) return;
+    const txt = NARR[id] || ''; el.textContent = '';
+    clearInterval(this.timers[id]);
+    let i = 0;
+    this.timers[id] = setInterval(()=>{
+      el.textContent = txt.slice(0, ++i);
+      if(i >= txt.length) clearInterval(this.timers[id]);
+    }, 28);
+  }
+};
+
+/* =========================================================================
+   路由：hash → 视图，带解锁守卫
+   ========================================================================= */
 function route(){
-  const h = location.hash.replace(/^#/, '') || '/home';
-  if(!ROUTES[h]){ location.hash = '#/home'; return; }
-  document.querySelectorAll('.view').forEach(v => v.classList.toggle('on', v.id === ROUTES[h]));
-  const top = h.split('/')[1];
-  document.querySelectorAll('.topnav nav a').forEach(a => a.classList.toggle('on', a.dataset.nav === top));
-  document.documentElement.scrollTop = 0; document.body.scrollTop = 0;   // 立即回到页顶
-  // 视图切换后重新量取画布尺寸并重绘（隐藏时 clientWidth 为 0）
+  const h = (location.hash||'').replace(/^#\/?/,'');
+  if(!h){ showView('v-prologue', null); return; }
+  const k = LEVELS.findIndex(l=>l.id===h);
+  if(k < 0){ location.hash = '#/'; return; }
+  if(!Journey.unlocked(k)){
+    toast('这一站还没解锁');
+    const d = Journey.deepest();
+    location.hash = '#/' + LEVELS[d].id;
+    return;
+  }
+  showView(LEVELS[k].view, LEVELS[k].id);
+}
+function showView(vid, id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on', v.id===vid));
+  document.documentElement.scrollTop = 0; document.body.scrollTop = 0;
   Sampling.render(); Web.drawSeries(); Freq.drawHistogram(false);
-  if(top === 'forge') Field.resize();
+  if(id === 'forge') Field.resize();
+  if(id) Story.play(id);
+  Journey.refresh();
 }
 addEventListener('hashchange', route);
 
 /* =========================================================================
-   交互装配：进度、页脚
+   装配
    ========================================================================= */
 function initUI(){
   document.getElementById('footYear').textContent = '2026';
   document.getElementById('btnRestart').onclick = ()=>{
-    if(confirm('清空进度，重新体验全部试炼？')) restartAll();
+    if(confirm('清空全部进度与卡册，从头开始？')) restartAll();
   };
-  document.getElementById('btnGradClose').onclick = ()=>{
+  document.getElementById('btnGradClose').onclick = ()=>
     document.getElementById('grad').classList.remove('show');
-  };
   document.getElementById('btnGradRestart').onclick = restartAll;
+  document.getElementById('btnAclose').onclick = ()=>Minis.close();
+  document.getElementById('amin').addEventListener('click', e=>{
+    if(e.target.id === 'amin') Minis.close();
+  });
+  document.getElementById('btnStart').onclick = ()=>{
+    const d = Journey.deepest();
+    location.hash = '#/' + LEVELS[d].id;
+  };
+  document.getElementById('moonWrap').onclick = ()=>
+    document.getElementById('btnStart').click();
+  Moon.draw();
+  const orig = markTrial;
+  markTrial = function(key){
+    const had = !!State.done[key];
+    orig(key);
+    Journey.onDone(key, had);
+  };
 }
 
+/* 序章像素月亮 */
+const Moon = {
+  draw(){
+    const c = document.getElementById('moonCv'); if(!c) return;
+    const dpr = window.devicePixelRatio||1, S = 150;
+    c.width = S*dpr; c.height = S*dpr;
+    const x = c.getContext('2d'); x.scale(dpr,dpr);
+    x.imageSmoothingEnabled = false;
+    const N = 25, cell = S/N;
+    for(let i=0;i<N;i++) for(let j=0;j<N;j++){
+      const dx = i-N/2+0.5, dy = j-N/2+0.5, d = Math.hypot(dx,dy);
+      if(d > N/2-1) continue;
+      const t = (d+12)/ (N/2);
+      x.fillStyle = d < N/2-5 ? (t<.55?'#fff3c4':'#ffd94a') : '#c9a52f';
+      x.fillRect(Math.round(i*cell), Math.round(j*cell), Math.ceil(cell), Math.ceil(cell));
+      if(((i+j)%2===0) && d < N/2-6){ x.fillStyle='rgba(120,90,20,.16)';
+        x.fillRect(Math.round(i*cell), Math.round(j*cell), Math.ceil(cell), Math.ceil(cell)); }
+    }
+    // 星点
+    for(let k=0;k<14;k++){
+      const px = Math.floor(Math.random()*S/2)*2, py = Math.floor(Math.random()*S/2)*2;
+      if(Math.hypot(px-75, py-75) < 62) continue;
+      x.fillStyle = Math.random()<.5 ? '#eaf0ff' : '#ffd94a';
+      x.fillRect(px, py, 2, 2);
+    }
+  }
+};
+
+/* ---------------- 启动 ---------------- */
 Cipher.init();
 Sampling.init();
 Web.init();
@@ -1632,12 +2073,13 @@ DNA.init();
 Forge.init();
 Field.init();
 initUI();
-route();
 const restored = loadProgress();
+Journey.refresh();
+route();
 if(restored === 6){
   showGrad();
 }else if(restored === 0){
-  setTimeout(()=>toast('🎓 完成顶部 6 个试炼，即可取得结业徽章'), 700);
+  setTimeout(()=>toast('▶ 点击「入夜，开始旅程」'), 700);
 }else{
   setTimeout(()=>toast('📚 已恢复进度：' + restored + ' / 6'), 700);
 }
