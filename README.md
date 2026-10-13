@@ -7,10 +7,15 @@
 
 ---
 
+**🎮 在线试玩（Demo）**：https://ulricawen.github.io/The-Midnight-Academy/
+
+---
+
 ## 1. 如何运行（零环境依赖）
 
 | 方式 | 操作 |
 |---|---|
+| **在线试玩（推荐）** | 打开上方 Demo 链接（GitHub Pages，`main` 分支根目录自动部署） |
 | 离线演示 | 双击 `index.html`，浏览器直接打开即为完整作品 |
 | 本地服务 | `python3 -m http.server 8090`，访问 `http://localhost:8090/` |
 
